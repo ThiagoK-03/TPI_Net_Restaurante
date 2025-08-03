@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
+
 namespace DTOs
 {
     public class ProveedorDTO
@@ -15,5 +17,7 @@ namespace DTOs
         public int Telefono {  get; set; }
         public string TipoIngrediente {  get; set; }
         //public string Nombre { get; set; } ---- Nombre = RazonSocial..?
+
+        public string Compañia { get; set; } //Agregue este atributo
     }
 }

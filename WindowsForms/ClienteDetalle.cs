@@ -14,11 +14,12 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace WindowsForms
 {
-    public enum FormMode
+    public enum FormMode //Comentar porque no permite tener "FormMode" a la vez que el de ProveedorDetalle, averiguar porque.
     {
         Add,
         Update
     }
+
     public partial class ClienteDetalle : Form
     {
         private ClienteDTO cliente;
@@ -59,6 +60,7 @@ namespace WindowsForms
             {
                 try
                 {
+                    
                     this.Cliente.Nombre = tbxNombre.Text;
                     this.Cliente.Apellido = tbxApellido.Text;
                     this.Cliente.Email = tbxEmail.Text;

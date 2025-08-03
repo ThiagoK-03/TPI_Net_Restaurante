@@ -115,4 +115,96 @@ app.MapDelete("/clientes/{id}", (int id) =>
 .Produces(StatusCodes.Status204NoContent)
 .Produces(StatusCodes.Status404NotFound);
 
+
+///Rest de Proveedores
+
+app.MapGet("/proveedores/{id}", (int id) =>
+{
+    ProveedorService proveedorService = new ProveedorService();
+
+    ProveedorDTO dto = proveedorService.Get(id);
+
+    if (dto == null)
+    {
+        return Results.NotFound();
+    }
+
+    return Results.Ok(dto);
+})
+.WithName("GetProveedor")
+.Produces<ProveedorDTO>(StatusCodes.Status200OK)
+.Produces(StatusCodes.Status404NotFound);
+
+app.MapGet("/proveedores", () =>
+{
+    ProveedorService proveedorService = new ProveedorService();
+
+    var dtos = proveedorService.GetAll();
+
+    return Results.Ok(dtos);
+})
+.WithName("GetAllProveedores")
+.Produces<List<ProveedorDTO>>(StatusCodes.Status200OK);
+
+app.MapPost("/proveedores", (ProveedorDTO dto) =>
+{
+    try
+    {
+        ProveedorService proveedorService = new ProveedorService();
+
+        ProveedorDTO proveedorDTO = proveedorService.Add(dto);
+
+        return Results.Created($"/proveedores/{proveedorDTO.Id}", proveedorDTO);
+    }
+    catch (ArgumentException ex)
+    {
+        return Results.BadRequest(new { error = ex.Message });
+    }
+})
+.WithName("AddProveedor")
+.Produces<ProveedorDTO>(StatusCodes.Status201Created)
+.Produces(StatusCodes.Status400BadRequest);
+
+app.MapPut("/proveedores", (ProveedorDTO dto) =>
+{
+    try
+    {
+        ProveedorService proveedorService = new ProveedorService();
+
+        var found = proveedorService.Update(dto);
+
+        if (!found)
+        {
+            return Results.NotFound();
+        }
+
+        return Results.NoContent();
+    }
+    catch (ArgumentException ex)
+    {
+        return Results.BadRequest(new { error = ex.Message });
+    }
+})
+.WithName("UpdateProveedor")
+.Produces(StatusCodes.Status404NotFound)
+.Produces(StatusCodes.Status400BadRequest);
+
+app.MapDelete("/proveedores/{id}", (int id) =>
+{
+    ProveedorService proveedorService = new ProveedorService();
+
+    var deleted = proveedorService.Delete(id);
+
+    if (!deleted)
+    {
+        return Results.NotFound();
+    }
+
+    return Results.NoContent();
+
+})
+.WithName("DeleteProveedor")
+.Produces(StatusCodes.Status204NoContent)
+.Produces(StatusCodes.Status404NotFound);
+
 app.Run();

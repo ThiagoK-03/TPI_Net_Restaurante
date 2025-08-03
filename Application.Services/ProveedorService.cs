@@ -72,36 +72,47 @@ namespace Application.Services
                 })
                 .ToList();
         }
-        public ProveedorDTO? Update(ProveedorDTO dto)
+        
+        //Este metodo Update tuve que modificarlo (a como estaba hecho el de Clientes) para que funcione y no de error.
+        public bool Update(ProveedorDTO dto) //Fue modificado respecto al original para solucionar un problema
         {
             // Buscar el proveedor por Id
-            Proveedor proveedor = ProveedorInMemory.Proveedores.Find(x => x.Id == dto.Id);
-            if (proveedor == null)
-                return null;
-
-            // Validar que el nuevo email no esté duplicado en otro proveedor
-            if (ProveedorInMemory.Proveedores.Any(p => p.Email.Equals(dto.Email, StringComparison.OrdinalIgnoreCase) && p.Id != dto.Id))
+            Proveedor? proveedorToUpdate = ProveedorInMemory.Proveedores.Find(x => x.Id == dto.Id);
+            
+            if (proveedorToUpdate != null)
             {
-                throw new ArgumentException($"Ya existe un proveedor con el Email '{dto.Email}'.");
+                // Validar que el nuevo email no esté duplicado en otro proveedor
+                if (ProveedorInMemory.Proveedores.Any(p => p.Id != dto.Id && p.Email.Equals(dto.Email, StringComparison.OrdinalIgnoreCase)))
+                {
+                    throw new ArgumentException($"Ya existe un proveedor con el Email '{dto.Email}'.");
+                }
+
+                // Actualizar los campos
+                proveedorToUpdate.SetNombre(dto.RazonSocial);
+                proveedorToUpdate.SetCuit(dto.Cuit);
+                proveedorToUpdate.SetEmail(dto.Email);
+                proveedorToUpdate.SetTelefono(dto.Telefono);
+                proveedorToUpdate.setTipoIngrediente(dto.TipoIngrediente);
+                proveedorToUpdate.setCompañia(dto.Compañia);
+
+                return true;
             }
-
-            // Actualizar los campos
-            proveedor.SetNombre(dto.RazonSocial);
-            proveedor.SetCuit(dto.Cuit);
-            proveedor.SetEmail(dto.Email);
-            proveedor.SetTelefono(dto.Telefono);
-            proveedor.setTipoIngrediente(dto.TipoIngrediente);
-
-            // Retornar el DTO actualizado
-            return new ProveedorDTO
+            else
             {
-                Id = proveedor.Id,
-                RazonSocial = proveedor.RazonSocial,
-                Cuit = proveedor.Cuit,
-                Email = proveedor.Email,
-                Telefono = proveedor.Telefono,
-                TipoIngrediente = proveedor.TipoIngrediente
-            };
+                return false;
+            }
+            /* Esta comentado para saber si esto se deja o no
+                // Retornar el DTO actualizado
+                return new ProveedorDTO
+                {
+                    Id = proveedor.Id,
+                    RazonSocial = proveedor.RazonSocial,
+                    Cuit = proveedor.Cuit,
+                    Email = proveedor.Email,
+                    Telefono = proveedor.Telefono,
+                    TipoIngrediente = proveedor.TipoIngrediente
+                };
+            */
         }
 
         private static int GetNextId()

@@ -16,6 +16,8 @@ namespace Domain.Model
         public int Telefono { get; private set; }
         public string TipoIngrediente {  get; private set; }
 
+        public string Compañia { get; private set; }
+
         public Proveedor(int id, string razonSocial, int cuit, string email, int telefono, string tipoIngrediente)
         {
             SetId(id);
@@ -72,6 +74,15 @@ namespace Domain.Model
                 throw new ArgumentException("El tipo de ingrediente no puede ser nulo o vacio.", nameof(tipoIngrediente));
             }
             TipoIngrediente = tipoIngrediente;
+        }
+
+        public void setCompañia(string compañia) //Agregue este metodo junto al atributo de Compañia
+        {
+            if (string.IsNullOrWhiteSpace(compañia))
+            {
+                throw new ArgumentException("La compañia no puede ser nulo o vacio.", nameof(compañia));
+            }
+            Compañia = compañia;
         }
       
     }
