@@ -18,6 +18,6 @@ namespace DTOs
         public string TipoIngrediente {  get; set; }
         //public string Nombre { get; set; } ---- Nombre = RazonSocial..?
 
-        public string Compañia { get; set; } //Agregue este atributo
+        //public string Compañia { get; set; } //Agregue este atributo
     }
 }

@@ -1,14 +1,14 @@
 ﻿namespace WindowsForms
 {
-    partial class ProveedorVista
+    partial class ClienteVista
     {
         /// <summary>
-        /// Required designer variable.
+        ///  Required designer variable.
         /// </summary>
         private System.ComponentModel.IContainer components = null;
 
         /// <summary>
-        /// Clean up any resources being used.
+        ///  Clean up any resources being used.
         /// </summary>
         /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
@@ -23,26 +23,27 @@
         #region Windows Form Designer generated code
 
         /// <summary>
-        /// Required method for Designer support - do not modify
-        /// the contents of this method with the code editor.
+        ///  Required method for Designer support - do not modify
+        ///  the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent()
         {
-            dgvProveedores = new DataGridView();
+            dgvClientes = new DataGridView();
             btnAgregar = new Button();
             btnModificar = new Button();
             btnEliminar = new Button();
-            ((System.ComponentModel.ISupportInitialize)dgvProveedores).BeginInit();
+            btnMenu = new Button();
+            ((System.ComponentModel.ISupportInitialize)dgvClientes).BeginInit();
             SuspendLayout();
             // 
-            // dgvProveedores
+            // dgvClientes
             // 
-            dgvProveedores.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvProveedores.Location = new Point(37, 31);
-            dgvProveedores.Name = "dgvProveedores";
-            dgvProveedores.RowHeadersWidth = 51;
-            dgvProveedores.Size = new Size(712, 297);
-            dgvProveedores.TabIndex = 0;
+            dgvClientes.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvClientes.Location = new Point(37, 31);
+            dgvClientes.Name = "dgvClientes";
+            dgvClientes.RowHeadersWidth = 51;
+            dgvClientes.Size = new Size(712, 297);
+            dgvClientes.TabIndex = 0;
             // 
             // btnAgregar
             // 
@@ -74,27 +75,39 @@
             btnEliminar.UseVisualStyleBackColor = true;
             btnEliminar.Click += btnEliminar_Click;
             // 
+            // btnMenu
+            // 
+            btnMenu.Location = new Point(355, 357);
+            btnMenu.Name = "btnMenu";
+            btnMenu.Size = new Size(94, 29);
+            btnMenu.TabIndex = 4;
+            btnMenu.Text = "Menu";
+            btnMenu.UseVisualStyleBackColor = true;
+            btnMenu.Click += btnMenu_Click;
+            // 
             // ClienteVista
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(btnMenu);
             Controls.Add(btnEliminar);
             Controls.Add(btnModificar);
             Controls.Add(btnAgregar);
-            Controls.Add(dgvProveedores);
-            Name = "ProveedorVista";
-            Text = "Proveedores";
-            Load += Proveedores_Load;
-            ((System.ComponentModel.ISupportInitialize)dgvProveedores).EndInit();
+            Controls.Add(dgvClientes);
+            Name = "ClienteVista";
+            Text = "Clientes";
+            Load += Clientes_Load;
+            ((System.ComponentModel.ISupportInitialize)dgvClientes).EndInit();
             ResumeLayout(false);
         }
 
-        private DataGridView dgvProveedores;
+        #endregion
+
+        private DataGridView dgvClientes;
         private Button btnAgregar;
         private Button btnModificar;
         private Button btnEliminar;
-
-        #endregion
+        private Button btnMenu;
     }
 }

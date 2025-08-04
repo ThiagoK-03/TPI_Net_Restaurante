@@ -1,13 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using DTOs;
+﻿using DTOs;
 
 namespace WindowsForms
 {
@@ -114,6 +105,11 @@ namespace WindowsForms
             proveedor = (ProveedorDTO)dgvProveedores.SelectedRows[0].DataBoundItem;
 
             return proveedor;
+        }
+
+        private void btnMenu_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }

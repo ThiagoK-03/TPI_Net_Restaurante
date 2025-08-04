@@ -10,6 +10,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using WindowsForms.clientes;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace WindowsForms

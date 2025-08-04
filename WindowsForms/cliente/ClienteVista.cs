@@ -1,4 +1,5 @@
 using DTOs;
+using WindowsForms.clientes;
 
 namespace WindowsForms
 {
@@ -37,6 +38,7 @@ namespace WindowsForms
                 int id = this.SelectedItem().Id;
 
                 ClienteDTO cliente = await ClienteApi.GetAsync(id);
+
 
                 clienteDetalle.Mode = FormMode.Update;
                 clienteDetalle.Cliente = cliente;
@@ -105,6 +107,11 @@ namespace WindowsForms
             cliente = (ClienteDTO)dgvClientes.SelectedRows[0].DataBoundItem;
 
             return cliente;
+        }
+
+        private void btnMenu_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }

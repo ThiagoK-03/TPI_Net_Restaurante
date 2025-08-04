@@ -93,7 +93,7 @@ namespace Application.Services
                 proveedorToUpdate.SetEmail(dto.Email);
                 proveedorToUpdate.SetTelefono(dto.Telefono);
                 proveedorToUpdate.setTipoIngrediente(dto.TipoIngrediente);
-                proveedorToUpdate.setCompañia(dto.Compañia);
+                //proveedorToUpdate.setCompañia(dto.Compañia);
 
                 return true;
             }

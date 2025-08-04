@@ -167,7 +167,7 @@
             Controls.Add(btnCancelar);
             Controls.Add(btnAceptar);
             Name = "ClienteDetalle";
-            Text = "Form1";
+            Text = "Cliente";
             ((System.ComponentModel.ISupportInitialize)errorProvider).EndInit();
             ResumeLayout(false);
             PerformLayout();

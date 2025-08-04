@@ -81,7 +81,7 @@ namespace WindowsForms
                     }
                     //Hacer Validaciones
                     this.Proveedor.TipoIngrediente = tbxTipoIng.Text;
-                    this.Proveedor.Compañia = tbxCompania.Text;
+                    //this.Proveedor.Compañia = tbxCompania.Text;
 
                     //El Detalle se esta llevando la responsabilidad de llamar al servicio
                     //pero tal vez deberia ser solo una vista y que esta responsabilidad quede
@@ -118,12 +118,16 @@ namespace WindowsForms
             this.tbxEmail.Text = this.Proveedor.Email;
             this.tbxTelefono.Text = this.Proveedor.Telefono.ToString();
             this.tbxTipoIng.Text = this.Proveedor.TipoIngrediente;
-            this.tbxCompania.Text = this.Proveedor.Compañia;
+            //this.tbxCompania.Text = this.Proveedor.Compañia;
         }
 
         private void SetFormMode(FormMode value)
         {
             mode = value;
+            
+            //momentaneo, hasta definir que hacer con Compañia
+            lblCompania.Visible = false;
+            tbxCompania.Visible = false;
 
             if (Mode == FormMode.Add)
             {
