@@ -1,5 +1,10 @@
 namespace WindowsForms
 {
+    public enum FormMode
+    {
+        Add,
+        Update
+    }
     internal static class Program
     {
         /// <summary>

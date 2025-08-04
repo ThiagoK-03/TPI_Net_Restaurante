@@ -15,11 +15,6 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace WindowsForms
 {
-    /*public enum FormMode //Comentar porque no permite tener "FormMode" a la vez que el de ClienteDetalle, averiguar porque.
-    {
-        Add,
-        Update
-    }*/
     public partial class ProveedorDetalle : Form
     {
         private ProveedorDTO proveedor;
