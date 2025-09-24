@@ -29,7 +29,7 @@ namespace WindowsForms
 
         private void btnSalir_Click(object sender, EventArgs e)
         {
-            Application.Exit();
+            System.Windows.Forms.Application.Exit();
         }
     }
 }
