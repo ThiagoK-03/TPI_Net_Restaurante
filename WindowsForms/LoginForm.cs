@@ -8,10 +8,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Application.Services;
+using WinFormsControlLibrary1;
 
 namespace WindowsForms
 {
-    public partial class LoginForm : Form
+    public partial class LoginForm : MenuBase
     {
         private readonly IAuthService _authService;
         public LoginForm()

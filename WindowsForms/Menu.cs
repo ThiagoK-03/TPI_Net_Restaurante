@@ -15,6 +15,8 @@ namespace WindowsForms
         public Menu()
         {
             InitializeComponent();
+            FormHelper.EnableDrag(this, topBar);
+
         }
         private void btnClientes_Click(object sender, EventArgs e)
         {
@@ -30,6 +32,11 @@ namespace WindowsForms
         private void btnSalir_Click(object sender, EventArgs e)
         {
             System.Windows.Forms.Application.Exit();
+        }
+
+        private void panel1_DragEnter(object sender, DragEventArgs e)
+        {
+
         }
     }
 }
