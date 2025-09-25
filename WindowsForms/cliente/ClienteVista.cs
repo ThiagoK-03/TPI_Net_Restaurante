@@ -1,9 +1,10 @@
 using DTOs;
 using WindowsForms.clientes;
+using WinFormsControlLibrary1;
 
 namespace WindowsForms
 {
-    public partial class ClienteVista : Form
+    public partial class ClienteVista : MenuBase
     {
         public ClienteVista()
         {

@@ -1,4 +1,6 @@
-﻿namespace WindowsForms
+﻿using WinFormsControlLibrary1;
+
+namespace WindowsForms
 {
     partial class ProveedorDetalle
     {
@@ -29,31 +31,37 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            btnAceptar = new Button();
-            btnCancelar = new Button();
-            lblId = new Label();
-            tbxId = new TextBox();
-            tbxRazonSocial = new TextBox();
-            lblRazonSocial = new Label();
-            tbxCuit = new TextBox();
-            lblCuit = new Label();
-            tbxTelefono = new TextBox();
-            lblTelefono = new Label();
-            tbxEmail = new TextBox();
-            lblEmail = new Label();
-            tbxTipoIng = new TextBox();
-            lblTipoIng = new Label();
-            tbxCompania = new TextBox();
-            lblCompania = new Label();
+            btnAceptar = new RedButton();
+            btnCancelar = new RedButton();
+            lblId = new BasicLabel();
+            tbxId = new BasicTxtBox();
+            tbxRazonSocial = new BasicTxtBox();
+            lblRazonSocial = new BasicLabel();
+            tbxCuit = new BasicTxtBox();
+            lblCuit = new BasicLabel();
+            tbxTelefono = new BasicTxtBox();
+            lblTelefono = new BasicLabel();
+            tbxEmail = new BasicTxtBox();
+            lblEmail = new BasicLabel();
+            tbxTipoIng = new BasicTxtBox();
+            lblTipoIng = new BasicLabel();
+            tbxCompania = new BasicTxtBox();
+            lblCompania = new BasicLabel();
             errorProvider = new ErrorProvider(components);
             ((System.ComponentModel.ISupportInitialize)errorProvider).BeginInit();
             SuspendLayout();
             // 
             // btnAceptar
             // 
-            btnAceptar.Location = new Point(362, 332);
+            btnAceptar.BackColor = Color.FromArgb(192, 0, 0);
+            btnAceptar.FlatAppearance.BorderSize = 0;
+            btnAceptar.FlatStyle = FlatStyle.Flat;
+            btnAceptar.Font = new Font("Leelawadee", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            btnAceptar.ForeColor = Color.MistyRose;
+            btnAceptar.Location = new Point(317, 249);
+            btnAceptar.Margin = new Padding(3, 2, 3, 2);
             btnAceptar.Name = "btnAceptar";
-            btnAceptar.Size = new Size(94, 29);
+            btnAceptar.Size = new Size(82, 22);
             btnAceptar.TabIndex = 0;
             btnAceptar.Text = "Aceptar";
             btnAceptar.UseVisualStyleBackColor = true;
@@ -61,9 +69,15 @@
             // 
             // btnCancelar
             // 
-            btnCancelar.Location = new Point(262, 332);
+            btnCancelar.BackColor = Color.FromArgb(192, 0, 0);
+            btnCancelar.FlatAppearance.BorderSize = 0;
+            btnCancelar.FlatStyle = FlatStyle.Flat;
+            btnCancelar.Font = new Font("Leelawadee", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            btnCancelar.ForeColor = Color.MistyRose;
+            btnCancelar.Location = new Point(229, 249);
+            btnCancelar.Margin = new Padding(3, 2, 3, 2);
             btnCancelar.Name = "btnCancelar";
-            btnCancelar.Size = new Size(94, 29);
+            btnCancelar.Size = new Size(82, 22);
             btnCancelar.TabIndex = 1;
             btnCancelar.Text = "Cancelar";
             btnCancelar.UseVisualStyleBackColor = true;
@@ -72,114 +86,117 @@
             // lblId
             // 
             lblId.AutoSize = true;
-            lblId.Location = new Point(11, 45);
+            lblId.Location = new Point(29, 56);
             lblId.Name = "lblId";
-            lblId.Size = new Size(22, 20);
+            lblId.Size = new Size(17, 15);
             lblId.TabIndex = 2;
             lblId.Text = "Id";
             // 
             // tbxId
             // 
-            tbxId.Location = new Point(131, 43);
+            tbxId.Location = new Point(134, 54);
+            tbxId.Margin = new Padding(3, 2, 3, 2);
             tbxId.Name = "tbxId";
-            tbxId.Size = new Size(126, 27);
+            tbxId.Size = new Size(111, 23);
             tbxId.TabIndex = 3;
             // 
             // tbxRazonSocial
             // 
-            tbxRazonSocial.Location = new Point(131, 75);
+            tbxRazonSocial.Location = new Point(134, 78);
+            tbxRazonSocial.Margin = new Padding(3, 2, 3, 2);
             tbxRazonSocial.Name = "tbxRazonSocial";
-            tbxRazonSocial.Size = new Size(223, 27);
+            tbxRazonSocial.Size = new Size(196, 23);
             tbxRazonSocial.TabIndex = 5;
             // 
             // lblRazonSocial
             // 
             lblRazonSocial.AutoSize = true;
-            lblRazonSocial.Location = new Point(11, 77);
+            lblRazonSocial.Location = new Point(29, 80);
             lblRazonSocial.Name = "lblRazonSocial";
-            lblRazonSocial.Size = new Size(90, 20);
+            lblRazonSocial.Size = new Size(70, 15);
             lblRazonSocial.TabIndex = 4;
             lblRazonSocial.Text = "RazonSocial";
             // 
             // tbxCuit
             // 
-            tbxCuit.Location = new Point(131, 108);
+            tbxCuit.Location = new Point(134, 103);
+            tbxCuit.Margin = new Padding(3, 2, 3, 2);
             tbxCuit.Name = "tbxCuit";
-            tbxCuit.Size = new Size(223, 27);
+            tbxCuit.Size = new Size(196, 23);
             tbxCuit.TabIndex = 7;
             // 
             // lblCuit
             // 
             lblCuit.AutoSize = true;
-            lblCuit.Location = new Point(11, 111);
+            lblCuit.Location = new Point(29, 105);
             lblCuit.Name = "lblCuit";
-            lblCuit.Size = new Size(35, 20);
+            lblCuit.Size = new Size(29, 15);
             lblCuit.TabIndex = 6;
             lblCuit.Text = "Cuit";
             // 
             // tbxTelefono
             // 
-            tbxTelefono.Location = new Point(131, 173);
+            tbxTelefono.Location = new Point(134, 152);
+            tbxTelefono.Margin = new Padding(3, 2, 3, 2);
             tbxTelefono.Name = "tbxTelefono";
-            tbxTelefono.Size = new Size(126, 27);
+            tbxTelefono.Size = new Size(111, 23);
             tbxTelefono.TabIndex = 9;
             // 
             // lblTelefono
             // 
             lblTelefono.AutoSize = true;
-            lblTelefono.Location = new Point(11, 177);
+            lblTelefono.Location = new Point(29, 155);
             lblTelefono.Name = "lblTelefono";
-            lblTelefono.Size = new Size(67, 20);
+            lblTelefono.Size = new Size(52, 15);
             lblTelefono.TabIndex = 8;
             lblTelefono.Text = "Telefono";
             // 
             // tbxEmail
             // 
-            tbxEmail.Location = new Point(131, 141);
+            tbxEmail.Location = new Point(134, 128);
+            tbxEmail.Margin = new Padding(3, 2, 3, 2);
             tbxEmail.Name = "tbxEmail";
-            tbxEmail.Size = new Size(223, 27);
+            tbxEmail.Size = new Size(196, 23);
             tbxEmail.TabIndex = 11;
             // 
             // lblEmail
             // 
             lblEmail.AutoSize = true;
-            lblEmail.Location = new Point(11, 144);
+            lblEmail.Location = new Point(29, 130);
             lblEmail.Name = "lblEmail";
-            lblEmail.Size = new Size(46, 20);
+            lblEmail.Size = new Size(36, 15);
             lblEmail.TabIndex = 10;
             lblEmail.Text = "Email";
             // 
             // tbxTipoIng
             // 
-            tbxTipoIng.Location = new Point(131, 207);
-            tbxTipoIng.Margin = new Padding(3, 4, 3, 4);
+            tbxTipoIng.Location = new Point(134, 177);
             tbxTipoIng.Name = "tbxTipoIng";
-            tbxTipoIng.Size = new Size(223, 27);
+            tbxTipoIng.Size = new Size(196, 23);
             tbxTipoIng.TabIndex = 13;
             // 
             // lblTipoIng
             // 
             lblTipoIng.AutoSize = true;
-            lblTipoIng.Location = new Point(11, 211);
+            lblTipoIng.Location = new Point(29, 180);
             lblTipoIng.Name = "lblTipoIng";
-            lblTipoIng.Size = new Size(119, 20);
+            lblTipoIng.Size = new Size(93, 15);
             lblTipoIng.TabIndex = 12;
             lblTipoIng.Text = "Tipo Ingrediente";
             // 
             // tbxCompania
             // 
-            tbxCompania.Location = new Point(131, 239);
-            tbxCompania.Margin = new Padding(3, 4, 3, 4);
+            tbxCompania.Location = new Point(134, 201);
             tbxCompania.Name = "tbxCompania";
-            tbxCompania.Size = new Size(223, 27);
+            tbxCompania.Size = new Size(196, 23);
             tbxCompania.TabIndex = 15;
             // 
             // lblCompania
             // 
             lblCompania.AutoSize = true;
-            lblCompania.Location = new Point(11, 243);
+            lblCompania.Location = new Point(29, 204);
             lblCompania.Name = "lblCompania";
-            lblCompania.Size = new Size(77, 20);
+            lblCompania.Size = new Size(62, 15);
             lblCompania.TabIndex = 14;
             lblCompania.Text = "Compañia";
             // 
@@ -189,9 +206,9 @@
             // 
             // ProveedorDetalle
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(467, 417);
+            ClientSize = new Size(409, 313);
             Controls.Add(tbxCompania);
             Controls.Add(lblCompania);
             Controls.Add(tbxTipoIng);
@@ -208,8 +225,25 @@
             Controls.Add(lblTelefono);
             Controls.Add(btnCancelar);
             Controls.Add(btnAceptar);
+            Margin = new Padding(3, 2, 3, 2);
             Name = "ProveedorDetalle";
             Text = "Proveedor";
+            Controls.SetChildIndex(btnAceptar, 0);
+            Controls.SetChildIndex(btnCancelar, 0);
+            Controls.SetChildIndex(lblTelefono, 0);
+            Controls.SetChildIndex(tbxTelefono, 0);
+            Controls.SetChildIndex(lblCuit, 0);
+            Controls.SetChildIndex(tbxCuit, 0);
+            Controls.SetChildIndex(lblId, 0);
+            Controls.SetChildIndex(tbxId, 0);
+            Controls.SetChildIndex(lblRazonSocial, 0);
+            Controls.SetChildIndex(tbxRazonSocial, 0);
+            Controls.SetChildIndex(lblEmail, 0);
+            Controls.SetChildIndex(tbxEmail, 0);
+            Controls.SetChildIndex(lblTipoIng, 0);
+            Controls.SetChildIndex(tbxTipoIng, 0);
+            Controls.SetChildIndex(lblCompania, 0);
+            Controls.SetChildIndex(tbxCompania, 0);
             ((System.ComponentModel.ISupportInitialize)errorProvider).EndInit();
             ResumeLayout(false);
             PerformLayout();
@@ -217,22 +251,22 @@
 
         #endregion
 
-        private Button btnAceptar;
-        private Button btnCancelar;
-        private Label lblId;
-        private TextBox tbxId;
-        private TextBox tbxRazonSocial;
-        private Label lblRazonSocial;
-        private TextBox tbxCuit;
-        private Label lblCuit;
-        private TextBox tbxTelefono;
-        private Label lblTelefono;
-        private TextBox tbxEmail;
-        private Label lblEmail;
+        private RedButton btnAceptar;
+        private RedButton btnCancelar;
+        private BasicLabel lblId;
+        private BasicTxtBox tbxId;
+        private BasicTxtBox tbxRazonSocial;
+        private BasicLabel lblRazonSocial;
+        private BasicTxtBox tbxCuit;
+        private BasicLabel lblCuit;
+        private BasicTxtBox tbxTelefono;
+        private BasicLabel lblTelefono;
+        private BasicTxtBox tbxEmail;
+        private BasicLabel lblEmail;
         private ErrorProvider errorProvider;
-        private Label lblTipoIng;
-        private TextBox tbxCompania;
-        private Label lblCompania;
-        private TextBox tbxTipoIng;
+        private BasicLabel lblTipoIng;
+        private BasicTxtBox tbxCompania;
+        private BasicLabel lblCompania;
+        private BasicTxtBox tbxTipoIng;
     }
 }

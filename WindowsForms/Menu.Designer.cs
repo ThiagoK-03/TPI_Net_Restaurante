@@ -43,6 +43,7 @@
             btnClientes.FlatAppearance.BorderColor = Color.DarkRed;
             btnClientes.FlatAppearance.BorderSize = 0;
             btnClientes.FlatStyle = FlatStyle.Flat;
+            btnClientes.Font = new Font("Leelawadee", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             btnClientes.ForeColor = Color.MistyRose;
             btnClientes.Location = new Point(99, 64);
             btnClientes.Margin = new Padding(3, 2, 3, 2);
@@ -58,6 +59,7 @@
             btnProveedores.BackColor = Color.FromArgb(192, 0, 0);
             btnProveedores.FlatAppearance.BorderSize = 0;
             btnProveedores.FlatStyle = FlatStyle.Flat;
+            btnProveedores.Font = new Font("Leelawadee", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             btnProveedores.ForeColor = Color.MistyRose;
             btnProveedores.Location = new Point(99, 98);
             btnProveedores.Margin = new Padding(3, 2, 3, 2);
@@ -73,6 +75,7 @@
             btnSalir.BackColor = Color.FromArgb(192, 0, 0);
             btnSalir.FlatAppearance.BorderSize = 0;
             btnSalir.FlatStyle = FlatStyle.Flat;
+            btnSalir.Font = new Font("Leelawadee", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             btnSalir.ForeColor = Color.MistyRose;
             btnSalir.Location = new Point(99, 132);
             btnSalir.Margin = new Padding(3, 2, 3, 2);
@@ -98,10 +101,11 @@
             // 
             label1.AutoSize = true;
             label1.BackColor = Color.FromArgb(192, 0, 0);
+            label1.Font = new Font("Leelawadee", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             label1.ForeColor = Color.MistyRose;
-            label1.Location = new Point(10, 5);
+            label1.Location = new Point(12, 7);
             label1.Name = "label1";
-            label1.Size = new Size(69, 15);
+            label1.Size = new Size(69, 14);
             label1.TabIndex = 5;
             label1.Text = "Restaurante";
             // 

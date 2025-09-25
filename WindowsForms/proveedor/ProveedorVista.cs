@@ -1,8 +1,9 @@
 ﻿using DTOs;
+using WinFormsControlLibrary1;
 
 namespace WindowsForms
 {
-    public partial class ProveedorVista : Form
+    public partial class ProveedorVista : MenuBase
     {
         public ProveedorVista()
         {

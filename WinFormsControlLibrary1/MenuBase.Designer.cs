@@ -50,7 +50,7 @@
             btn_salir.Dock = DockStyle.Right;
             btn_salir.FlatAppearance.BorderSize = 0;
             btn_salir.FlatStyle = FlatStyle.Flat;
-            btn_salir.Font = new Font("Leelawadee UI", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            btn_salir.Font = new Font("Leelawadee UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             btn_salir.ForeColor = Color.MistyRose;
             btn_salir.Location = new Point(769, 0);
             btn_salir.Name = "btn_salir";
@@ -89,8 +89,8 @@
 
         #endregion
 
-        private Panel topBar;
-        private Label label_tittle;
-        private Button btn_salir;
+        public Panel topBar;
+        public Label label_tittle;
+        public Button btn_salir;
     }
 }

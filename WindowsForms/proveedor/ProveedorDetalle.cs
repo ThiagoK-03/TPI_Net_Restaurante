@@ -10,12 +10,13 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using WinFormsControlLibrary1;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 
 namespace WindowsForms
 {
-    public partial class ProveedorDetalle : Form
+    public partial class ProveedorDetalle : MenuBase
     {
         private ProveedorDTO proveedor;
         private FormMode mode;

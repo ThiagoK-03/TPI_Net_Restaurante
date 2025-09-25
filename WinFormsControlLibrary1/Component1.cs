@@ -20,7 +20,7 @@ namespace WinFormsControlLibrary1
         public RedButton()
         {
             this.BackColor = Color.FromArgb(192, 0, 0);      // rojo oscuro
-            this.Font = new Font("Javanese Text", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            this.Font = new Font("Leelawadee", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             this.ForeColor = Color.MistyRose;       // texto claro
             this.FlatStyle = FlatStyle.Flat;
             this.FlatAppearance.BorderSize = 0;
@@ -34,9 +34,9 @@ namespace WinFormsControlLibrary1
     {
         public BasicLabel() 
         {
-            //this.AutoSize = true;
+            this.AutoSize = false;
             this.BackColor = Color.Transparent;
-            this.Font = new Font("Javanese Text", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            this.Font = new Font("Javanese Text", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             this.ForeColor = Color.MistyRose;
             this.Name = "label_basic";
             this.Text = "basic Label";
@@ -44,6 +44,24 @@ namespace WinFormsControlLibrary1
 
     }
 
+    public partial class BasicTxtBox : TextBox
+    {
+        public BasicTxtBox()
+        {
+            this.BackColor = Color.MistyRose;
+            this.BorderStyle = BorderStyle.None;
+            this.Name = "basicTxtBox";
+            this.PlaceholderText = "Content";
+        }
+    }
+
+    public partial class BasicDataGridView : DataGridView
+    {
+        public BasicDataGridView()
+        {
+            this.BackgroundColor = Color.MistyRose;
+        }
+    }
     public partial class TopBar : Panel
     {
         public TopBar()
