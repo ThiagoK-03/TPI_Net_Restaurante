@@ -33,13 +33,23 @@
             labelUsuario = new WinFormsControlLibrary1.BasicLabel();
             labelContraseña = new WinFormsControlLibrary1.BasicLabel();
             btnLogin = new WinFormsControlLibrary1.RedButton();
+            topBar.SuspendLayout();
             SuspendLayout();
+            // 
+            // topBar
+            // 
+            topBar.Size = new Size(402, 31);
+            // 
+            // btn_salir
+            // 
+            btn_salir.FlatAppearance.BorderSize = 0;
+            btn_salir.Location = new Point(371, 0);
             // 
             // txtUsuario
             // 
             txtUsuario.BackColor = Color.MistyRose;
             txtUsuario.BorderStyle = BorderStyle.None;
-            txtUsuario.Location = new Point(157, 60);
+            txtUsuario.Location = new Point(116, 60);
             txtUsuario.Name = "txtUsuario";
             txtUsuario.PlaceholderText = "admin";
             txtUsuario.Size = new Size(139, 16);
@@ -49,7 +59,7 @@
             // 
             txtPassword.BackColor = Color.MistyRose;
             txtPassword.BorderStyle = BorderStyle.None;
-            txtPassword.Location = new Point(157, 96);
+            txtPassword.Location = new Point(116, 96);
             txtPassword.Name = "txtPassword";
             txtPassword.PlaceholderText = "1234";
             txtPassword.Size = new Size(139, 16);
@@ -59,9 +69,10 @@
             // labelUsuario
             // 
             labelUsuario.BackColor = Color.Transparent;
+            labelUsuario.FlatStyle = FlatStyle.Flat;
             labelUsuario.Font = new Font("Javanese Text", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             labelUsuario.ForeColor = Color.MistyRose;
-            labelUsuario.Location = new Point(58, 53);
+            labelUsuario.Location = new Point(285, 56);
             labelUsuario.Name = "labelUsuario";
             labelUsuario.Size = new Size(78, 23);
             labelUsuario.TabIndex = 5;
@@ -72,7 +83,7 @@
             labelContraseña.BackColor = Color.Transparent;
             labelContraseña.Font = new Font("Javanese Text", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             labelContraseña.ForeColor = Color.MistyRose;
-            labelContraseña.Location = new Point(58, 92);
+            labelContraseña.Location = new Point(285, 92);
             labelContraseña.Name = "labelContraseña";
             labelContraseña.Size = new Size(100, 23);
             labelContraseña.TabIndex = 6;
@@ -85,7 +96,7 @@
             btnLogin.FlatStyle = FlatStyle.Flat;
             btnLogin.Font = new Font("Leelawadee", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             btnLogin.ForeColor = Color.MistyRose;
-            btnLogin.Location = new Point(199, 151);
+            btnLogin.Location = new Point(116, 147);
             btnLogin.Name = "btnLogin";
             btnLogin.Size = new Size(97, 24);
             btnLogin.TabIndex = 7;
@@ -105,11 +116,13 @@
             Controls.Add(txtUsuario);
             Name = "LoginForm";
             Text = "Form1";
+            Controls.SetChildIndex(topBar, 0);
             Controls.SetChildIndex(txtUsuario, 0);
             Controls.SetChildIndex(txtPassword, 0);
             Controls.SetChildIndex(labelUsuario, 0);
             Controls.SetChildIndex(labelContraseña, 0);
             Controls.SetChildIndex(btnLogin, 0);
+            topBar.ResumeLayout(false);
             ResumeLayout(false);
             PerformLayout();
         }

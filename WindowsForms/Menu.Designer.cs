@@ -31,11 +31,17 @@
             btnClientes = new Button();
             btnProveedores = new Button();
             btnSalir = new Button();
-            topBar = new Panel();
-            label1 = new Label();
-            btn_salir = new Button();
             topBar.SuspendLayout();
             SuspendLayout();
+            // 
+            // topBar
+            // 
+            topBar.Size = new Size(354, 31);
+            // 
+            // btn_salir
+            // 
+            btn_salir.FlatAppearance.BorderSize = 0;
+            btn_salir.Location = new Point(323, 0);
             // 
             // btnClientes
             // 
@@ -86,60 +92,23 @@
             btnSalir.UseVisualStyleBackColor = false;
             btnSalir.Click += btnSalir_Click;
             // 
-            // topBar
-            // 
-            topBar.BackColor = Color.FromArgb(192, 0, 0);
-            topBar.Controls.Add(label1);
-            topBar.Controls.Add(btn_salir);
-            topBar.Dock = DockStyle.Top;
-            topBar.Location = new Point(0, 0);
-            topBar.Name = "topBar";
-            topBar.Size = new Size(354, 28);
-            topBar.TabIndex = 3;
-            // 
-            // label1
-            // 
-            label1.AutoSize = true;
-            label1.BackColor = Color.FromArgb(192, 0, 0);
-            label1.Font = new Font("Leelawadee", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label1.ForeColor = Color.MistyRose;
-            label1.Location = new Point(12, 7);
-            label1.Name = "label1";
-            label1.Size = new Size(69, 14);
-            label1.TabIndex = 5;
-            label1.Text = "Restaurante";
-            // 
-            // btn_salir
-            // 
-            btn_salir.BackColor = Color.FromArgb(192, 0, 0);
-            btn_salir.FlatAppearance.BorderSize = 0;
-            btn_salir.FlatStyle = FlatStyle.Flat;
-            btn_salir.Font = new Font("Georgia", 15.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btn_salir.ForeColor = Color.MistyRose;
-            btn_salir.Location = new Point(328, -5);
-            btn_salir.Name = "btn_salir";
-            btn_salir.Size = new Size(23, 30);
-            btn_salir.TabIndex = 4;
-            btn_salir.Text = "x";
-            btn_salir.UseVisualStyleBackColor = false;
-            btn_salir.Click += btnSalir_Click;
-            // 
             // Menu
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(64, 0, 0);
             ClientSize = new Size(354, 226);
-            Controls.Add(topBar);
             Controls.Add(btnSalir);
             Controls.Add(btnProveedores);
             Controls.Add(btnClientes);
-            FormBorderStyle = FormBorderStyle.None;
             Margin = new Padding(3, 2, 3, 2);
             Name = "Menu";
             Text = "Restaurant";
+            Controls.SetChildIndex(btnClientes, 0);
+            Controls.SetChildIndex(btnProveedores, 0);
+            Controls.SetChildIndex(btnSalir, 0);
+            Controls.SetChildIndex(topBar, 0);
             topBar.ResumeLayout(false);
-            topBar.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -148,8 +117,5 @@
         private Button btnClientes;
         private Button btnProveedores;
         private Button btnSalir;
-        private Panel topBar;
-        private Button btn_salir;
-        private Label label1;
     }
 }

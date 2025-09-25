@@ -7,15 +7,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using WinFormsControlLibrary1;
 
 namespace WindowsForms
 {
-    public partial class Menu : Form
+    public partial class Menu : MenuBase
     {
         public Menu()
         {
             InitializeComponent();
-            FormHelper.EnableDrag(this, topBar);
 
         }
         private void btnClientes_Click(object sender, EventArgs e)

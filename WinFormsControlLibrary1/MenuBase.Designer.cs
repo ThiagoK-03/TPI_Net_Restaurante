@@ -50,7 +50,7 @@
             btn_salir.Dock = DockStyle.Right;
             btn_salir.FlatAppearance.BorderSize = 0;
             btn_salir.FlatStyle = FlatStyle.Flat;
-            btn_salir.Font = new Font("Leelawadee UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            btn_salir.Font = new Font("Leelawadee UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             btn_salir.ForeColor = Color.MistyRose;
             btn_salir.Location = new Point(769, 0);
             btn_salir.Name = "btn_salir";
@@ -68,9 +68,9 @@
             label_tittle.ForeColor = Color.MistyRose;
             label_tittle.Location = new Point(0, 0);
             label_tittle.Name = "label_tittle";
-            label_tittle.Size = new Size(93, 31);
+            label_tittle.Size = new Size(110, 31);
             label_tittle.TabIndex = 5;
-            label_tittle.Text = "Titulo";
+            label_tittle.Text = "Restaurante";
             label_tittle.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // MenuBase
@@ -78,6 +78,8 @@
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(64, 0, 0);
+            BackgroundImage = Properties.Resources.restaurantBG1;
+            BackgroundImageLayout = ImageLayout.Stretch;
             ClientSize = new Size(800, 450);
             Controls.Add(topBar);
             FormBorderStyle = FormBorderStyle.None;
