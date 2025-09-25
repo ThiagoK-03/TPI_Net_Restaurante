@@ -34,6 +34,8 @@
             topBar = new Panel();
             label1 = new Label();
             btn_salir = new Button();
+            btnIngredientes = new WinFormsControlLibrary1.RedButton();
+            btnProductos = new WinFormsControlLibrary1.RedButton();
             topBar.SuspendLayout();
             SuspendLayout();
             // 
@@ -74,7 +76,7 @@
             btnSalir.FlatAppearance.BorderSize = 0;
             btnSalir.FlatStyle = FlatStyle.Flat;
             btnSalir.ForeColor = Color.MistyRose;
-            btnSalir.Location = new Point(99, 132);
+            btnSalir.Location = new Point(99, 221);
             btnSalir.Margin = new Padding(3, 2, 3, 2);
             btnSalir.Name = "btnSalir";
             btnSalir.Size = new Size(155, 22);
@@ -120,12 +122,46 @@
             btn_salir.UseVisualStyleBackColor = false;
             btn_salir.Click += btnSalir_Click;
             // 
+            // btnIngredientes
+            // 
+            btnIngredientes.BackColor = Color.FromArgb(192, 0, 0);
+            btnIngredientes.FlatAppearance.BorderSize = 0;
+            btnIngredientes.FlatStyle = FlatStyle.Flat;
+            btnIngredientes.Font = new Font("Segoe UI", 9F);
+            btnIngredientes.ForeColor = Color.MistyRose;
+            btnIngredientes.Location = new Point(99, 133);
+            btnIngredientes.Margin = new Padding(3, 2, 3, 2);
+            btnIngredientes.Name = "btnIngredientes";
+            btnIngredientes.Size = new Size(155, 22);
+            btnIngredientes.TabIndex = 4;
+            btnIngredientes.Text = "CRUD Ingredientes";
+            btnIngredientes.UseVisualStyleBackColor = false;
+            btnIngredientes.Click += btnIngredientes_Click;
+            // 
+            // btnProductos
+            // 
+            btnProductos.BackColor = Color.FromArgb(192, 0, 0);
+            btnProductos.FlatAppearance.BorderSize = 0;
+            btnProductos.FlatStyle = FlatStyle.Flat;
+            btnProductos.Font = new Font("Segoe UI", 9F);
+            btnProductos.ForeColor = Color.MistyRose;
+            btnProductos.Location = new Point(99, 167);
+            btnProductos.Margin = new Padding(3, 2, 3, 2);
+            btnProductos.Name = "btnProductos";
+            btnProductos.Size = new Size(155, 22);
+            btnProductos.TabIndex = 5;
+            btnProductos.Text = "CRUD Productos";
+            btnProductos.UseVisualStyleBackColor = false;
+            btnProductos.Click += btnProductos_Click;
+            // 
             // Menu
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(64, 0, 0);
-            ClientSize = new Size(354, 226);
+            ClientSize = new Size(354, 264);
+            Controls.Add(btnProductos);
+            Controls.Add(btnIngredientes);
             Controls.Add(topBar);
             Controls.Add(btnSalir);
             Controls.Add(btnProveedores);
@@ -147,5 +183,7 @@
         private Panel topBar;
         private Button btn_salir;
         private Label label1;
+        private WinFormsControlLibrary1.RedButton btnIngredientes;
+        private WinFormsControlLibrary1.RedButton btnProductos;
     }
 }

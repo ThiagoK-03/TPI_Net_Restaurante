@@ -7,6 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using WindowsForms.ingrediente;
+using WindowsForms.producto;
 
 namespace WindowsForms
 {
@@ -37,6 +39,18 @@ namespace WindowsForms
         private void panel1_DragEnter(object sender, DragEventArgs e)
         {
 
+        }
+
+        private void btnIngredientes_Click(object sender, EventArgs e)
+        {
+            IngredienteVista ingredienteVista = new IngredienteVista();
+            ingredienteVista.ShowDialog();
+        }
+
+        private void btnProductos_Click(object sender, EventArgs e)
+        {
+            ProductoVista productovista = new ProductoVista();
+            productovista.ShowDialog();
         }
     }
 }
