@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             lblId = new WinFormsControlLibrary1.BasicLabel();
             lblNombre = new WinFormsControlLibrary1.BasicLabel();
             lblCuit = new WinFormsControlLibrary1.BasicLabel();
@@ -44,7 +45,10 @@
             txbSueldo = new WinFormsControlLibrary1.BasicTxtBox();
             btnCancelar = new WinFormsControlLibrary1.RedButton();
             btnAceptar = new WinFormsControlLibrary1.RedButton();
+            backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
+            errorProvider = new ErrorProvider(components);
             topBar.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)errorProvider).BeginInit();
             SuspendLayout();
             // 
             // topBar
@@ -215,7 +219,7 @@
             btnCancelar.BackColor = Color.FromArgb(192, 0, 0);
             btnCancelar.FlatAppearance.BorderSize = 0;
             btnCancelar.FlatStyle = FlatStyle.Flat;
-            btnCancelar.Font = new Font("Leelawadee", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            btnCancelar.Font = new Font("Microsoft Sans Serif", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             btnCancelar.ForeColor = Color.MistyRose;
             btnCancelar.Location = new Point(317, 263);
             btnCancelar.Name = "btnCancelar";
@@ -230,7 +234,7 @@
             btnAceptar.BackColor = Color.FromArgb(192, 0, 0);
             btnAceptar.FlatAppearance.BorderSize = 0;
             btnAceptar.FlatStyle = FlatStyle.Flat;
-            btnAceptar.Font = new Font("Leelawadee", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            btnAceptar.Font = new Font("Microsoft Sans Serif", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             btnAceptar.ForeColor = Color.MistyRose;
             btnAceptar.Location = new Point(398, 263);
             btnAceptar.Name = "btnAceptar";
@@ -239,6 +243,10 @@
             btnAceptar.Text = "Aceptar";
             btnAceptar.UseVisualStyleBackColor = false;
             btnAceptar.Click += btnAceptar_Click;
+            // 
+            // errorProvider
+            // 
+            errorProvider.ContainerControl = this;
             // 
             // EmpleadoDetalle
             // 
@@ -281,6 +289,7 @@
             Controls.SetChildIndex(btnCancelar, 0);
             Controls.SetChildIndex(btnAceptar, 0);
             topBar.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)errorProvider).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -303,5 +312,7 @@
         private WinFormsControlLibrary1.BasicTxtBox txbSueldo;
         private WinFormsControlLibrary1.RedButton btnCancelar;
         private WinFormsControlLibrary1.RedButton btnAceptar;
+        private System.ComponentModel.BackgroundWorker backgroundWorker1;
+        private ErrorProvider errorProvider;
     }
 }

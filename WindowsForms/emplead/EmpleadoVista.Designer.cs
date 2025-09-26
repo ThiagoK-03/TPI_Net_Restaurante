@@ -60,7 +60,7 @@
             btnAgregar.BackColor = Color.FromArgb(192, 0, 0);
             btnAgregar.FlatAppearance.BorderSize = 0;
             btnAgregar.FlatStyle = FlatStyle.Flat;
-            btnAgregar.Font = new Font("Leelawadee", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            btnAgregar.Font = new Font("Microsoft Sans Serif", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             btnAgregar.ForeColor = Color.MistyRose;
             btnAgregar.Location = new Point(553, 269);
             btnAgregar.Name = "btnAgregar";
@@ -68,13 +68,14 @@
             btnAgregar.TabIndex = 6;
             btnAgregar.Text = "Agregar";
             btnAgregar.UseVisualStyleBackColor = false;
+            btnAgregar.Click += btnAgregar_Click;
             // 
             // btnModificar
             // 
             btnModificar.BackColor = Color.FromArgb(192, 0, 0);
             btnModificar.FlatAppearance.BorderSize = 0;
             btnModificar.FlatStyle = FlatStyle.Flat;
-            btnModificar.Font = new Font("Leelawadee", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            btnModificar.Font = new Font("Microsoft Sans Serif", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             btnModificar.ForeColor = Color.MistyRose;
             btnModificar.Location = new Point(472, 269);
             btnModificar.Name = "btnModificar";
@@ -82,13 +83,14 @@
             btnModificar.TabIndex = 7;
             btnModificar.Text = "Modificar";
             btnModificar.UseVisualStyleBackColor = false;
+            btnModificar.Click += btnModificar_Click;
             // 
             // btnMenu
             // 
             btnMenu.BackColor = Color.FromArgb(192, 0, 0);
             btnMenu.FlatAppearance.BorderSize = 0;
             btnMenu.FlatStyle = FlatStyle.Flat;
-            btnMenu.Font = new Font("Leelawadee", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            btnMenu.Font = new Font("Microsoft Sans Serif", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             btnMenu.ForeColor = Color.MistyRose;
             btnMenu.Location = new Point(310, 269);
             btnMenu.Name = "btnMenu";
@@ -96,13 +98,14 @@
             btnMenu.TabIndex = 8;
             btnMenu.Text = "Menu";
             btnMenu.UseVisualStyleBackColor = false;
+            btnMenu.Click += btnMenu_Click;
             // 
             // btnEliminar
             // 
             btnEliminar.BackColor = Color.FromArgb(192, 0, 0);
             btnEliminar.FlatAppearance.BorderSize = 0;
             btnEliminar.FlatStyle = FlatStyle.Flat;
-            btnEliminar.Font = new Font("Leelawadee", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            btnEliminar.Font = new Font("Microsoft Sans Serif", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             btnEliminar.ForeColor = Color.MistyRose;
             btnEliminar.Location = new Point(391, 269);
             btnEliminar.Name = "btnEliminar";
@@ -110,6 +113,7 @@
             btnEliminar.TabIndex = 9;
             btnEliminar.Text = "Eliminar";
             btnEliminar.UseVisualStyleBackColor = false;
+            btnEliminar.Click += btnEliminar_Click;
             // 
             // EmpleadoVista
             // 

@@ -390,4 +390,96 @@ app.MapDelete("/Productos/{id}", (int id) =>
 .Produces(StatusCodes.Status204NoContent)
 .Produces(StatusCodes.Status404NotFound);
 
+/// Rest de Empleado
+
+app.MapGet("/empleados/{id}", (int id) =>
+{
+    EmpleadoService empleadoService = new EmpleadoService();
+
+    EmpleadoDto? dto = empleadoService.Get(id);
+
+    if (dto == null)
+    {
+        return Results.NotFound();
+    }
+
+    return Results.Ok(dto);
+})
+.WithName("GetEmpleado")
+.Produces<EmpleadoDto>(StatusCodes.Status200OK)
+.Produces(StatusCodes.Status404NotFound);
+
+app.MapGet("/empleados", () =>
+{
+    EmpleadoService empleadoService = new EmpleadoService();
+
+    var dtos = empleadoService.GetAll();
+
+    return Results.Ok(dtos);
+})
+.WithName("GetAllEmpleados")
+.Produces<List<EmpleadoDto>>(StatusCodes.Status200OK);
+
+app.MapPost("/empleados", (EmpleadoDto dto) =>
+{
+    try
+    {
+        EmpleadoService empleadoService = new EmpleadoService();
+
+        EmpleadoDto EmpleadoDto = empleadoService.Add(dto);
+
+        return Results.Created($"/empleados/{EmpleadoDto.Id}", EmpleadoDto);
+    }
+    catch (ArgumentException ex)
+    {
+        return Results.BadRequest(new { error = ex.Message });
+    }
+})
+.WithName("AddEmpleado")
+.Produces<EmpleadoDto>(StatusCodes.Status201Created)
+.Produces(StatusCodes.Status400BadRequest);
+
+app.MapPut("/empleados", (EmpleadoDto dto) =>
+{
+    try
+    {
+        EmpleadoService empleadoService = new EmpleadoService();
+
+        var found = empleadoService.Update(dto);
+
+        if (!found)
+        {
+            return Results.NotFound();
+        }
+
+        return Results.NoContent();
+    }
+    catch (ArgumentException ex)
+    {
+        return Results.BadRequest(new { error = ex.Message });
+    }
+})
+.WithName("UpdateEmpleado")
+.Produces(StatusCodes.Status404NotFound)
+.Produces(StatusCodes.Status400BadRequest);
+
+app.MapDelete("/empleados/{id}", (int id) =>
+{
+    EmpleadoService empleadoService = new EmpleadoService();
+
+    var deleted = empleadoService.Delete(id);
+
+    if (!deleted)
+    {
+        return Results.NotFound();
+    }
+
+    return Results.NoContent();
+
+})
+.WithName("DeleteEmpleado")
+.Produces(StatusCodes.Status204NoContent)
+.Produces(StatusCodes.Status404NotFound);
+
+
 app.Run();

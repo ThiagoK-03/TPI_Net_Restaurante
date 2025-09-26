@@ -31,13 +31,21 @@
             btnClientes = new Button();
             btnProveedores = new Button();
             btnSalir = new Button();
-            topBar = new Panel();
-            label1 = new Label();
-            btn_salir = new Button();
             btnIngredientes = new WinFormsControlLibrary1.RedButton();
             btnProductos = new WinFormsControlLibrary1.RedButton();
+            btnPedidos = new WinFormsControlLibrary1.RedButton();
+            btnEmpleados = new WinFormsControlLibrary1.RedButton();
             topBar.SuspendLayout();
             SuspendLayout();
+            // 
+            // topBar
+            // 
+            topBar.Size = new Size(406, 31);
+            // 
+            // btn_salir
+            // 
+            btn_salir.FlatAppearance.BorderSize = 0;
+            btn_salir.Location = new Point(375, 0);
             // 
             // btnClientes
             // 
@@ -46,7 +54,7 @@
             btnClientes.FlatAppearance.BorderSize = 0;
             btnClientes.FlatStyle = FlatStyle.Flat;
             btnClientes.ForeColor = Color.MistyRose;
-            btnClientes.Location = new Point(99, 64);
+            btnClientes.Location = new Point(120, 64);
             btnClientes.Margin = new Padding(3, 2, 3, 2);
             btnClientes.Name = "btnClientes";
             btnClientes.Size = new Size(155, 22);
@@ -61,7 +69,7 @@
             btnProveedores.FlatAppearance.BorderSize = 0;
             btnProveedores.FlatStyle = FlatStyle.Flat;
             btnProveedores.ForeColor = Color.MistyRose;
-            btnProveedores.Location = new Point(99, 98);
+            btnProveedores.Location = new Point(120, 98);
             btnProveedores.Margin = new Padding(3, 2, 3, 2);
             btnProveedores.Name = "btnProveedores";
             btnProveedores.Size = new Size(155, 22);
@@ -76,7 +84,7 @@
             btnSalir.FlatAppearance.BorderSize = 0;
             btnSalir.FlatStyle = FlatStyle.Flat;
             btnSalir.ForeColor = Color.MistyRose;
-            btnSalir.Location = new Point(99, 221);
+            btnSalir.Location = new Point(120, 311);
             btnSalir.Margin = new Padding(3, 2, 3, 2);
             btnSalir.Name = "btnSalir";
             btnSalir.Size = new Size(155, 22);
@@ -85,43 +93,6 @@
             btnSalir.UseVisualStyleBackColor = false;
             btnSalir.Click += btnSalir_Click;
             // 
-            // topBar
-            // 
-            topBar.BackColor = Color.FromArgb(192, 0, 0);
-            topBar.Controls.Add(label1);
-            topBar.Controls.Add(btn_salir);
-            topBar.Dock = DockStyle.Top;
-            topBar.Location = new Point(0, 0);
-            topBar.Name = "topBar";
-            topBar.Size = new Size(354, 28);
-            topBar.TabIndex = 3;
-            // 
-            // label1
-            // 
-            label1.AutoSize = true;
-            label1.BackColor = Color.FromArgb(192, 0, 0);
-            label1.ForeColor = Color.MistyRose;
-            label1.Location = new Point(10, 5);
-            label1.Name = "label1";
-            label1.Size = new Size(69, 15);
-            label1.TabIndex = 5;
-            label1.Text = "Restaurante";
-            // 
-            // btn_salir
-            // 
-            btn_salir.BackColor = Color.FromArgb(192, 0, 0);
-            btn_salir.FlatAppearance.BorderSize = 0;
-            btn_salir.FlatStyle = FlatStyle.Flat;
-            btn_salir.Font = new Font("Georgia", 15.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btn_salir.ForeColor = Color.MistyRose;
-            btn_salir.Location = new Point(328, -5);
-            btn_salir.Name = "btn_salir";
-            btn_salir.Size = new Size(23, 30);
-            btn_salir.TabIndex = 4;
-            btn_salir.Text = "x";
-            btn_salir.UseVisualStyleBackColor = false;
-            btn_salir.Click += btnSalir_Click;
-            // 
             // btnIngredientes
             // 
             btnIngredientes.BackColor = Color.FromArgb(192, 0, 0);
@@ -129,7 +100,7 @@
             btnIngredientes.FlatStyle = FlatStyle.Flat;
             btnIngredientes.Font = new Font("Segoe UI", 9F);
             btnIngredientes.ForeColor = Color.MistyRose;
-            btnIngredientes.Location = new Point(99, 133);
+            btnIngredientes.Location = new Point(120, 133);
             btnIngredientes.Margin = new Padding(3, 2, 3, 2);
             btnIngredientes.Name = "btnIngredientes";
             btnIngredientes.Size = new Size(155, 22);
@@ -145,7 +116,7 @@
             btnProductos.FlatStyle = FlatStyle.Flat;
             btnProductos.Font = new Font("Segoe UI", 9F);
             btnProductos.ForeColor = Color.MistyRose;
-            btnProductos.Location = new Point(99, 167);
+            btnProductos.Location = new Point(120, 167);
             btnProductos.Margin = new Padding(3, 2, 3, 2);
             btnProductos.Name = "btnProductos";
             btnProductos.Size = new Size(155, 22);
@@ -154,24 +125,61 @@
             btnProductos.UseVisualStyleBackColor = false;
             btnProductos.Click += btnProductos_Click;
             // 
+            // btnPedidos
+            // 
+            btnPedidos.BackColor = Color.FromArgb(192, 0, 0);
+            btnPedidos.FlatAppearance.BorderSize = 0;
+            btnPedidos.FlatStyle = FlatStyle.Flat;
+            btnPedidos.Font = new Font("Microsoft Sans Serif", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            btnPedidos.ForeColor = Color.MistyRose;
+            btnPedidos.Location = new Point(120, 244);
+            btnPedidos.Name = "btnPedidos";
+            btnPedidos.Size = new Size(155, 23);
+            btnPedidos.TabIndex = 6;
+            btnPedidos.Text = "CRUD Pedidos";
+            btnPedidos.UseVisualStyleBackColor = false;
+            btnPedidos.Click += btnPedidos_Click;
+            // 
+            // btnEmpleados
+            // 
+            btnEmpleados.BackColor = Color.FromArgb(192, 0, 0);
+            btnEmpleados.FlatAppearance.BorderSize = 0;
+            btnEmpleados.FlatStyle = FlatStyle.Flat;
+            btnEmpleados.Font = new Font("Microsoft Sans Serif", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            btnEmpleados.ForeColor = Color.MistyRose;
+            btnEmpleados.Location = new Point(120, 203);
+            btnEmpleados.Name = "btnEmpleados";
+            btnEmpleados.Size = new Size(155, 23);
+            btnEmpleados.TabIndex = 7;
+            btnEmpleados.Text = "CRUD Empleados";
+            btnEmpleados.UseVisualStyleBackColor = false;
+            btnEmpleados.Click += btnEmpleados_Click;
+            // 
             // Menu
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(64, 0, 0);
-            ClientSize = new Size(354, 264);
+            ClientSize = new Size(406, 357);
+            Controls.Add(btnEmpleados);
+            Controls.Add(btnPedidos);
             Controls.Add(btnProductos);
             Controls.Add(btnIngredientes);
-            Controls.Add(topBar);
             Controls.Add(btnSalir);
             Controls.Add(btnProveedores);
             Controls.Add(btnClientes);
-            FormBorderStyle = FormBorderStyle.None;
             Margin = new Padding(3, 2, 3, 2);
             Name = "Menu";
             Text = "Restaurant";
+            Controls.SetChildIndex(btnClientes, 0);
+            Controls.SetChildIndex(btnProveedores, 0);
+            Controls.SetChildIndex(btnSalir, 0);
+            Controls.SetChildIndex(btnIngredientes, 0);
+            Controls.SetChildIndex(btnProductos, 0);
+            Controls.SetChildIndex(topBar, 0);
+            Controls.SetChildIndex(btnPedidos, 0);
+            Controls.SetChildIndex(btnEmpleados, 0);
             topBar.ResumeLayout(false);
-            topBar.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -180,10 +188,9 @@
         private Button btnClientes;
         private Button btnProveedores;
         private Button btnSalir;
-        private Panel topBar;
-        private Button btn_salir;
-        private Label label1;
         private WinFormsControlLibrary1.RedButton btnIngredientes;
         private WinFormsControlLibrary1.RedButton btnProductos;
+        private WinFormsControlLibrary1.RedButton btnPedidos;
+        private WinFormsControlLibrary1.RedButton btnEmpleados;
     }
 }
