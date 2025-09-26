@@ -60,7 +60,7 @@ namespace WindowsForms
             {
                 int id = this.SelectedItem().Id;
 
-                var result = MessageBox.Show($"¿Está seguro que desea eliminar el cliente con Id {id}?", "Confirmar eliminación", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                var result = MessageBox.Show($"ï¿½Estï¿½ seguro que desea eliminar el cliente con Id {id}?", "Confirmar eliminaciï¿½n", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
                 if (result == DialogResult.Yes)
                 {

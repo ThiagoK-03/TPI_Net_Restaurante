@@ -46,7 +46,7 @@ namespace WindowsForms
             // 
             // label_tittle
             // 
-            label_tittle.Size = new Size(81, 23);
+            label_tittle.Size = new Size(119, 23);
             // 
             // btn_salir
             // 

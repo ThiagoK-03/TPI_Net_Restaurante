@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using WindowsForms.emplead;
 using WinFormsControlLibrary1;
 
 namespace WindowsForms
@@ -34,7 +35,13 @@ namespace WindowsForms
             System.Windows.Forms.Application.Exit();
         }
 
-        private void panel1_DragEnter(object sender, DragEventArgs e)
+        private void btnEmpleado_Click(object sender, EventArgs e)
+        {
+            EmpleadoVista empleadoVista = new EmpleadoVista();
+            empleadoVista.ShowDialog();
+        }
+
+        private void btnPedido_Click(object sender, EventArgs e)
         {
 
         }
