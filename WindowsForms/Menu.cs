@@ -7,16 +7,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using WindowsForms.emplead;
-using WinFormsControlLibrary1;
+using WindowsForms.ingrediente;
+using WindowsForms.producto;
 
 namespace WindowsForms
 {
-    public partial class Menu : MenuBase
+    public partial class Menu : Form
     {
         public Menu()
         {
             InitializeComponent();
+            FormHelper.EnableDrag(this, topBar);
 
         }
         private void btnClientes_Click(object sender, EventArgs e)
@@ -35,15 +36,21 @@ namespace WindowsForms
             System.Windows.Forms.Application.Exit();
         }
 
-        private void btnEmpleado_Click(object sender, EventArgs e)
+        private void panel1_DragEnter(object sender, DragEventArgs e)
         {
-            EmpleadoVista empleadoVista = new EmpleadoVista();
-            empleadoVista.ShowDialog();
+
         }
 
-        private void btnPedido_Click(object sender, EventArgs e)
+        private void btnIngredientes_Click(object sender, EventArgs e)
         {
+            IngredienteVista ingredienteVista = new IngredienteVista();
+            ingredienteVista.ShowDialog();
+        }
 
+        private void btnProductos_Click(object sender, EventArgs e)
+        {
+            ProductoVista productovista = new ProductoVista();
+            productovista.ShowDialog();
         }
     }
 }

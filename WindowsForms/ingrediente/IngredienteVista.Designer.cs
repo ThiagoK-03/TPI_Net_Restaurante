@@ -1,14 +1,14 @@
-﻿namespace WindowsForms
+﻿namespace WindowsForms.ingrediente
 {
-    partial class ClienteVista
+    partial class IngredienteVista
     {
         /// <summary>
-        ///  Required designer variable.
+        /// Required designer variable.
         /// </summary>
         private System.ComponentModel.IContainer components = null;
 
         /// <summary>
-        ///  Clean up any resources being used.
+        /// Clean up any resources being used.
         /// </summary>
         /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
@@ -23,33 +23,31 @@
         #region Windows Form Designer generated code
 
         /// <summary>
-        ///  Required method for Designer support - do not modify
-        ///  the contents of this method with the code editor.
+        /// Required method for Designer support - do not modify
+        /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent()
         {
-            dgvClientes = new DataGridView();
+            dgvIngredientes = new DataGridView();
             btnAgregar = new Button();
-            btnModificar = new Button();
             btnEliminar = new Button();
+            btnModificar = new Button();
             btnMenu = new Button();
-            ((System.ComponentModel.ISupportInitialize)dgvClientes).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)dgvIngredientes).BeginInit();
             SuspendLayout();
             // 
-            // dgvClientes
+            // dgvIngredientes
             // 
-            dgvClientes.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvClientes.Location = new Point(32, 23);
-            dgvClientes.Margin = new Padding(3, 2, 3, 2);
-            dgvClientes.Name = "dgvClientes";
-            dgvClientes.RowHeadersWidth = 51;
-            dgvClientes.Size = new Size(623, 223);
-            dgvClientes.TabIndex = 0;
+            dgvIngredientes.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvIngredientes.Location = new Point(32, 23);
+            dgvIngredientes.Name = "dgvIngredientes";
+            dgvIngredientes.RowHeadersWidth = 51;
+            dgvIngredientes.Size = new Size(623, 223);
+            dgvIngredientes.TabIndex = 0;
             // 
             // btnAgregar
             // 
             btnAgregar.Location = new Point(573, 268);
-            btnAgregar.Margin = new Padding(3, 2, 3, 2);
             btnAgregar.Name = "btnAgregar";
             btnAgregar.Size = new Size(82, 22);
             btnAgregar.TabIndex = 1;
@@ -57,21 +55,9 @@
             btnAgregar.UseVisualStyleBackColor = true;
             btnAgregar.Click += btnAgregar_Click;
             // 
-            // btnModificar
-            // 
-            btnModificar.Location = new Point(486, 268);
-            btnModificar.Margin = new Padding(3, 2, 3, 2);
-            btnModificar.Name = "btnModificar";
-            btnModificar.Size = new Size(82, 22);
-            btnModificar.TabIndex = 2;
-            btnModificar.Text = "Modificar";
-            btnModificar.UseVisualStyleBackColor = true;
-            btnModificar.Click += btnModificar_Click;
-            // 
             // btnEliminar
             // 
             btnEliminar.Location = new Point(398, 268);
-            btnEliminar.Margin = new Padding(3, 2, 3, 2);
             btnEliminar.Name = "btnEliminar";
             btnEliminar.Size = new Size(82, 22);
             btnEliminar.TabIndex = 3;
@@ -79,10 +65,19 @@
             btnEliminar.UseVisualStyleBackColor = true;
             btnEliminar.Click += btnEliminar_Click;
             // 
+            // btnModificar
+            // 
+            btnModificar.Location = new Point(486, 268);
+            btnModificar.Name = "btnModificar";
+            btnModificar.Size = new Size(82, 22);
+            btnModificar.TabIndex = 2;
+            btnModificar.Text = "Modificar";
+            btnModificar.UseVisualStyleBackColor = true;
+            btnModificar.Click += btnModificar_Click;
+            // 
             // btnMenu
             // 
             btnMenu.Location = new Point(311, 268);
-            btnMenu.Margin = new Padding(3, 2, 3, 2);
             btnMenu.Name = "btnMenu";
             btnMenu.Size = new Size(82, 22);
             btnMenu.TabIndex = 4;
@@ -90,30 +85,29 @@
             btnMenu.UseVisualStyleBackColor = true;
             btnMenu.Click += btnMenu_Click;
             // 
-            // ClienteVista
+            // IngredienteVista
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(700, 338);
             Controls.Add(btnMenu);
-            Controls.Add(btnEliminar);
             Controls.Add(btnModificar);
+            Controls.Add(btnEliminar);
             Controls.Add(btnAgregar);
-            Controls.Add(dgvClientes);
-            Margin = new Padding(3, 2, 3, 2);
-            Name = "ClienteVista";
-            Text = "Clientes";
-            Load += Clientes_Load;
-            ((System.ComponentModel.ISupportInitialize)dgvClientes).EndInit();
+            Controls.Add(dgvIngredientes);
+            Name = "IngredienteVista";
+            Text = "Ingredientes";
+            Load += Ingredientes_Load;
+            ((System.ComponentModel.ISupportInitialize)dgvIngredientes).EndInit();
             ResumeLayout(false);
         }
 
         #endregion
 
-        private DataGridView dgvClientes;
+        private DataGridView dgvIngredientes;
         private Button btnAgregar;
-        private Button btnModificar;
         private Button btnEliminar;
+        private Button btnModificar;
         private Button btnMenu;
     }
 }

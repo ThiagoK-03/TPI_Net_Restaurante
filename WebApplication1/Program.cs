@@ -207,4 +207,187 @@ app.MapDelete("/proveedores/{id}", (int id) =>
 .Produces(StatusCodes.Status204NoContent)
 .Produces(StatusCodes.Status404NotFound);
 
+///Rest de Ingrediente
+
+app.MapGet("/ingredientes/{id}", (int id) =>
+{
+    IngredienteService ingredienteService = new IngredienteService();
+
+    IngredienteDTO dto = ingredienteService.Get(id);
+
+    if (dto == null)
+    {
+        return Results.NotFound();
+    }
+
+    return Results.Ok(dto);
+})
+.WithName("GetIngrediente")
+.Produces<IngredienteDTO>(StatusCodes.Status200OK)
+.Produces(StatusCodes.Status404NotFound);
+
+app.MapGet("/ingredientes", () =>
+{
+    IngredienteService ingredienteService = new IngredienteService();
+
+    var dtos = ingredienteService.GetAll();
+
+    return Results.Ok(dtos);
+})
+.WithName("GetAllIngredientes")
+.Produces<List<IngredienteDTO>>(StatusCodes.Status200OK);
+
+app.MapPost("/ingredientes", (IngredienteDTO dto) =>
+{
+    try
+    {
+        IngredienteService ingredienteService = new IngredienteService();
+
+        IngredienteDTO ingredienteDTO = ingredienteService.Add(dto);
+
+        return Results.Created($"/ingredientes/{ingredienteDTO.Id}", ingredienteDTO);
+    }
+    catch (ArgumentException ex)
+    {
+        return Results.BadRequest(new { error = ex.Message });
+    }
+})
+.WithName("AddIngrediente")
+.Produces<IngredienteDTO>(StatusCodes.Status201Created)
+.Produces(StatusCodes.Status400BadRequest);
+
+app.MapPut("/ingredientes", (IngredienteDTO dto) =>
+{
+    try
+    {
+        IngredienteService ingredienteService = new IngredienteService();
+
+        var found = ingredienteService.Update(dto);
+
+        if (!found)
+        {
+            return Results.NotFound();
+        }
+
+        return Results.NoContent();
+    }
+    catch (ArgumentException ex)
+    {
+        return Results.BadRequest(new { error = ex.Message });
+    }
+})
+.WithName("UpdateIngrediente")
+.Produces(StatusCodes.Status404NotFound)
+.Produces(StatusCodes.Status400BadRequest);
+
+app.MapDelete("/ingredientes/{id}", (int id) =>
+{
+    IngredienteService ingredienteService = new IngredienteService();
+
+    var deleted = ingredienteService.Delete(id);
+
+    if (!deleted)
+    {
+        return Results.NotFound();
+    }
+
+    return Results.NoContent();
+
+})
+.WithName("DeleteIngrediente")
+.Produces(StatusCodes.Status204NoContent)
+.Produces(StatusCodes.Status404NotFound);
+
+
+///Rest de Producto
+
+app.MapGet("/productos/{id}", (int id) =>
+{
+    ProductoService productoService = new ProductoService();
+
+    ProductoDTO dto = productoService.Get(id);
+
+    if (dto == null)
+    {
+        return Results.NotFound();
+    }
+
+    return Results.Ok(dto);
+})
+.WithName("GetProducto")
+.Produces<ProductoDTO>(StatusCodes.Status200OK)
+.Produces(StatusCodes.Status404NotFound);
+
+app.MapGet("/productos", () =>
+{
+    ProductoService productoService = new ProductoService();
+
+    var dtos = productoService.GetAll();
+
+    return Results.Ok(dtos);
+})
+.WithName("GetAllProductos")
+.Produces<List<ProductoDTO>>(StatusCodes.Status200OK);
+
+app.MapPost("/productos", (ProductoDTO dto) =>
+{
+    try
+    {
+        ProductoService productoService = new ProductoService();
+
+        ProductoDTO productoDTO = productoService.Add(dto);
+
+        return Results.Created($"/ingredientes/{productoDTO.Id}", productoDTO);
+    }
+    catch (ArgumentException ex)
+    {
+        return Results.BadRequest(new { error = ex.Message });
+    }
+})
+.WithName("AddProducto")
+.Produces<ProductoDTO>(StatusCodes.Status201Created)
+.Produces(StatusCodes.Status400BadRequest);
+
+app.MapPut("/productos", (ProductoDTO dto) =>
+{
+    try
+    {
+        ProductoService productoService = new ProductoService();
+
+        var found = productoService.Update(dto);
+
+        if (!found)
+        {
+            return Results.NotFound();
+        }
+
+        return Results.NoContent();
+    }
+    catch (ArgumentException ex)
+    {
+        return Results.BadRequest(new { error = ex.Message });
+    }
+})
+.WithName("UpdateProducto")
+.Produces(StatusCodes.Status404NotFound)
+.Produces(StatusCodes.Status400BadRequest);
+
+app.MapDelete("/Productos/{id}", (int id) =>
+{
+    ProductoService productoService = new ProductoService();
+
+    var deleted = productoService.Delete(id);
+
+    if (!deleted)
+    {
+        return Results.NotFound();
+    }
+
+    return Results.NoContent();
+
+})
+.WithName("DeleteProductos")
+.Produces(StatusCodes.Status204NoContent)
+.Produces(StatusCodes.Status404NotFound);
+
 app.Run();
