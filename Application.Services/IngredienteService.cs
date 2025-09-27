@@ -9,7 +9,7 @@ using DTOs;
 
 namespace Application.Services
 {
-    public class IngredienteService
+    public class IngredienteService : CrudService<IngredienteDTO>
     {
         public IngredienteDTO Add(IngredienteDTO dto)
         {

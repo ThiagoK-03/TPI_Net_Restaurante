@@ -7,7 +7,7 @@ using System.Text.RegularExpressions;
 
 namespace DTOs
 {
-    public class ProductoDTO
+    public class ProductoDTO : DTOInterface
     {
         public int Id { get; set; }
         public string Nombre { get; set; }

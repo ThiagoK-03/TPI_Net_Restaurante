@@ -4,7 +4,7 @@ using DTOs;
 
 namespace Application.Services
 {
-    public class ClienteService
+    public class ClienteService : CrudService<ClienteDTO>
     {
         public ClienteDTO Add(ClienteDTO dto)
         {

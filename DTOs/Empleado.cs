@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DTOs
 {
-    public class EmpleadoDto
+    public class EmpleadoDto : DTOInterface
     {
         public int Id { get; set; }
         public string RazonSocial { get; set; }

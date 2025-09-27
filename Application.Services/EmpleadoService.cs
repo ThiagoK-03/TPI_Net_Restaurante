@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Application.Services
 {
-    public class EmpleadoService
+    public class EmpleadoService : CrudService <EmpleadoDto>
     {
         // CREATE
         public EmpleadoDto Add(EmpleadoDto dto)

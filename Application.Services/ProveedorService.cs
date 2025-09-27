@@ -4,7 +4,7 @@ using DTOs;
 
 namespace Application.Services
 {
-    public class ProveedorService
+    public class ProveedorService : CrudService<ProveedorDTO>
     {
         //create, retrieve, update, delete, getall, getone
         public ProveedorDTO Add(ProveedorDTO dto)

@@ -2,7 +2,7 @@
 
 namespace DTOs
 {
-    public class ClienteDTO
+    public class ClienteDTO : DTOInterface
     {
         public int Id { get; set; }
         public string Nombre { get; set; }
