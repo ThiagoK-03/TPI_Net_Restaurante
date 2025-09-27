@@ -7,12 +7,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using WindowsForms.emplead;
 using WindowsForms.ingrediente;
 using WindowsForms.producto;
+using WinFormsControlLibrary1;
 
 namespace WindowsForms
 {
-    public partial class Menu : Form
+    public partial class Menu : MenuBase
     {
         public Menu()
         {
@@ -51,6 +53,17 @@ namespace WindowsForms
         {
             ProductoVista productovista = new ProductoVista();
             productovista.ShowDialog();
+        }
+
+        private void btnPedidos_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnEmpleados_Click(object sender, EventArgs e)
+        {
+            EmpleadoVista empleadoVista = new EmpleadoVista();
+            empleadoVista.ShowDialog();
         }
     }
 }

@@ -11,11 +11,12 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using WindowsForms.clientes;
+using WinFormsControlLibrary1;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace WindowsForms
 {
-    public partial class ClienteDetalle : Form
+    public partial class ClienteDetalle : MenuBase
     {
         private ClienteDTO cliente;
         private FormMode mode;
