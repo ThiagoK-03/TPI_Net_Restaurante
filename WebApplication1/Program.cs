@@ -1,4 +1,5 @@
 using Application.Services;
+using Data;
 using Domain.Model;
 using DTOs;
 using WebApplication1;
@@ -12,12 +13,15 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddHttpLogging(o => { });
 
-// Singletons Services
-builder.Services.AddSingleton<EmpleadoService>();
-builder.Services.AddSingleton<ClienteService>();
-builder.Services.AddSingleton<IngredienteService>();
-builder.Services.AddSingleton<ProveedorService>();
-builder.Services.AddSingleton<ProductoService>();
+//Services for DB
+builder.Services.AddDbContext<AppDbContext>();
+
+builder.Services.AddScoped<ProductoService>();
+builder.Services.AddScoped<EmpleadoService>();
+builder.Services.AddScoped<ClienteService>();
+builder.Services.AddScoped<IngredienteService>();
+builder.Services.AddScoped<ProveedorService>();
+builder.Services.AddScoped<PedidoService>();
 
 var app = builder.Build();
 
@@ -38,6 +42,6 @@ app.MapCrudEndpoints<ClienteDTO, ClienteService>("clientes");
 app.MapCrudEndpoints<ProveedorDTO, ProveedorService>("proveedores");
 app.MapCrudEndpoints<ProductoDTO, ProductoService>("productos");
 app.MapCrudEndpoints<IngredienteDTO, IngredienteService>("ingredientes");
-//app.MapCrudEndpoints<PedidoDto, PedidoService>("pedidos");
+app.MapCrudEndpoints<PedidoDTO, PedidoService>("pedidos");
 
 app.Run();

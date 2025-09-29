@@ -21,23 +21,41 @@ namespace Domain.Model
         public EstadoPedido Estado { get; private set; }
         public DateTime FechaHoraInicio { get; private set; }
         public DateTime? FechaHoraFin { get; private set; }
-        public DateTime FechaHoraFinEstimada { get; private set; }
-        //public List<Producto> Productos { get; private set; }
+        public DateTime? FechaHoraFinEstimada { get; private set; }
+        public List<Producto> Productos { get; private set; }
+        public int ClienteId { get; private set; }
+        public int EmpleadoId { get; private set; }
+        public Cliente Cliente { get; private set; }
+        public Empleado Empleado { get; private set; }
 
-        public Pedido(int id, string descripcion, EstadoPedido estado, DateTime fechaHoraInicio, DateTime fechaHoraFinEstimada)
+        public Pedido() { }
+        public Pedido(int id, string descripcion, DateTime fechaHoraInicio, DateTime? fechaHoraFinEstimada, int clienteId, int empleadoId)
         {
             SetId(id);
             SetDescripcion(descripcion);
-            SetEstado(estado);
+            SetEstado(EstadoPedido.Pendiente);
             SetFechaHoraInicio(fechaHoraInicio);
             SetFechaHoraFinEstimada(fechaHoraFinEstimada);
-            //SetProdcutos(Productos);
+            ClienteId = clienteId;
+            EmpleadoId = empleadoId;
+        }
+
+        public void SetClienteId(int id)
+        {
+            if (id <= 0)
+                throw new ArgumentException("El Id debe ser mayor que 0.", nameof(id));
+            ClienteId = id;
+        }
+
+        public void SetEmpleadoId(int id)
+        {
+            if(id<=0) 
+                throw new ArgumentException("El Id debe ser mayor que 0.", nameof(id));
+            ClienteId= id;
         }
 
         public void SetId(int id)
         {
-            if (id <= 0)
-                throw new ArgumentException("El Id debe ser mayor que 0.", nameof(id));
             Id = id;
         }
 
@@ -60,26 +78,28 @@ namespace Domain.Model
             FechaHoraInicio = fechaHoraInicio;
         }
 
-        public void SetFechaHoraFin(DateTime fechaHoraFin)
+        public void SetFechaHoraFin(DateTime? fechaHoraFin)
         {
             if (fechaHoraFin < FechaHoraInicio)
                 throw new ArgumentException("La fecha de fin no puede ser anterior a la de inicio.", nameof(fechaHoraFin));
             FechaHoraFin = fechaHoraFin;
         }
 
-        public void SetFechaHoraFinEstimada(DateTime fechaHoraFinEstimada)
+        public void SetFechaHoraFinEstimada(DateTime? fechaHoraFinEstimada)
         {
             if (fechaHoraFinEstimada < FechaHoraInicio)
                 throw new ArgumentException("La fecha de fin estimada no puede ser anterior a la de inicio.", nameof(fechaHoraFinEstimada));
             FechaHoraFinEstimada = fechaHoraFinEstimada;
         }
 
-        //public void SetProductos(List<Prodcuto> productos)
-        //{
-        //    if (prodcutos == null || prodcutos.Count == 0)
-        //        throw new ArgumentException("El pedido debe contener al menos un producto.", nameof(productos));
-        //    Productos = productos;
-        //}
+        public void SetProductos(List<Producto> productos)
+        {
+            if (productos == null || productos.Count == 0)
+                throw new ArgumentException("El pedido debe contener al menos un producto.", nameof(productos));
+            Productos = productos;
+        }
+
+
     }
 
 }

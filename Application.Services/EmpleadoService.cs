@@ -1,11 +1,11 @@
 ﻿using Domain.Model;
 using DTOs;
-using Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Data.Repositories;
 
 namespace Application.Services
 {
@@ -14,13 +14,16 @@ namespace Application.Services
         // CREATE
         public EmpleadoDto Add(EmpleadoDto dto)
         {
-            if (EmpleadoInMemory.Empleados.Any(e => e.Cuit == dto.Cuit))
+            var empleadoRepository = new EmpleadoRepository();
+
+            if (empleadoRepository.CuitExists(dto.Cuit))
+            {
                 throw new ArgumentException($"Ya existe un empleado con el CUIT {dto.Cuit}.");
+            }
+            
 
-            var id = GetNextId();
-
-            var empleado = new Empleado(id, dto.RazonSocial, dto.Cuit, dto.Turno, dto.HorasTrabajadas, dto.PrecioPorHora);
-            EmpleadoInMemory.Empleados.Add(empleado);
+            var empleado = new Empleado(0, dto.RazonSocial, dto.Cuit, dto.Turno, dto.HorasTrabajadas, dto.PrecioPorHora);
+            empleadoRepository.Add(empleado);
 
             dto.Id = empleado.Id;
             dto.Sueldo = empleado.Sueldo;
@@ -31,55 +34,42 @@ namespace Application.Services
         // READ ONE
         public EmpleadoDto? Get(int id)
         {
-            var empleado = EmpleadoInMemory.Empleados.FirstOrDefault(e => e.Id == id);
+            var empleadoRepository = new EmpleadoRepository();
+            Empleado? empleado = empleadoRepository.Get(id);
+
             return empleado is null ? null : ToDto(empleado);
         }
 
         // READ ALL
         public IEnumerable<EmpleadoDto> GetAll()
         {
-            return EmpleadoInMemory.Empleados.Select(e => ToDto(e)).ToList();
+            var empleadoRepository = new EmpleadoRepository();
+
+            return empleadoRepository.GetAll().Select(e => ToDto(e)).ToList();
         }
 
         // UPDATE
         public bool Update(EmpleadoDto dto)
         {
-            var empleado = EmpleadoInMemory.Empleados.FirstOrDefault(e => e.Id == dto.Id);
+            var empleadoRepository = new EmpleadoRepository();
 
-            if (empleado is null)
-                return false;
-
-            if (EmpleadoInMemory.Empleados.Any(e => e.Id != dto.Id && e.Cuit == dto.Cuit))
+            if (empleadoRepository.CuitExists(dto.Cuit))
+            {
                 throw new ArgumentException($"Ya existe un empleado con el CUIT {dto.Cuit}.");
+            }
 
-            empleado.SetRazonSocial(dto.RazonSocial);
-            empleado.SetCuit(dto.Cuit);
-            empleado.SetTurno(dto.Turno);
-            empleado.SetHorasTrabajadas(dto.HorasTrabajadas);
-            empleado.SetPrecioPorHora(dto.PrecioPorHora);
+            Empleado empleado = new Empleado(dto.Id, dto.RazonSocial,dto.Cuit,dto.Turno,dto.HorasTrabajadas,dto.PrecioPorHora);
+            return empleadoRepository.Update(empleado);
 
-            return true;
         }
 
         // DELETE
         public bool Delete(int id)
         {
-            var empleado = EmpleadoInMemory.Empleados.FirstOrDefault(e => e.Id == id);
-
-            if (empleado is null)
-                return false;
-
-            EmpleadoInMemory.Empleados.Remove(empleado);
-            return true;
+            var empleadoRepository = new EmpleadoRepository();
+            return empleadoRepository.Delete(id);
         }
 
-        // Helpers
-        private static int GetNextId()
-        {
-            return EmpleadoInMemory.Empleados.Count == 0
-                ? 1
-                : EmpleadoInMemory.Empleados.Max(e => e.Id) + 1;
-        }
 
         private static EmpleadoDto ToDto(Empleado empleado)
         {

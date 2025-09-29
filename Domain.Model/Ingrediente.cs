@@ -28,15 +28,13 @@ namespace Domain.Model
             SetNombre(nombre);
             SetDescripcion(descripcion);
             SetStock(stock);
-            SetunidadMedida(unidadMedida);
+            SetUnidadMedida(unidadMedida);
             SetOrigen(origen);
             SetLimiteBajoStock(limiteBajoStock);
         }
 
         public void SetId(int id)
         {
-            if (id <= 0)
-                throw new ArgumentException("El Id debe ser mayor que 0.", nameof(id));
             Id = id;
         }
 
@@ -61,7 +59,7 @@ namespace Domain.Model
             Stock = stock;
         }
 
-        public void SetunidadMedida(string unidadMedida)
+        public void SetUnidadMedida(string unidadMedida)
         {
             if (string.IsNullOrWhiteSpace(unidadMedida))
                 throw new ArgumentException("La unidad de medida no puede ser nula o vacía.", nameof(unidadMedida));

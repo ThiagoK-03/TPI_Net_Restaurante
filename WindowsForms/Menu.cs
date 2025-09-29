@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using WindowsForms.emplead;
 using WindowsForms.ingrediente;
+using WindowsForms.Pedido;
 using WindowsForms.producto;
 using WinFormsControlLibrary1;
 
@@ -57,7 +58,8 @@ namespace WindowsForms
 
         private void btnPedidos_Click(object sender, EventArgs e)
         {
-
+            PedidoVista pedidoVista = new PedidoVista();
+            pedidoVista.ShowDialog();
         }
 
         private void btnEmpleados_Click(object sender, EventArgs e)

@@ -31,8 +31,6 @@ namespace Domain.Model
 
         public void SetId(int id)
         {
-            if (id <= 0)
-                throw new ArgumentException("El Id debe ser mayor que 0.", nameof(id));
             Id = id;
         }
 
@@ -70,5 +68,6 @@ namespace Domain.Model
                 throw new ArgumentException("El precio debe ser mayor o igual que 0.", nameof(precio));
             Precio = precio;
         }
+
     }
 }

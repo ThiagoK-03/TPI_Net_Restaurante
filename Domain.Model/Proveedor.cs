@@ -24,13 +24,11 @@ namespace Domain.Model
             SetCuit(cuit);
             SetEmail(email);
             SetTelefono(telefono);
-            setTipoIngrediente(tipoIngrediente);
+            SetTipoIngrediente(tipoIngrediente);
         }
 
         public void SetId(int id)
         {
-            if (id < 0)
-                throw new ArgumentException("El Id debe ser mayor que 0.", nameof(id));
             Id = id;
         }
 
@@ -67,7 +65,7 @@ namespace Domain.Model
             Telefono = telefono;
         }
 
-        public void setTipoIngrediente(string tipoIngrediente)
+        public void SetTipoIngrediente(string tipoIngrediente)
         {
             if (string.IsNullOrWhiteSpace(tipoIngrediente)){
                 throw new ArgumentException("El tipo de ingrediente no puede ser nulo o vacio.", nameof(tipoIngrediente));
