@@ -59,7 +59,36 @@ namespace WinFormsControlLibrary1
     {
         public BasicDataGridView()
         {
-            this.BackgroundColor = Color.MistyRose;
+            // Quitar bordes y resaltar las celdas de forma moderna
+            this.BorderStyle = BorderStyle.None;
+            this.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
+            this.EnableHeadersVisualStyles = false;
+            //this.RowHeadersVisible = false;
+            this.AllowUserToResizeRows = false;
+
+            // Colores base
+            this.BackgroundColor = Color.FromArgb(245, 220, 220); // tono rosado claro
+            this.GridColor = Color.FromArgb(220, 120, 120);
+
+            // Encabezados
+            this.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(180, 40, 40);
+            this.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+            this.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 10, FontStyle.Bold);
+            this.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+            // Filas
+            this.DefaultCellStyle.BackColor = Color.FromArgb(255, 235, 235);
+            this.DefaultCellStyle.ForeColor = Color.FromArgb(60, 0, 0);
+            this.DefaultCellStyle.SelectionBackColor = Color.FromArgb(200, 60, 60);
+            this.DefaultCellStyle.SelectionForeColor = Color.White;
+            this.DefaultCellStyle.Font = new Font("Segoe UI", 9, FontStyle.Regular);
+
+            // Alternancia de filas (para mejor lectura)
+            this.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(255, 245, 245);
+
+            // Encabezado de filas (si lo usás)
+            this.RowHeadersDefaultCellStyle.BackColor = Color.FromArgb(160, 50, 50);
+            this.RowHeadersDefaultCellStyle.ForeColor = Color.White;
         }
     }
     public partial class TopBar : Panel

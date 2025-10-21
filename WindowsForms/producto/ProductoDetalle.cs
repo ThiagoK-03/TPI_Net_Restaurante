@@ -9,17 +9,18 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using DTOs;
+using WinFormsControlLibrary1;
 
 namespace WindowsForms.producto
 {
-    public partial class ProductoDetalle : Form
+    public partial class ProductoDetalle : MenuBase
     {
         private ProductoDTO producto;
         private FormMode mode;
 
         public ProductoDTO Producto
         {
-            get {  return producto; }
+            get { return producto; }
             set
             {
                 producto = value;
@@ -150,6 +151,16 @@ namespace WindowsForms.producto
             }
 
             return isValid;
+        }
+
+        private void lblPrecio_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void lblCalificacion_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

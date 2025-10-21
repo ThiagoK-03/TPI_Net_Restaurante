@@ -10,11 +10,12 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using WinFormsControlLibrary1;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace WindowsForms.ingrediente
 {
-    public partial class IngredienteDetalle : Form
+    public partial class IngredienteDetalle : MenuBase
     {
 
         private IngredienteDTO ingrediente;
@@ -54,7 +55,7 @@ namespace WindowsForms.ingrediente
 
         
 
-        private async void button1_Click(object sender, EventArgs e) //Boton de aceptar
+        private async void btnAceptar_click(object sender, EventArgs e) //Boton de aceptar
         {
             if (this.ValidateIngrediente())
             {
@@ -87,7 +88,7 @@ namespace WindowsForms.ingrediente
             }
         }
 
-        private void button2_Click(object sender, EventArgs e)  //Boton de Cancelar
+        private void btnCancelar_click(object sender, EventArgs e)  //Boton de Cancelar
         {
             this.Close();
         }

@@ -9,10 +9,11 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using DTOs;
 using WindowsForms.ingrediente;
+using WinFormsControlLibrary1;
 
 namespace WindowsForms.ingrediente
 {
-    public partial class IngredienteVista : Form
+    public partial class IngredienteVista : MenuBase
     {
         public IngredienteVista()
         {
@@ -51,8 +52,8 @@ namespace WindowsForms.ingrediente
                 ingredienteDetalle.Mode = FormMode.Update;
                 ingredienteDetalle.Ingrediente = ingrediente;
 
-                ingredienteDetalle.ShowDialog(); 
-                
+                ingredienteDetalle.ShowDialog();
+
                 this.GetAllAndLoad();
             }
             catch (Exception ex)
@@ -68,7 +69,7 @@ namespace WindowsForms.ingrediente
                 int id = this.SelectedItem().Id;
 
                 var result = MessageBox.Show($"¿Está seguro que desea eliminar el ingrediente con Id {id}?", "Confirmar eliminación", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                
+
                 if (result == DialogResult.Yes)
                 {
                     await IngredienteApi.DeleteAsync(id);

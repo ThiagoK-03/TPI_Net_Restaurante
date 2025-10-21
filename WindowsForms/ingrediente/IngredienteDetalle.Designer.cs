@@ -29,194 +29,265 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            tbxId = new TextBox();
-            tbxDescripcion = new TextBox();
-            lblId = new Label();
-            lblNombre = new Label();
-            tbxNombre = new TextBox();
-            lblDescripcion = new Label();
-            lblUnidadMedida = new Label();
-            tbxUnidadMedida = new TextBox();
-            lblStock = new Label();
-            tbxStock = new TextBox();
-            button1 = new Button();
-            button2 = new Button();
-            tbxOrigen = new TextBox();
-            lblOrigen = new Label();
-            lblLimiteBajoStock = new Label();
-            tbxLimiteBajoStock = new TextBox();
             errorProvider = new ErrorProvider(components);
+            btnCancelar = new WinFormsControlLibrary1.RedButton();
+            btnAceptar = new WinFormsControlLibrary1.RedButton();
+            tbxId = new WinFormsControlLibrary1.BasicTxtBox();
+            tbxNombre = new WinFormsControlLibrary1.BasicTxtBox();
+            tbxDescripcion = new WinFormsControlLibrary1.BasicTxtBox();
+            tbxStock = new WinFormsControlLibrary1.BasicTxtBox();
+            tbxUnidadMedida = new WinFormsControlLibrary1.BasicTxtBox();
+            tbxOrigen = new WinFormsControlLibrary1.BasicTxtBox();
+            tbxLimiteBajoStock = new WinFormsControlLibrary1.BasicTxtBox();
+            lblId = new WinFormsControlLibrary1.BasicLabel();
+            lblNombre = new WinFormsControlLibrary1.BasicLabel();
+            lblDescripcion = new WinFormsControlLibrary1.BasicLabel();
+            lblStock = new WinFormsControlLibrary1.BasicLabel();
+            lblUnidadDeMedida = new WinFormsControlLibrary1.BasicLabel();
+            lblOrigen = new WinFormsControlLibrary1.BasicLabel();
+            lblLimiteBajoStock = new WinFormsControlLibrary1.BasicLabel();
+            topBar.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)errorProvider).BeginInit();
             SuspendLayout();
             // 
-            // tbxId
+            // topBar
             // 
-            tbxId.Location = new Point(142, 31);
-            tbxId.Margin = new Padding(3, 2, 3, 2);
-            tbxId.Name = "tbxId";
-            tbxId.Size = new Size(111, 23);
-            tbxId.TabIndex = 4;
+            topBar.Size = new Size(438, 31);
             // 
-            // tbxDescripcion
+            // btn_salir
             // 
-            tbxDescripcion.Location = new Point(142, 80);
-            tbxDescripcion.Margin = new Padding(3, 2, 3, 2);
-            tbxDescripcion.Name = "tbxDescripcion";
-            tbxDescripcion.Size = new Size(196, 23);
-            tbxDescripcion.TabIndex = 16;
-            // 
-            // lblId
-            // 
-            lblId.AutoSize = true;
-            lblId.Location = new Point(10, 34);
-            lblId.Name = "lblId";
-            lblId.Size = new Size(17, 15);
-            lblId.TabIndex = 12;
-            lblId.Text = "Id";
-            // 
-            // lblNombre
-            // 
-            lblNombre.AutoSize = true;
-            lblNombre.Location = new Point(10, 58);
-            lblNombre.Name = "lblNombre";
-            lblNombre.Size = new Size(51, 15);
-            lblNombre.TabIndex = 13;
-            lblNombre.Text = "Nombre";
-            // 
-            // tbxNombre
-            // 
-            tbxNombre.Location = new Point(142, 55);
-            tbxNombre.Margin = new Padding(3, 2, 3, 2);
-            tbxNombre.Name = "tbxNombre";
-            tbxNombre.Size = new Size(196, 23);
-            tbxNombre.TabIndex = 14;
-            // 
-            // lblDescripcion
-            // 
-            lblDescripcion.AutoSize = true;
-            lblDescripcion.Location = new Point(10, 83);
-            lblDescripcion.Name = "lblDescripcion";
-            lblDescripcion.Size = new Size(69, 15);
-            lblDescripcion.TabIndex = 15;
-            lblDescripcion.Text = "Descripcion";
-            // 
-            // lblUnidadMedida
-            // 
-            lblUnidadMedida.AutoSize = true;
-            lblUnidadMedida.Location = new Point(10, 133);
-            lblUnidadMedida.Name = "lblUnidadMedida";
-            lblUnidadMedida.Size = new Size(104, 15);
-            lblUnidadMedida.TabIndex = 17;
-            lblUnidadMedida.Text = "Unidad de Medida";
-            // 
-            // tbxUnidadMedida
-            // 
-            tbxUnidadMedida.Location = new Point(142, 129);
-            tbxUnidadMedida.Margin = new Padding(3, 2, 3, 2);
-            tbxUnidadMedida.Name = "tbxUnidadMedida";
-            tbxUnidadMedida.Size = new Size(111, 23);
-            tbxUnidadMedida.TabIndex = 18;
-            // 
-            // lblStock
-            // 
-            lblStock.AutoSize = true;
-            lblStock.Location = new Point(10, 108);
-            lblStock.Name = "lblStock";
-            lblStock.Size = new Size(36, 15);
-            lblStock.TabIndex = 19;
-            lblStock.Text = "Stock";
-            // 
-            // tbxStock
-            // 
-            tbxStock.Location = new Point(142, 105);
-            tbxStock.Margin = new Padding(3, 2, 3, 2);
-            tbxStock.Name = "tbxStock";
-            tbxStock.Size = new Size(111, 23);
-            tbxStock.TabIndex = 20;
-            // 
-            // button1
-            // 
-            button1.Location = new Point(315, 285);
-            button1.Margin = new Padding(3, 2, 3, 2);
-            button1.Name = "button1";
-            button1.Size = new Size(82, 22);
-            button1.TabIndex = 12;
-            button1.Text = "Aceptar";
-            button1.UseVisualStyleBackColor = true;
-            button1.Click += button1_Click;
-            // 
-            // button2
-            // 
-            button2.Location = new Point(229, 285);
-            button2.Margin = new Padding(3, 2, 3, 2);
-            button2.Name = "button2";
-            button2.Size = new Size(82, 22);
-            button2.TabIndex = 13;
-            button2.Text = "Cancelar";
-            button2.UseVisualStyleBackColor = true;
-            button2.Click += button2_Click;
-            // 
-            // tbxOrigen
-            // 
-            tbxOrigen.Location = new Point(142, 154);
-            tbxOrigen.Margin = new Padding(3, 2, 3, 2);
-            tbxOrigen.Name = "tbxOrigen";
-            tbxOrigen.Size = new Size(196, 23);
-            tbxOrigen.TabIndex = 21;
-            // 
-            // lblOrigen
-            // 
-            lblOrigen.AutoSize = true;
-            lblOrigen.Location = new Point(10, 157);
-            lblOrigen.Name = "lblOrigen";
-            lblOrigen.Size = new Size(43, 15);
-            lblOrigen.TabIndex = 22;
-            lblOrigen.Text = "Origen";
-            // 
-            // lblLimiteBajoStock
-            // 
-            lblLimiteBajoStock.AutoSize = true;
-            lblLimiteBajoStock.Location = new Point(10, 181);
-            lblLimiteBajoStock.Name = "lblLimiteBajoStock";
-            lblLimiteBajoStock.Size = new Size(114, 15);
-            lblLimiteBajoStock.TabIndex = 23;
-            lblLimiteBajoStock.Text = "Limite de Bajo Stock";
-            // 
-            // tbxLimiteBajoStock
-            // 
-            tbxLimiteBajoStock.Location = new Point(142, 178);
-            tbxLimiteBajoStock.Margin = new Padding(3, 2, 3, 2);
-            tbxLimiteBajoStock.Name = "tbxLimiteBajoStock";
-            tbxLimiteBajoStock.Size = new Size(111, 23);
-            tbxLimiteBajoStock.TabIndex = 24;
+            btn_salir.FlatAppearance.BorderSize = 0;
+            btn_salir.Location = new Point(407, 0);
             // 
             // errorProvider
             // 
             errorProvider.ContainerControl = this;
             // 
+            // btnCancelar
+            // 
+            btnCancelar.BackColor = Color.FromArgb(192, 0, 0);
+            btnCancelar.FlatAppearance.BorderSize = 0;
+            btnCancelar.FlatStyle = FlatStyle.Flat;
+            btnCancelar.Font = new Font("Microsoft Sans Serif", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            btnCancelar.ForeColor = Color.MistyRose;
+            btnCancelar.Location = new Point(213, 275);
+            btnCancelar.Name = "btnCancelar";
+            btnCancelar.Size = new Size(75, 23);
+            btnCancelar.TabIndex = 25;
+            btnCancelar.Text = "Cancelar";
+            btnCancelar.UseVisualStyleBackColor = false;
+            btnCancelar.Click += btnCancelar_click;
+            // 
+            // btnAceptar
+            // 
+            btnAceptar.BackColor = Color.FromArgb(192, 0, 0);
+            btnAceptar.FlatAppearance.BorderSize = 0;
+            btnAceptar.FlatStyle = FlatStyle.Flat;
+            btnAceptar.Font = new Font("Microsoft Sans Serif", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            btnAceptar.ForeColor = Color.MistyRose;
+            btnAceptar.Location = new Point(294, 275);
+            btnAceptar.Name = "btnAceptar";
+            btnAceptar.Size = new Size(75, 23);
+            btnAceptar.TabIndex = 26;
+            btnAceptar.Text = "Aceptar";
+            btnAceptar.UseVisualStyleBackColor = false;
+            btnAceptar.Click += btnAceptar_click;
+            // 
+            // tbxId
+            // 
+            tbxId.BackColor = Color.MistyRose;
+            tbxId.BorderStyle = BorderStyle.None;
+            tbxId.Location = new Point(159, 49);
+            tbxId.Name = "tbxId";
+            tbxId.PlaceholderText = "Content";
+            tbxId.Size = new Size(100, 16);
+            tbxId.TabIndex = 27;
+            // 
+            // tbxNombre
+            // 
+            tbxNombre.BackColor = Color.MistyRose;
+            tbxNombre.BorderStyle = BorderStyle.None;
+            tbxNombre.Location = new Point(159, 76);
+            tbxNombre.Name = "tbxNombre";
+            tbxNombre.PlaceholderText = "Content";
+            tbxNombre.Size = new Size(100, 16);
+            tbxNombre.TabIndex = 28;
+            // 
+            // tbxDescripcion
+            // 
+            tbxDescripcion.BackColor = Color.MistyRose;
+            tbxDescripcion.BorderStyle = BorderStyle.None;
+            tbxDescripcion.Location = new Point(103, 104);
+            tbxDescripcion.Name = "tbxDescripcion";
+            tbxDescripcion.PlaceholderText = "Content";
+            tbxDescripcion.Size = new Size(156, 16);
+            tbxDescripcion.TabIndex = 29;
+            // 
+            // tbxStock
+            // 
+            tbxStock.BackColor = Color.MistyRose;
+            tbxStock.BorderStyle = BorderStyle.None;
+            tbxStock.Location = new Point(159, 131);
+            tbxStock.Name = "tbxStock";
+            tbxStock.PlaceholderText = "Content";
+            tbxStock.Size = new Size(100, 16);
+            tbxStock.TabIndex = 30;
+            // 
+            // tbxUnidadMedida
+            // 
+            tbxUnidadMedida.BackColor = Color.MistyRose;
+            tbxUnidadMedida.BorderStyle = BorderStyle.None;
+            tbxUnidadMedida.Location = new Point(159, 158);
+            tbxUnidadMedida.Name = "tbxUnidadMedida";
+            tbxUnidadMedida.PlaceholderText = "Content";
+            tbxUnidadMedida.Size = new Size(100, 16);
+            tbxUnidadMedida.TabIndex = 31;
+            // 
+            // tbxOrigen
+            // 
+            tbxOrigen.BackColor = Color.MistyRose;
+            tbxOrigen.BorderStyle = BorderStyle.None;
+            tbxOrigen.Location = new Point(119, 185);
+            tbxOrigen.Name = "tbxOrigen";
+            tbxOrigen.PlaceholderText = "Content";
+            tbxOrigen.Size = new Size(140, 16);
+            tbxOrigen.TabIndex = 32;
+            // 
+            // tbxLimiteBajoStock
+            // 
+            tbxLimiteBajoStock.BackColor = Color.MistyRose;
+            tbxLimiteBajoStock.BorderStyle = BorderStyle.None;
+            tbxLimiteBajoStock.Location = new Point(159, 212);
+            tbxLimiteBajoStock.Name = "tbxLimiteBajoStock";
+            tbxLimiteBajoStock.PlaceholderText = "Content";
+            tbxLimiteBajoStock.Size = new Size(100, 16);
+            tbxLimiteBajoStock.TabIndex = 33;
+            // 
+            // lblId
+            // 
+            lblId.AutoSize = true;
+            lblId.BackColor = Color.Transparent;
+            lblId.Font = new Font("Javanese Text", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lblId.ForeColor = Color.MistyRose;
+            lblId.Location = new Point(265, 46);
+            lblId.Name = "lblId";
+            lblId.Size = new Size(23, 27);
+            lblId.TabIndex = 34;
+            lblId.Text = "Id";
+            // 
+            // lblNombre
+            // 
+            lblNombre.AutoSize = true;
+            lblNombre.BackColor = Color.Transparent;
+            lblNombre.Font = new Font("Javanese Text", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lblNombre.ForeColor = Color.MistyRose;
+            lblNombre.Location = new Point(265, 73);
+            lblNombre.Name = "lblNombre";
+            lblNombre.Size = new Size(55, 27);
+            lblNombre.TabIndex = 35;
+            lblNombre.Text = "Nombre";
+            // 
+            // lblDescripcion
+            // 
+            lblDescripcion.AutoSize = true;
+            lblDescripcion.BackColor = Color.Transparent;
+            lblDescripcion.Font = new Font("Javanese Text", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lblDescripcion.ForeColor = Color.MistyRose;
+            lblDescripcion.Location = new Point(265, 101);
+            lblDescripcion.Name = "lblDescripcion";
+            lblDescripcion.Size = new Size(75, 27);
+            lblDescripcion.TabIndex = 36;
+            lblDescripcion.Text = "Descripcion";
+            // 
+            // lblStock
+            // 
+            lblStock.AutoSize = true;
+            lblStock.BackColor = Color.Transparent;
+            lblStock.Font = new Font("Javanese Text", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lblStock.ForeColor = Color.MistyRose;
+            lblStock.Location = new Point(265, 128);
+            lblStock.Name = "lblStock";
+            lblStock.Size = new Size(42, 27);
+            lblStock.TabIndex = 37;
+            lblStock.Text = "Stock";
+            // 
+            // lblUnidadDeMedida
+            // 
+            lblUnidadDeMedida.AutoSize = true;
+            lblUnidadDeMedida.BackColor = Color.Transparent;
+            lblUnidadDeMedida.Font = new Font("Javanese Text", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lblUnidadDeMedida.ForeColor = Color.MistyRose;
+            lblUnidadDeMedida.Location = new Point(265, 155);
+            lblUnidadDeMedida.Name = "lblUnidadDeMedida";
+            lblUnidadDeMedida.Size = new Size(110, 27);
+            lblUnidadDeMedida.TabIndex = 38;
+            lblUnidadDeMedida.Text = "Unidad de Medida";
+            // 
+            // lblOrigen
+            // 
+            lblOrigen.AutoSize = true;
+            lblOrigen.BackColor = Color.Transparent;
+            lblOrigen.Font = new Font("Javanese Text", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lblOrigen.ForeColor = Color.MistyRose;
+            lblOrigen.Location = new Point(265, 182);
+            lblOrigen.Name = "lblOrigen";
+            lblOrigen.Size = new Size(48, 27);
+            lblOrigen.TabIndex = 39;
+            lblOrigen.Text = "Origen";
+            // 
+            // lblLimiteBajoStock
+            // 
+            lblLimiteBajoStock.AutoSize = true;
+            lblLimiteBajoStock.BackColor = Color.Transparent;
+            lblLimiteBajoStock.Font = new Font("Javanese Text", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lblLimiteBajoStock.ForeColor = Color.MistyRose;
+            lblLimiteBajoStock.Location = new Point(265, 209);
+            lblLimiteBajoStock.Name = "lblLimiteBajoStock";
+            lblLimiteBajoStock.Size = new Size(104, 27);
+            lblLimiteBajoStock.TabIndex = 40;
+            lblLimiteBajoStock.Text = "Limite Bajo Stock";
+            // 
             // IngredienteDetalle
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(409, 318);
-            Controls.Add(tbxLimiteBajoStock);
+            ClientSize = new Size(438, 335);
             Controls.Add(lblLimiteBajoStock);
             Controls.Add(lblOrigen);
-            Controls.Add(tbxOrigen);
-            Controls.Add(button2);
-            Controls.Add(tbxStock);
-            Controls.Add(button1);
-            Controls.Add(tbxId);
+            Controls.Add(lblUnidadDeMedida);
             Controls.Add(lblStock);
-            Controls.Add(tbxDescripcion);
-            Controls.Add(tbxUnidadMedida);
-            Controls.Add(lblId);
-            Controls.Add(lblUnidadMedida);
-            Controls.Add(lblNombre);
-            Controls.Add(tbxNombre);
             Controls.Add(lblDescripcion);
+            Controls.Add(lblNombre);
+            Controls.Add(lblId);
+            Controls.Add(tbxLimiteBajoStock);
+            Controls.Add(tbxOrigen);
+            Controls.Add(tbxUnidadMedida);
+            Controls.Add(tbxStock);
+            Controls.Add(tbxDescripcion);
+            Controls.Add(tbxNombre);
+            Controls.Add(tbxId);
+            Controls.Add(btnAceptar);
+            Controls.Add(btnCancelar);
             Name = "IngredienteDetalle";
             Text = "Ingrediente";
+            Controls.SetChildIndex(topBar, 0);
+            Controls.SetChildIndex(btnCancelar, 0);
+            Controls.SetChildIndex(btnAceptar, 0);
+            Controls.SetChildIndex(tbxId, 0);
+            Controls.SetChildIndex(tbxNombre, 0);
+            Controls.SetChildIndex(tbxDescripcion, 0);
+            Controls.SetChildIndex(tbxStock, 0);
+            Controls.SetChildIndex(tbxUnidadMedida, 0);
+            Controls.SetChildIndex(tbxOrigen, 0);
+            Controls.SetChildIndex(tbxLimiteBajoStock, 0);
+            Controls.SetChildIndex(lblId, 0);
+            Controls.SetChildIndex(lblNombre, 0);
+            Controls.SetChildIndex(lblDescripcion, 0);
+            Controls.SetChildIndex(lblStock, 0);
+            Controls.SetChildIndex(lblUnidadDeMedida, 0);
+            Controls.SetChildIndex(lblOrigen, 0);
+            Controls.SetChildIndex(lblLimiteBajoStock, 0);
+            topBar.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)errorProvider).EndInit();
             ResumeLayout(false);
             PerformLayout();
@@ -224,22 +295,22 @@
 
         #endregion
 
-        private TextBox tbxId;
-        private TextBox tbxDescripcion;
-        private Label lblId;
-        private Label lblNombre;
-        private TextBox tbxNombre;
-        private Label lblDescripcion;
-        private Label lblUnidadMedida;
-        private TextBox tbxUnidadMedida;
-        private Label lblStock;
-        private TextBox tbxStock;
-        private Button button1;
-        private Button button2;
-        private TextBox tbxOrigen;
-        private Label lblOrigen;
-        private Label lblLimiteBajoStock;
-        private TextBox tbxLimiteBajoStock;
         private ErrorProvider errorProvider;
+        private WinFormsControlLibrary1.RedButton btnAceptar;
+        private WinFormsControlLibrary1.RedButton btnCancelar;
+        private WinFormsControlLibrary1.BasicLabel lblLimiteBajoStock;
+        private WinFormsControlLibrary1.BasicLabel lblOrigen;
+        private WinFormsControlLibrary1.BasicLabel lblUnidadDeMedida;
+        private WinFormsControlLibrary1.BasicLabel lblStock;
+        private WinFormsControlLibrary1.BasicLabel lblDescripcion;
+        private WinFormsControlLibrary1.BasicLabel lblNombre;
+        private WinFormsControlLibrary1.BasicLabel lblId;
+        private WinFormsControlLibrary1.BasicTxtBox tbxLimiteBajoStock;
+        private WinFormsControlLibrary1.BasicTxtBox tbxOrigen;
+        private WinFormsControlLibrary1.BasicTxtBox tbxUnidadMedida;
+        private WinFormsControlLibrary1.BasicTxtBox tbxStock;
+        private WinFormsControlLibrary1.BasicTxtBox tbxDescripcion;
+        private WinFormsControlLibrary1.BasicTxtBox tbxNombre;
+        private WinFormsControlLibrary1.BasicTxtBox tbxId;
     }
 }
