@@ -9,10 +9,11 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using DTOs;
 using WindowsForms.clientes;
+using WinFormsControlLibrary1;
 
 namespace WindowsForms.producto
 {
-    public partial class ProductoVista : Form
+    public partial class ProductoVista : MenuBase
     {
         public ProductoVista()
         {
@@ -68,7 +69,7 @@ namespace WindowsForms.producto
                 int id = this.SelectedItem().Id;
 
                 var result = MessageBox.Show($"¿Está seguro que desea eliminar el producto con Id {id}?", "Confirmar eliminación", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                
+
                 if (result == DialogResult.Yes)
                 {
                     await ProductoApi.DeleteAsync(id);
@@ -80,7 +81,7 @@ namespace WindowsForms.producto
                 MessageBox.Show($"Error al eliminar producto: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-       
+
         private async void GetAllAndLoad()
         {
             try
@@ -120,6 +121,11 @@ namespace WindowsForms.producto
         private void btnMenu_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void tittleLabel_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
