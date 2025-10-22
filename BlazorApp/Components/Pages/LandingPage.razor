@@ -1,4 +1,5 @@
 ﻿@page "/"
+@inject NavigationManager navigation
 
 <link href="/LandingPage.css" rel="stylesheet" />
 
@@ -16,51 +17,19 @@
         </div>
     </section>
 
-    <!-- Features Section -->
-    <section class="features">
-        <div class="container">
-            <h2 class="section-title">¿Por qué elegirnos?</h2>
-            <div class="features-grid">
-                <div class="feature-card">
-                    <div class="feature-icon">🍽️</div>
-                    <h3>Menú Variado</h3>
-                    <p>Amplia selección de platos preparados con ingredientes frescos y de calidad</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">🚀</div>
-                    <h3>Pedidos Rápidos</h3>
-                    <p>Sistema ágil de pedidos online para que disfrutes sin esperas</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">👨‍🍳</div>
-                    <h3>Chefs Expertos</h3>
-                    <p>Equipo profesional dedicado a crear experiencias culinarias únicas</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- CTA Section -->
-    <section class="cta">
-        <div class="container cta-content">
-            <h2>¿Listo para ordenar?</h2>
-            <p>Únete a nosotros y descubre una nueva forma de disfrutar la buena comida</p>
-            <button class="btn-primary btn-large" @onclick="NavigateToLogin">Comenzar Ahora</button>
-        </div>
-    </section>
+    
 </div>
 
 @code {
-    [Inject]
-    private NavigationManager NavigationManager { get; set; } = default!;
+
 
     private void NavigateToLogin()
     {
-        NavigationManager.NavigateTo("/login");
+        navigation.NavigateTo("/login");
     }
 
     private void NavigateToRegister()
     {
-        NavigationManager.NavigateTo("/register");
+        navigation.NavigateTo("/register");
     }
 }
