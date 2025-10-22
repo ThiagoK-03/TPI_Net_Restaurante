@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsForms", "WindowsForm
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinFormsControlLibrary1", "WinFormsControlLibrary1\WinFormsControlLibrary1.csproj", "{8187A1D1-EFCC-4C1E-85BE-99D0E7BE62EB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorApp", "BlazorApp\BlazorApp.csproj", "{92B4957A-74E1-46B5-988E-2F3C32162E87}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +53,10 @@ Global
 		{8187A1D1-EFCC-4C1E-85BE-99D0E7BE62EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8187A1D1-EFCC-4C1E-85BE-99D0E7BE62EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8187A1D1-EFCC-4C1E-85BE-99D0E7BE62EB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{92B4957A-74E1-46B5-988E-2F3C32162E87}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{92B4957A-74E1-46B5-988E-2F3C32162E87}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{92B4957A-74E1-46B5-988E-2F3C32162E87}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{92B4957A-74E1-46B5-988E-2F3C32162E87}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

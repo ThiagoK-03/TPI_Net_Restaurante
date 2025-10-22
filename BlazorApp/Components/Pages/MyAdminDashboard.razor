@@ -1,0 +1,68 @@
+﻿@page "/dashboard/admin"
+
+<link href="/AdminDashboard.css" rel="stylesheet" />
+
+<div class="admin-dashboard">
+	<aside class="sidebar">
+		<div class="sidebar-header">
+			<h2>🍽️ Admin Panel</h2>
+			<p class="admin-name">Administrador</p>
+		</div>
+
+		<nav class="sidebar-nav">
+			<button class="nav-item @(currentSection == "pedidos" ? "" : "active")"
+					@onclick='() => ChangeSection("pedidos")' >
+				Pedidos
+			</button>
+
+			<button class="nav-item @(currentSection == "productos" ? "" : "active")"
+					@onclick='() => ChangeSection("productos")' >
+				Productos
+			</button>
+
+			<button class="nav-item @(currentSection == "ingredientes" ? "" : "active")"
+					@onclick='() => ChangeSection("ingredientes")' >
+				Ingredientes
+			</button>
+
+			<button class="nav-item @(currentSection == "proveedores" ? "" : "active")"
+					@onclick='() => ChangeSection("proveedores")' >
+				Proveedores
+			</button>
+
+			<button class="nav-item @(currentSection == "empleados" ? "" : "active")"
+					@onclick='() => ChangeSection("empleados")' >
+				Empleados
+			</button>
+
+		</nav>
+
+		<div class="sidebar-footer">
+			<button class="btn-logout" @onclick=Logout>
+				<span>🚪</span>
+				Cerrar Sesión
+			</button>
+		</div>
+	</aside>
+
+	<main class="main-content">
+
+	</main>
+
+
+</div>
+
+@code {
+	private string currentSection = "overview";
+
+
+	private void Logout()
+	{
+		Console.WriteLine("Logging out");
+	}
+
+	private void ChangeSection(string section)
+	{
+		currentSection = section;
+	}
+}

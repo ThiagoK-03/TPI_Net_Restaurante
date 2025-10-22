@@ -1,0 +1,66 @@
+﻿@page "/"
+
+<link href="/LandingPage.css" rel="stylesheet" />
+
+<div class="landing-page">
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-overlay"></div>
+        <div class="container hero-content">
+            <h1 class="hero-title">Bienvenido a Restaurante Entity Flavor</h1>
+            <p class="hero-subtitle">La mejor experiencia gastronómica al alcance de un request</p>
+            <div class="hero-buttons">
+                <button class="btn-primary" @onclick="NavigateToLogin">Iniciar Sesión</button>
+                <button class="btn-secondary" @onclick="NavigateToRegister">Registrarse</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features">
+        <div class="container">
+            <h2 class="section-title">¿Por qué elegirnos?</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🍽️</div>
+                    <h3>Menú Variado</h3>
+                    <p>Amplia selección de platos preparados con ingredientes frescos y de calidad</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🚀</div>
+                    <h3>Pedidos Rápidos</h3>
+                    <p>Sistema ágil de pedidos online para que disfrutes sin esperas</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">👨‍🍳</div>
+                    <h3>Chefs Expertos</h3>
+                    <p>Equipo profesional dedicado a crear experiencias culinarias únicas</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta">
+        <div class="container cta-content">
+            <h2>¿Listo para ordenar?</h2>
+            <p>Únete a nosotros y descubre una nueva forma de disfrutar la buena comida</p>
+            <button class="btn-primary btn-large" @onclick="NavigateToLogin">Comenzar Ahora</button>
+        </div>
+    </section>
+</div>
+
+@code {
+    [Inject]
+    private NavigationManager NavigationManager { get; set; } = default!;
+
+    private void NavigateToLogin()
+    {
+        NavigationManager.NavigateTo("/login");
+    }
+
+    private void NavigateToRegister()
+    {
+        NavigationManager.NavigateTo("/register");
+    }
+}
