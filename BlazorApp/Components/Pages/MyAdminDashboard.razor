@@ -10,35 +10,37 @@
 		</div>
 
 		<nav class="sidebar-nav">
-			<button class="nav-item @(currentSection == "pedidos" ? "" : "active")"
-					@onclick='() => ChangeSection("pedidos")' >
+			<button class="nav-item@(currentSection == "pedidos" ? ".active" : "")"
+			@onclick='() => ChangeSection("pedidos")' >
 				Pedidos
+				@Logout()
+				
 			</button>
 
-			<button class="nav-item @(currentSection == "productos" ? "" : "active")"
-					@onclick='() => ChangeSection("productos")' >
+			<button class="nav-item@(currentSection == "productos" ? ".active" : "")"
+			@onclick='() => ChangeSection("productos")' >
 				Productos
 			</button>
 
-			<button class="nav-item @(currentSection == "ingredientes" ? "" : "active")"
-					@onclick='() => ChangeSection("ingredientes")' >
+			<button class="nav-item@(currentSection == "ingredientes" ? ".active" : "")"
+			@onclick='() => ChangeSection("ingredientes")' >
 				Ingredientes
 			</button>
 
-			<button class="nav-item @(currentSection == "proveedores" ? "" : "active")"
-					@onclick='() => ChangeSection("proveedores")' >
+			<button class="nav-item@(currentSection == "proveedores" ? ".active" : "")"
+			@onclick='() => ChangeSection("proveedores")' >
 				Proveedores
 			</button>
 
-			<button class="nav-item @(currentSection == "empleados" ? "" : "active")"
-					@onclick='() => ChangeSection("empleados")' >
+			<button class="nav-item@(currentSection == "empleados" ? ".active" : "")"
+			@onclick='() => ChangeSection("empleados")' >
 				Empleados
 			</button>
 
 		</nav>
 
 		<div class="sidebar-footer">
-			<button class="btn-logout" @onclick=Logout>
+			<button class="btn-logout">
 				<span>🚪</span>
 				Cerrar Sesión
 			</button>
@@ -56,13 +58,15 @@
 	private string currentSection = "overview";
 
 
-	private void Logout()
+	private string Logout()
 	{
 		Console.WriteLine("Logging out");
+		return ("Logging out");
 	}
 
 	private void ChangeSection(string section)
 	{
+		Console.WriteLine(section + "cambiadaaa");
 		currentSection = section;
 	}
 }
