@@ -12,6 +12,8 @@ namespace Application.Services
     }
     public class AuthService : IAuthService
     {
+        public AuthService() { }
+
         public bool Login(string username, string password)
         {
             // 🔹 Por ahora hardcode
@@ -19,6 +21,11 @@ namespace Application.Services
                 return true;
 
             return false;
+        }
+
+        static public String GetUserLogged()
+        {
+            return "admin";
         }
     }
 }
