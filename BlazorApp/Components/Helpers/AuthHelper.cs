@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
+using Microsoft.AspNetCore.Diagnostics;
 
 public class AuthHelper
 {
@@ -22,5 +23,24 @@ public class AuthHelper
     {
         if (!await IsAdminAsync())
             _navManager.NavigateTo("/login");
+    }
+
+    public async Task<string> GetSection()
+    {
+        var result = await _localStorage.GetAsync<string>("userRole");
+        switch (result.Value)
+        {
+            case "Admin":
+                return "/dashboard/admin";
+
+            case "Empleado":
+                return "/dashboard/empleado";
+
+            case "Cliente":
+                return "/dashboard/empleado";
+
+            default:
+                return "No logueado";
+        }
     }
 }

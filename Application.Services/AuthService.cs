@@ -9,6 +9,11 @@ namespace Application.Services
     public interface IAuthService
     {
         bool Login(string username, string password);
+        Task<bool> IsAuthenticatedAsync();
+        Task<string> GetUserLoggedAsync();
+
+        string IsAuthenticated();
+
     }
     public class AuthService : IAuthService
     {
@@ -23,9 +28,22 @@ namespace Application.Services
             return false;
         }
 
-        static public String GetUserLogged()
+        public async Task<string> GetUserLoggedAsync()
         {
-            return "admin";
+            await Task.Delay(500);
+            return "empleado";
+        }
+
+        public async Task<bool> IsAuthenticatedAsync()
+        {
+            //implementacion
+            await Task.Delay(1000);
+            return  true;
+        }
+
+        public string IsAuthenticated()
+        {
+            return "HOLA DESDE EL SERVICE";
         }
     }
 }

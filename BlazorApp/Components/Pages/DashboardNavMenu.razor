@@ -1,0 +1,80 @@
+﻿@inject NavigationManager NavigationManager
+@inject IAuthService AuthService
+
+<div class="nav-scrollable" onclick="document.querySelector('.navbar-toggler').click()">
+    <nav class="flex-column">
+        <div class="nav-item px-3">
+            <NavLink class="nav-link active" href="" Match="NavLinkMatch.All">
+                <p style="color: white;">Home</p>
+            </NavLink>
+        </div>
+
+        @if(userRole == "admin")
+        {
+            <div class="nav-item px-3">
+                <NavLink class="nav-link active" href="@{"/dashboard/" + @userRole + "/clientes"}">
+                    <p style="color: white;">Clientes</p>
+                </NavLink>
+            </div>
+        }
+
+        @if(userRole == "admin")
+        {
+            <div class="nav-item px-3">
+                <NavLink class="nav-link active" href="@{"/dashboard/" + @userRole + "/empleados"}">
+                    <p style="color: white;">Empleados</p>
+                </NavLink>
+            </div>
+        }
+
+        @if(userRole == "admin" || userRole == "empleado")
+        {
+            <div class="nav-item px-3">
+                <NavLink class="nav-link active" href="@{"/dashboard/" + @userRole + "/ingredientes"}">
+                    <p style="color: white;">Ingredientes</p>
+                </NavLink>
+            </div>
+        }
+
+        @* Acceso para todos *@
+        <div class="nav-item px-3">
+            <NavLink class="nav-link active" href="@{"/dashboard/" + @userRole + "/pedidos"}">
+                <p style="color: white;">Pedidos</p>
+            </NavLink>
+        </div>
+
+        @* Acceso para todos *@
+        <div class="nav-item px-3">
+            <NavLink class="nav-link active" href="@{"/dashboard/" + @userRole + "/productos"}">
+                <p style="color: white;">Productos</p>
+            </NavLink>
+        </div>
+
+        @if(userRole == "admin")
+        {
+            <div class="nav-item px-3">
+                <NavLink class="nav-link active" href=" @{"/dashboard/" + @userRole + "proveedores"}">
+                    <p style="color: white;">Proveedores</p>
+                </NavLink>
+            </div>
+        }
+    </nav>
+</div>
+
+@code{
+    string userRole = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            userRole = await AuthService.GetUserLoggedAsync();
+            userRole = userRole.ToString();
+        }
+        catch
+        {
+            NavigationManager.NavigateTo("/login");
+        }
+    }
+
+}

@@ -13,7 +13,7 @@ else
     <div class="admin-dashboard">
         <aside class="sidebar">
             <div class="sidebar-header">
-                <h2>🍽️ Panel Admin</h2>
+                <h2>🍽️ Panel Empleado</h2>
                 <p class="admin-name">@username</p>
             </div>
             <DashboardNavMenu />
@@ -28,7 +28,7 @@ else
 @code {
     private bool isAuthenticated;
     private bool isLoading = true;
-    private string username = "jaime";
+    private string username = "Pedro";
 
     protected override async Task OnInitializedAsync()
     {
@@ -38,7 +38,7 @@ else
             isAuthenticated = await AuthService.IsAuthenticatedAsync();
             string userRole = await AuthService.GetUserLoggedAsync();
 
-            if (!isAuthenticated || userRole!="admin")
+            if (!isAuthenticated || userRole != "empleado")
             {
                 // Redirige si no está autenticado
                 Navigation.NavigateTo("/login");

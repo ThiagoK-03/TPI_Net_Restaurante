@@ -1,4 +1,6 @@
 ﻿@inherits LayoutComponentBase
+@inject IAuthService AuthService
+@inject NavigationManager Navigation
 
 <div class="page">
     <header> <MyHeader/> </header>
@@ -9,3 +11,29 @@
 
     @* <footer> <MyFooter/> </footer> *@
 </div>
+
+@code{
+    private bool isAuthenticated = false;
+    private bool isLoading = true;
+    private string username = "";
+
+    //Redirecciona a la homePage si no esta logueado
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            isAuthenticated = await AuthService.IsAuthenticatedAsync();
+
+            if (!isAuthenticated && Navigation.BaseUri != "/")
+            {
+                Navigation.NavigateTo("/login");
+                return;
+            }
+
+            isLoading = false;
+            StateHasChanged();
+        }
+        await base.OnAfterRenderAsync(firstRender);
+
+    }
+}

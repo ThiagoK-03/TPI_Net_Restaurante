@@ -1,4 +1,6 @@
-﻿<link href="/Header.css" rel="stylesheet" />
+﻿@inject IAuthService AuthService
+
+<link href="/Header.css" rel="stylesheet" />
 
 <div class="header">
     <a href="/" style="text-decoration: none; color: inherit;">
@@ -8,9 +10,20 @@
         </div>
     </a>
 
-    <a href="/dashboard/admin" style="text-decoration: none; color: inherit;">
+    <a href="/dashboard/@role" style="text-decoration: none; color: inherit;">
         <div class="header-right">
             <h1> Mi seccion </h1>
         </div>
     </a>
 </div>
+
+@code{
+    string role = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        role = await AuthService.GetUserLoggedAsync();
+        role = role.ToString();
+    }
+
+}
