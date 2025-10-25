@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinFormsControlLibrary1", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorApp", "BlazorApp\BlazorApp.csproj", "{92B4957A-74E1-46B5-988E-2F3C32162E87}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "API", "API\API.csproj", "{A103A3CD-15D9-4EF5-B8FE-C4AE70F1AA63}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -57,6 +59,10 @@ Global
 		{92B4957A-74E1-46B5-988E-2F3C32162E87}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{92B4957A-74E1-46B5-988E-2F3C32162E87}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{92B4957A-74E1-46B5-988E-2F3C32162E87}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A103A3CD-15D9-4EF5-B8FE-C4AE70F1AA63}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A103A3CD-15D9-4EF5-B8FE-C4AE70F1AA63}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A103A3CD-15D9-4EF5-B8FE-C4AE70F1AA63}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A103A3CD-15D9-4EF5-B8FE-C4AE70F1AA63}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
