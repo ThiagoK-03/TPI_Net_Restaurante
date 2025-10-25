@@ -1,5 +1,5 @@
 using DTOs;
-using WindowsForms.clientes;
+using API;
 using WinFormsControlLibrary1;
 
 namespace WindowsForms

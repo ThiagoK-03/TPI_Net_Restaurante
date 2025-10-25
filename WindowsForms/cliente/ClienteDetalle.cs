@@ -10,9 +10,9 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using WindowsForms.clientes;
 using WinFormsControlLibrary1;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using API;
 
 namespace WindowsForms
 {

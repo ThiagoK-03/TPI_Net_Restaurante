@@ -8,8 +8,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using DTOs;
-using WindowsForms.clientes;
 using WinFormsControlLibrary1;
+using API;
 
 namespace WindowsForms.producto
 {
