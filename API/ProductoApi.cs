@@ -7,9 +7,9 @@ using System.Text;
 using System.Threading.Tasks;
 using DTOs;
 
-namespace WindowsForms.producto
+namespace API
 {
-    internal class ProductoApi
+    public class ProductoApi
     {
         private static HttpClient client = new HttpClient();
         static ProductoApi()

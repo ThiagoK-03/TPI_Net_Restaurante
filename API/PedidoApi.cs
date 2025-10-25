@@ -7,11 +7,11 @@ using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using DTOs;
 
-namespace WindowsForms.Pedido
+namespace API
 {
   
 
-    internal class PedidoApi
+    public class PedidoApi
     {
         private static HttpClient client = new HttpClient();
 

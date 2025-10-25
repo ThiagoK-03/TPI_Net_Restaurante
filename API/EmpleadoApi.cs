@@ -5,13 +5,13 @@ using System.Text;
 using System.Threading.Tasks;
 using DTOs;
 
-namespace WindowsForms.emplead
+namespace API
 {
     using System.Net.Http.Headers;
     using System.Net.Http.Json;
     using DTOs;
 
-    internal class EmpleadoApi
+    public class EmpleadoApi
     {
         private static HttpClient client = new HttpClient();
 

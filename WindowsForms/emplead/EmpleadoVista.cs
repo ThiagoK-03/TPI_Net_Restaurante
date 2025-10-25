@@ -11,6 +11,7 @@ using DTOs;
 using WindowsForms.clientes;
 using WindowsForms.producto;
 using WinFormsControlLibrary1;
+using API;
 
 namespace WindowsForms.emplead
 {

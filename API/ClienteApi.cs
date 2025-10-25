@@ -7,9 +7,9 @@ using System.Net.Http.Json;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WindowsForms.clientes
+namespace API
 {
-    internal class ClienteApi
+    public class ClienteApi
     {
         private static HttpClient client = new HttpClient();
         static ClienteApi()

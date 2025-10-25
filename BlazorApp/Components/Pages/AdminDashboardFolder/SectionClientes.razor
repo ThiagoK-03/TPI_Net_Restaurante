@@ -1,6 +1,6 @@
 ﻿@page "/dashboard/admin/clientes"
 @layout AdminDashboardLayout
-@using Application.Services
+@using API
 @using DTOs
 
 
@@ -15,6 +15,26 @@
     <h1>Lista de Clientes</h1>
     <div class="container">
 
+        @if (loadingClients)
+        {
+            <div> Cargando clientes . . . </div>
+        }
+        else
+        {
+            @if(clientes.Count > 0)
+            {
+                @foreach(ClienteDTO cliente in clientes)
+                {
+                    <div> @cliente.Nombre </div>
+                }
+            }
+            else
+            {
+                <div> No hay clientes registrados </div>
+            }
+            
+        }
+
     </div>
 
     @* Opc Editar Cliente *@
@@ -27,12 +47,31 @@
 
 
 @code {
-    private List<ClienteDTO>? clientes;
-    private ClienteService ClienteService;
+    private List<ClienteDTO>? clientes = [];
+    private bool loadingClients = true;
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            loadingClients = true;
+            await LoadClientes();
+        }
+        catch
+        {
+
+        }
+        finally
+        {
+            loadingClients = false;
+        }
+    }
 
     private async Task LoadClientes()
     {
         await Task.Delay(500);
-        
+        //clientes = await ClienteApiClient.GetAllAsync())?.ToList();
+        clientes = (await ClienteApi.GetAllAsync())?.ToList();
     }
 }

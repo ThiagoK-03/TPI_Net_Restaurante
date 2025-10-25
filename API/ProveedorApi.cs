@@ -7,9 +7,9 @@ using System.Text;
 using System.Threading.Tasks;
 using DTOs;
 
-namespace WindowsForms
+namespace API
 {
-    internal class ProveedorApi
+    public class ProveedorApi
     {
         private static HttpClient client = new HttpClient();
         static ProveedorApi()

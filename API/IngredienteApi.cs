@@ -7,9 +7,9 @@ using System.Text;
 using System.Threading.Tasks;
 using DTOs;
 
-namespace WindowsForms.ingrediente
+namespace API
 {
-    internal class IngredienteApi
+    public class IngredienteApi
     {
         private static HttpClient client = new HttpClient();
         static IngredienteApi()
