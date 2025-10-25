@@ -1,7 +1,27 @@
 ﻿@page "/dashboard/cliente"
+@layout ClienteDashboardLayout
+@rendermode InteractiveServer
 
 <h3>ClienteDashboard</h3>
 
-@code {
+<button type="button" @onclick="ChangeRender">
+	CHANGE RENDER
+</button>
 
+@if (renderis)
+{
+	<p>IT IS RENDERING OMG IT WORKS</p>
+}
+
+<div class="text-black-50">
+	@renderis
+</div>
+
+@code {
+	private bool renderis = false;
+
+	private void ChangeRender()
+	{
+		renderis = !renderis;
+	}
 }

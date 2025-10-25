@@ -1,5 +1,10 @@
 ﻿@page "/dashboard/admin/clientes"
 @layout AdminDashboardLayout
+@using Application.Services
+@using DTOs
+
+
+
 <h1>SectionClientes</h1>
 <div class="section-conteiner">
 
@@ -8,6 +13,9 @@
 
     @* Mostrar Clientes *@
     <h1>Lista de Clientes</h1>
+    <div class="container">
+
+    </div>
 
     @* Opc Editar Cliente *@
 
@@ -19,5 +27,12 @@
 
 
 @code {
+    private List<ClienteDTO>? clientes;
+    private ClienteService ClienteService;
 
+    private async Task LoadClientes()
+    {
+        await Task.Delay(500);
+        
+    }
 }

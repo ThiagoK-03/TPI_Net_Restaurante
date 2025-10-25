@@ -1,0 +1,183 @@
+﻿@page "/dashboard/empleado/ingredientes"
+@layout EmpleadoDashboardLayout
+
+<div class="container-fluid py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+        <h2 class="text-danger fw-bold mb-0">Inventario de Ingredientes</h2>
+        <div class="input-group" style="max-width: 350px;">
+            <span class="input-group-text bg-white"><i class="bi bi-search"></i></span>
+            <input type="text"
+                   class="form-control"
+                   placeholder="Buscar ingrediente..."
+                   @bind="searchTerm"
+                   @bind:event="oninput"
+                   @onkeyup="FilterIngredientes" />
+        </div>
+    </div>
+
+    <div class="alert alert-info d-flex align-items-center mb-4" role="alert">
+        <i class="bi bi-info-circle-fill me-2 fs-5"></i>
+        <div>Vista de solo lectura. Para modificar ingredientes contacta al administrador.</div>
+    </div>
+
+    @if (isLoading)
+    {
+        <div class="text-center py-5">
+            <div class="spinner-border text-danger" role="status" style="width: 3rem; height: 3rem;">
+                <span class="visually-hidden">Cargando...</span>
+            </div>
+            <p class="mt-3 text-muted">Cargando ingredientes...</p>
+        </div>
+    }
+    else if (filteredIngredientes.Count == 0)
+    {
+        <div class="card text-center py-5">
+            <div class="card-body">
+                <h1 class="display-1">🥬</h1>
+                <h3 class="text-muted">No se encontraron ingredientes</h3>
+                <p class="text-secondary">@(string.IsNullOrEmpty(searchTerm) ? "No hay ingredientes registrados" : "Intenta con otra búsqueda")</p>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="card shadow-sm border-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead style="background: linear-gradient(135deg, var(--rojo-principal) 0%, var(--rojo-oscuro) 100%);" class="text-white">
+                        <tr>
+                            <th scope="col" class="py-3">Ingrediente</th>
+                            <th scope="col" class="py-3">Categoría</th>
+                            <th scope="col" class="py-3 text-end">Cantidad</th>
+                            <th scope="col" class="py-3">Unidad</th>
+                            <th scope="col" class="py-3 text-center">Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var ingrediente in filteredIngredientes)
+                        {
+                            <tr class="@GetRowClass(ingrediente)">
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <span class="fs-3 me-3">@GetIngredienteIcon(ingrediente.Categoria)</span>
+                                        <strong>@ingrediente.Nombre</strong>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="badge" style="background-color: var(--rojo-muy-claro); color: var(--rojo-oscuro);">
+                                        @ingrediente.Categoria
+                                    </span>
+                                </td>
+                                <td class="text-end">
+                                    <span class="fw-bold fs-5 text-danger">@ingrediente.Cantidad</span>
+                                </td>
+                                <td>@ingrediente.Unidad</td>
+                                <td class="text-center">
+                                    <span class="badge @GetStockClass(ingrediente)">
+                                        @GetStockStatus(ingrediente)
+                                    </span>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div class="card-footer bg-white text-center text-muted py-3">
+                Mostrando @filteredIngredientes.Count de @ingredientes.Count ingredientes
+            </div>
+        </div>
+    }
+</div>
+
+@code {
+    private List<Ingrediente> ingredientes = new();
+    private List<Ingrediente> filteredIngredientes = new();
+    private bool isLoading = false;
+    private string searchTerm = string.Empty;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadIngredientes();
+    }
+
+    private async Task LoadIngredientes()
+    {
+        isLoading = true;
+        await Task.Delay(500);
+
+        ingredientes = new List<Ingrediente>
+        {
+            new Ingrediente { Id = 1, Nombre = "Harina", Categoria = "Panadería", Cantidad = 50, Unidad = "kg", StockMinimo = 20 },
+            new Ingrediente { Id = 2, Nombre = "Tomate", Categoria = "Verduras", Cantidad = 15, Unidad = "kg", StockMinimo = 10 },
+            new Ingrediente { Id = 3, Nombre = "Mozzarella", Categoria = "Lácteos", Cantidad = 8, Unidad = "kg", StockMinimo = 15 },
+            new Ingrediente { Id = 4, Nombre = "Carne molida", Categoria = "Carnes", Cantidad = 25, Unidad = "kg", StockMinimo = 10 },
+            new Ingrediente { Id = 5, Nombre = "Aceite de oliva", Categoria = "Aceites", Cantidad = 12, Unidad = "litros", StockMinimo = 5 },
+            new Ingrediente { Id = 6, Nombre = "Sal", Categoria = "Condimentos", Cantidad = 30, Unidad = "kg", StockMinimo = 5 },
+            new Ingrediente { Id = 7, Nombre = "Lechuga", Categoria = "Verduras", Cantidad = 5, Unidad = "kg", StockMinimo = 8 },
+            new Ingrediente { Id = 8, Nombre = "Cebolla", Categoria = "Verduras", Cantidad = 2, Unidad = "kg", StockMinimo = 10 },
+        };
+
+        FilterIngredientes();
+        isLoading = false;
+    }
+
+    private void FilterIngredientes()
+    {
+        if (string.IsNullOrWhiteSpace(searchTerm))
+        {
+            filteredIngredientes = ingredientes;
+        }
+        else
+        {
+            var search = searchTerm.ToLower();
+            filteredIngredientes = ingredientes
+                .Where(i => i.Nombre.ToLower().Contains(search) || i.Categoria.ToLower().Contains(search))
+                .ToList();
+        }
+    }
+
+    private string GetRowClass(Ingrediente ingrediente)
+    {
+        if (ingrediente.Cantidad == 0) return "table-danger";
+        if (ingrediente.Cantidad < ingrediente.StockMinimo) return "table-warning";
+        return "";
+    }
+
+    private string GetStockClass(Ingrediente ingrediente)
+    {
+        if (ingrediente.Cantidad == 0) return "bg-danger";
+        if (ingrediente.Cantidad < ingrediente.StockMinimo) return "bg-warning";
+        return "bg-success";
+    }
+
+    private string GetStockStatus(Ingrediente ingrediente)
+    {
+        if (ingrediente.Cantidad == 0) return "Sin stock";
+        if (ingrediente.Cantidad < ingrediente.StockMinimo) return "Stock bajo";
+        return "Disponible";
+    }
+
+    private string GetIngredienteIcon(string categoria)
+    {
+        return categoria switch
+        {
+            "Verduras" => "🥬",
+            "Carnes" => "🥩",
+            "Lácteos" => "🧀",
+            "Panadería" => "🍞",
+            "Aceites" => "🫒",
+            "Condimentos" => "🧂",
+            _ => "📦"
+        };
+    }
+
+    private class Ingrediente
+    {
+        public int Id { get; set; }
+        public string Nombre { get; set; } = string.Empty;
+        public string Categoria { get; set; } = string.Empty;
+        public decimal Cantidad { get; set; }
+        public string Unidad { get; set; } = string.Empty;
+        public decimal StockMinimo { get; set; }
+    }
+}

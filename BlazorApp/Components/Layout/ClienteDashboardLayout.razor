@@ -1,0 +1,61 @@
+﻿@inherits LayoutComponentBase
+@inject IAuthService AuthService
+@inject NavigationManager Navigation
+
+<link href="/AdminDashboard.css" rel="stylesheet" />
+
+<div class="admin-dashboard" style="display:@(isLoading ? "none" : "block")">
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <h2>🍽️ Panel Cliente</h2>
+            <p class="admin-name">@username</p>
+        </div>
+        <DashboardNavMenu />
+    </aside>
+
+    <main class="main-content">
+        @Body
+    </main>
+</div>
+
+@if (isLoading)
+{
+    <div class="loading">Cargando...</div>
+}
+
+@code {
+    private bool isAuthenticated;
+    private bool isLoading = true;
+    private string username = "Julio";
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            isLoading = true;
+            isAuthenticated = await AuthService.IsAuthenticatedAsync();
+            string userRole = await AuthService.GetUserLoggedAsync();
+
+            if (!isAuthenticated || userRole != "cliente")
+            {
+                // Redirige si no está autenticado
+                Navigation.NavigateTo("/login");
+                return;
+            }
+
+            //username = user.name;
+
+        }
+        catch
+        {
+            // Manejo de errores: redirigir o mostrar mensaje
+            Navigation.NavigateTo("/login");
+            return;
+        }
+        finally
+        {
+            isLoading = false;
+            StateHasChanged();
+        }
+    }
+}
