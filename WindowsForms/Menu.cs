@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using WindowsForms.cliente;
 using WindowsForms.emplead;
 using WindowsForms.ingrediente;
 using WindowsForms.Pedido;

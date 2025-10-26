@@ -1,49 +1,134 @@
-﻿using System;
+﻿using Data;
+using Domain.Model;
+using DTOs;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
+using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Application.Services
 {
-    public interface IAuthService
+    public class AuthService
     {
-        bool Login(string username, string password);
-        Task<bool> IsAuthenticatedAsync();
-        Task<string> GetUserLoggedAsync();
-
-        string IsAuthenticated();
-
-    }
-    public class AuthService : IAuthService
-    {
-        public AuthService() { }
-
-        public bool Login(string username, string password)
+        private readonly UsuarioRepository usuarioRepository;
+        private readonly IConfiguration configuration;
+        public AuthService(IConfiguration configuration, UsuarioRepository usuarioRepository)
         {
-            // 🔹 Por ahora hardcode
-            if (username == "admin" && password == "1234")
+            this.usuarioRepository = usuarioRepository;
+            this.configuration = configuration;
+        }
+        public async Task<LoginResponse?> LoginAsync(LoginRequest request)
+        {
+            if (string.IsNullOrWhiteSpace(request.Username) || string.IsNullOrWhiteSpace(request.Password))
+                return null;
+            var usuario = usuarioRepository.GetByUsername(request.Username);
+
+            if (usuario == null || !usuario.ValidatePassword(request.Password))
+                return null;
+            var token = GenerateJwtToken(usuario);
+            var expiresAt = DateTime.UtcNow.AddMinutes(GetExpirationMinutes());
+            return new LoginResponse
+            {
+                Token = token,
+                ExpiresAt = expiresAt,
+                Username = usuario.Username
+            };
+        }
+        private string GenerateJwtToken(Usuario usuario)
+        {
+            var jwtSettings = configuration.GetSection("JwtSettings");
+            var secretKey = jwtSettings["SecretKey"];
+            var issuer = jwtSettings["Issuer"];
+            var audience = jwtSettings["Audience"];
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey!));
+            var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+            var claims = new List<Claim>
+                {
+                new Claim(ClaimTypes.NameIdentifier, usuario.Id.ToString()),
+                new Claim(ClaimTypes.Name, usuario.Username),
+                new Claim(ClaimTypes.Email, usuario.Email),
+                new Claim("jti", Guid.NewGuid().ToString())
+                };
+            // Agregar permisos como claims para UI
+            var permisos = usuario.ObtenerTodosLosPermisos();
+            foreach (var permiso in permisos)
+            {
+                claims.Add(new Claim("permission", permiso));
+            }
+            // Agregar grupo como claim (para info/debugging)
+            var grupo = usuario.ObtenerNombreGrupo();
+            if (!string.IsNullOrEmpty(grupo))
+            {
+                claims.Add(new Claim("group", grupo));
+            }
+            var token = new JwtSecurityToken(
+            issuer: issuer,
+            audience: audience,
+            claims: claims,
+            expires: DateTime.UtcNow.AddMinutes(GetExpirationMinutes()),
+            signingCredentials: credentials
+            );
+            return new JwtSecurityTokenHandler().WriteToken(token);
+        }
+        public bool ValidateToken(string token)
+        {
+            try
+            {
+                var jwtSettings = configuration.GetSection("JwtSettings");
+                var secretKey = jwtSettings["SecretKey"];
+                var issuer = jwtSettings["Issuer"];
+                var audience = jwtSettings["Audience"];
+                var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey!));
+                var tokenHandler = new JwtSecurityTokenHandler();
+                var validationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidIssuer = issuer,
+                    ValidateAudience = true,
+                    ValidAudience = audience,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = key,
+                    ClockSkew = TimeSpan.Zero
+                };
+                tokenHandler.ValidateToken(token, validationParameters, out SecurityToken validatedToken);
                 return true;
-
-            return false;
+            }
+            catch
+            {
+                return false;
+            }
         }
-
-        public async Task<string> GetUserLoggedAsync()
+        public int? GetUserIdFromToken(string token)
         {
-            await Task.Delay(500);
-            return "cliente";
-        }
+            try
+            {
+                var tokenHandler = new JwtSecurityTokenHandler();
+                var jsonToken = tokenHandler.ReadJwtToken(token);
 
-        public async Task<bool> IsAuthenticatedAsync()
-        {
-            //implementacion
-            await Task.Delay(1000);
-            return  true;
+                var userIdClaim = jsonToken.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier);
+                if (userIdClaim != null && int.TryParse(userIdClaim.Value, out int userId))
+                {
+                    return userId;
+                }
+                return null;
+            }
+            catch
+            {
+                return null;
+            }
         }
-
-        public string IsAuthenticated()
+        private int GetExpirationMinutes()
         {
-            return "HOLA DESDE EL SERVICE";
-        }
+            var jwtSettings = configuration.GetSection("JwtSettings");
+            if (int.TryParse(jwtSettings["ExpirationMinutes"], out int minutes))
+                return minutes;
+            return 60; // Default 60 minutes
+        }
     }
 }

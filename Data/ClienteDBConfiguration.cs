@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿// Bonus: Actualización para ClienteDBConfiguration (ya que la tuya actual referencia props removidas)
 using Domain.Model;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -13,35 +9,36 @@ namespace Data
     {
         public void Configure(EntityTypeBuilder<Cliente> entity)
         {
-            // Clave primaria
+            // Clave primaria (auto-generada)
             entity.HasKey(c => c.Id);
-            entity.Property(e => e.Id)
-                    .ValueGeneratedOnAdd();
+            entity.Property(c => c.Id)
+                .ValueGeneratedOnAdd();
 
-            // Propiedades obligatorias
-            entity.Property(c => c.Nombre)
+            // Propiedades específicas de Cliente
+            entity.Property(c => c.FechaAlta)
                 .IsRequired()
-                .HasMaxLength(100);
+                .HasDefaultValueSql("GETDATE()"); // Fecha actual por defecto
 
-            entity.Property(c => c.Apellido)
+            entity.Property(c => c.Penalizacion)
                 .IsRequired()
-                .HasMaxLength(100);
+                .HasDefaultValue(0m)
+                .HasColumnType("decimal(5,2)");
 
-            //  Email
-            entity.Property(c => c.Email)
-                .IsRequired()
-                .HasMaxLength(150);
+            // FK a Usuario (1:1, principal en Usuario config)
+            entity.Property(c => c.UsuarioId)
+                .IsRequired();
 
-            //  Email único
-            entity.HasIndex(c => c.Email)
-                .IsUnique();
+            // Relación con HistorialPedidos (1:N)
+            entity.HasMany(c => c.HistorialPedidos)
+                .WithOne(p => p.Cliente) // Asume Pedido tiene FK ClienteId
+                .HasForeignKey(p => p.ClienteId)
+                .OnDelete(DeleteBehavior.Restrict); // No borra pedidos al borrar cliente
 
-            ////  Relación con Pedidos (1 Cliente : N Pedidos)
-            //entity.HasMany(c => c.Pedidos)
-            //    .WithOne(p => p.Cliente)
-            //    .HasForeignKey(p => p.ClienteId)
-            //    .OnDelete(DeleteBehavior.Restrict);
-
+            // Relación con Usuario (reforzada)
+            entity.HasOne(c => c.Usuario)
+                .WithOne(u => u.Cliente)
+                .HasForeignKey<Cliente>(c => c.UsuarioId)
+                .OnDelete(DeleteBehavior.Cascade);
 
         }
     }

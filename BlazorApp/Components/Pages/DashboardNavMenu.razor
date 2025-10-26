@@ -1,5 +1,5 @@
 ﻿@inject NavigationManager NavigationManager
-@inject IAuthService AuthService
+@* @inject IAuthService AuthService *@
 
 <div class="nav-scrollable" onclick="document.querySelector('.navbar-toggler').click()">
     <nav class="flex-column">
@@ -68,8 +68,8 @@
     {
         try
         {
-            userRole = await AuthService.GetUserLoggedAsync();
-            userRole = userRole.ToString();
+            // userRole = await AuthService.GetUserLoggedAsync();
+            // userRole = userRole.ToString();
         }
         catch
         {

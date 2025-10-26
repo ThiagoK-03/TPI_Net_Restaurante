@@ -64,7 +64,7 @@
 
                             <div class="mb-2">
                                 <small class="text-muted">Cuit:</small>
-                                <span class="ms-2">@empleado.Cuit</span>
+                                <span class="ms-2">@empleado.Cuil</span>
                             </div>
                             <div class="mb-2">
                                 <small class="text-muted">Turno:</small>
@@ -122,7 +122,7 @@
                             <div class="row">
                                 <div class="col-md-6 mb-3">
                                     <label class="form-label fw-semibold">Cuit *</label>
-                                    <input type="text" class="form-control" @bind="empleadoActual.Cuit" required />
+                                    <input type="text" class="form-control" @bind="empleadoActual.Cuil" required />
                                 </div>
                                 <div class="col-md-6 mb-3">
                                     <label class="form-label fw-semibold">Turno *</label>
@@ -267,7 +267,7 @@
             {
                 Id = empleado.Id,
                 RazonSocial = empleado.RazonSocial,
-                Cuit = empleado.Cuit,
+                Cuil = empleado.Cuil,
                 Turno = empleado.Turno,
                 HorasTrabajadas = empleado.HorasTrabajadas,
                 PrecioPorHora = empleado.PrecioPorHora,

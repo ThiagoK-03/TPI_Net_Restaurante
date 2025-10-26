@@ -14,7 +14,7 @@ using WinFormsControlLibrary1;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using API;
 
-namespace WindowsForms
+namespace WindowsForms.cliente
 {
     public partial class ClienteDetalle : MenuBase
     {

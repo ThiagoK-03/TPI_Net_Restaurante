@@ -8,7 +8,7 @@ builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
 // Configurar autenticación
-builder.Services.AddSingleton<IAuthService, AuthService>();
+//builder.Services.AddSingleton<IAuthService, AuthService>();
 
 var app = builder.Build();
 

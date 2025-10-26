@@ -9,28 +9,54 @@ namespace Domain.Model
     public class Empleado
     {
         public int Id { get; private set; }
-        public string RazonSocial { get; private set; }
-        public int Cuit { get; private set; }
-        public string Turno { get; private set; }
+        public string RazonSocial { get; private set; } = string.Empty;
+        public int Cuil { get; private set; }
+        public string Turno { get; private set; } = string.Empty;
         public int HorasTrabajadas { get; private set; }
         public decimal PrecioPorHora { get; private set; }
         public decimal Sueldo { get; private set; }
+        public int UsuarioId { get; private set; } // FK
+        public virtual Usuario Usuario { get; private set; } = null!;
 
-        public Empleado(int id, string razonSocial, int cuit, string turno, int horasTrabajadas, decimal precioPorHora)
+        // Constructor principal: Toma Usuario en lugar de solo ID para consistencia
+        public Empleado(Usuario usuario, string razonSocial, int cuil, string turno, int horasTrabajadas, decimal precioPorHora)
         {
-            SetId(id);
+            SetUsuario(usuario);
             SetRazonSocial(razonSocial);
-            SetCuit(cuit);
+            SetCuil(cuil);
             SetTurno(turno);
             SetHorasTrabajadas(horasTrabajadas);
             SetPrecioPorHora(precioPorHora);
-
             CalcularSueldo();
         }
 
+        // Constructor con ID para actualizaciones (EF Core)
+        public Empleado(int id, Usuario usuario, string razonSocial, int cuil, string turno, int horasTrabajadas, decimal precioPorHora)
+        {
+            SetId(id);
+            SetUsuario(usuario);
+            SetRazonSocial(razonSocial);
+            SetCuil(cuil);
+            SetTurno(turno);
+            SetHorasTrabajadas(horasTrabajadas);
+            SetPrecioPorHora(precioPorHora);
+            CalcularSueldo();
+        }
+
+        // Constructor vacío para EF Core
+        public Empleado() { }
+
         public void SetId(int id)
         {
+            if (id <= 0) throw new ArgumentException("ID inválido");
             Id = id;
+        }
+
+        public void SetUsuario(Usuario usuario)
+        {
+            if (usuario == null) throw new ArgumentException("Usuario requerido");
+            Usuario = usuario;
+            UsuarioId = usuario.Id;
         }
 
         public void SetRazonSocial(string razonSocial)
@@ -40,11 +66,10 @@ namespace Domain.Model
             RazonSocial = razonSocial;
         }
 
-        public void SetCuit(int cuit)
+        public void SetCuil(int cuil)
         {
-            if (cuit <= 0)
-                throw new ArgumentException("El CUIT debe ser válido.", nameof(cuit));
-            Cuit = cuit;
+            if (cuil <= 0) throw new ArgumentException("CUIL inválido");
+            Cuil = cuil;
         }
 
         public void SetTurno(string turno)

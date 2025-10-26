@@ -64,7 +64,7 @@ namespace WindowsForms.emplead
                 {
 
                     this.Empleado.RazonSocial = txbNombre.Text;
-                    this.Empleado.Cuit = int.Parse(txbCuit.Text);
+                    this.Empleado.Cuil = int.Parse(txbCuit.Text);
                     this.Empleado.Turno = txbTurno.Text;
                     this.Empleado.HorasTrabajadas = int.Parse(txbHorasTrabajadas.Text);
                     this.Empleado.PrecioPorHora = int.Parse(txbPrecioPorHora.Text);
@@ -96,7 +96,7 @@ namespace WindowsForms.emplead
         {
             this.tbxId.Text = this.Empleado.Id.ToString();
             this.txbNombre.Text = this.Empleado.RazonSocial;
-            this.txbCuit.Text = this.Empleado.Cuit.ToString();
+            this.txbCuit.Text = this.Empleado.Cuil.ToString();
             this.txbTurno.Text = this.Empleado.Turno;
             this.txbHorasTrabajadas.Text = this.Empleado.HorasTrabajadas.ToString();
             this.txbPrecioPorHora.Text = this.Empleado.PrecioPorHora.ToString();

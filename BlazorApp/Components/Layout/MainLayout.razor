@@ -1,5 +1,5 @@
 ﻿@inherits LayoutComponentBase
-@inject IAuthService AuthService
+@* @inject IAuthService AuthService *@
 @inject NavigationManager Navigation
 
 <div class="page">
@@ -22,13 +22,13 @@
     {
         if (firstRender)
         {
-            isAuthenticated = await AuthService.IsAuthenticatedAsync();
+            // isAuthenticated = await AuthService.IsAuthenticatedAsync();
 
-            if (!isAuthenticated && Navigation.BaseUri != "/")
-            {
-                Navigation.NavigateTo("/login");
-                return;
-            }
+            // if (!isAuthenticated && Navigation.BaseUri != "/")
+            // {
+            //     Navigation.NavigateTo("/login");
+            //     return;
+            // }
 
             isLoading = false;
             StateHasChanged();

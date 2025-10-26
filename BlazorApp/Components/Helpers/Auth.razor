@@ -1,5 +1,5 @@
 ﻿@inject NavigationManager Navigation
-@inject AuthService AuthService
+@* @inject AuthService AuthService *@
 
 
 <h3>Auth</h3>
@@ -9,13 +9,13 @@
     {
         if (firstRender)
         {
-            var isAuthenticated = await AuthService.IsAuthenticatedAsync();
+            // var isAuthenticated = await AuthService.IsAuthenticatedAsync();
 
-            if (!isAuthenticated)
-            {
-                Navigation.NavigateTo("/login");
-                return;
-            }
+            // if (!isAuthenticated)
+            // {
+            //     Navigation.NavigateTo("/login");
+            //     return;
+            // }
 
             StateHasChanged();
         }

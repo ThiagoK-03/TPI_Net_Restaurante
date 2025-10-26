@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace DTOs
 {
@@ -11,19 +7,47 @@ namespace DTOs
         public EmpleadoDto()
         {
             Id = 0;
-            RazonSocial = "";
-            Cuit = 0;
-            Turno = "";
+            RazonSocial = string.Empty;
+            Cuil = 0;
+            Turno = string.Empty;
             HorasTrabajadas = 0;
             PrecioPorHora = 0;
             Sueldo = 0;
+            Nombre = string.Empty;
+            Apellido = string.Empty;
+            Email = string.Empty;
+            Telefono = string.Empty;
+            Username = string.Empty;
+            Password = string.Empty;
         }
+
         public int Id { get; set; }
-        public string RazonSocial { get; set; }
-        public int Cuit { get; set; }
-        public string Turno { get; set; }
+        [Required]
+        public string RazonSocial { get; set; } = string.Empty;
+        [Required]
+        public int Cuil { get; set; }
+        [Required]
+        public string Turno { get; set; } = string.Empty;
+        [Required, Range(0, int.MaxValue)]
         public int HorasTrabajadas { get; set; }
+        [Required, Range(0, double.MaxValue)]
         public decimal PrecioPorHora { get; set; }
         public decimal Sueldo { get; set; }
+
+        // Campos de Usuario
+        [Required]
+        public string Nombre { get; set; } = string.Empty;
+        [Required]
+        public string Apellido { get; set; } = string.Empty;
+        [Required, EmailAddress]
+        public string Email { get; set; } = string.Empty;
+        [Required, Phone]
+        public string Telefono { get; set; } = string.Empty;
+        [Required, MinLength(3)]
+        public string Username { get; set; } = string.Empty;
+        [Required, MinLength(6)]
+        public string Password { get; set; } = string.Empty; // Temporal
+        public string Rol { get; set; } = "Empleado";
+        public bool Estado { get; set; } = true;
     }
 }

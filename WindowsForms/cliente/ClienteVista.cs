@@ -2,7 +2,7 @@ using DTOs;
 using API;
 using WinFormsControlLibrary1;
 
-namespace WindowsForms
+namespace WindowsForms.cliente
 {
     public partial class ClienteVista : MenuBase
     {

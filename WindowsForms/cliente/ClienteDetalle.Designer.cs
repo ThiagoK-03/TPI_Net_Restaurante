@@ -1,4 +1,4 @@
-﻿namespace WindowsForms
+﻿namespace WindowsForms.cliente
 {
     partial class ClienteDetalle
     {

@@ -1,5 +1,5 @@
 ﻿@inherits LayoutComponentBase
-@inject IAuthService AuthService
+@* @inject IAuthService AuthService *@
 @inject NavigationManager Navigation
 
 <link href="/AdminDashboard.css" rel="stylesheet" />
@@ -33,15 +33,15 @@
         try
         {
             isLoading = true;
-            isAuthenticated = await AuthService.IsAuthenticatedAsync();
-            string userRole = await AuthService.GetUserLoggedAsync();
+            // isAuthenticated = await AuthService.IsAuthenticatedAsync();
+            // string userRole = await AuthService.GetUserLoggedAsync();
 
-            if (!isAuthenticated || userRole != "cliente")
-            {
-                // Redirige si no está autenticado
-                Navigation.NavigateTo("/login");
-                return;
-            }
+            // if (!isAuthenticated || userRole != "cliente")
+            // {
+            //     // Redirige si no está autenticado
+            //     Navigation.NavigateTo("/login");
+            //     return;
+            // }
 
             //username = user.name;
 
