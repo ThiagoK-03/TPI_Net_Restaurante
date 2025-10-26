@@ -21,13 +21,10 @@ namespace Application.Services
 
             // buscar entidades relacionadas
             var cliente = clienteRepository.Get(dto.ClienteId);
-            var empleado = empleadoRepository.Get(dto.EmpleadoId);
+            //var empleado = empleadoRepository.Get(dto.EmpleadoId);
 
             if (cliente == null)
                 throw new ArgumentException($"Cliente con Id {dto.ClienteId} no existe");
-
-            if (empleado == null)
-                throw new ArgumentException($"Empleado con Id {dto.EmpleadoId} no existe");
 
             // traer productos del pedido
             var productos = new List<Producto>();
@@ -45,12 +42,12 @@ namespace Application.Services
                 dto.Descripcion,
                 DateTime.Now,
                 dto.FechaHoraFinEstimada,
-                cliente.Id,
-                empleado.Id
+                cliente.Id
+                
             );
 
-
-            // asignar productos (depende de cómo modelaste la relación)
+            //pedido.SetEmpleadoId(0);
+            // asignar productos
             pedido.SetProductos(productos);
 
             pedidoRepository.Add(pedido);
@@ -111,12 +108,12 @@ namespace Application.Services
         {
             PedidoRepository repository = new PedidoRepository();
 
-
-            Pedido pedidoUpdated = new Pedido(pedido.Id, pedido.Descripcion, pedido.FechaHoraInicio, pedido.FechaHoraFinEstimada, pedido.ClienteId, pedido.EmpleadoId);
+            
+            Pedido pedidoUpdated = new Pedido(pedido.Id, pedido.Descripcion, pedido.FechaHoraInicio, pedido.FechaHoraFinEstimada, pedido.ClienteId);
             
             //Estado?
             //Lista productos??
-            
+            //Empleado????????????
 
             return repository.Update(pedidoUpdated);
         }

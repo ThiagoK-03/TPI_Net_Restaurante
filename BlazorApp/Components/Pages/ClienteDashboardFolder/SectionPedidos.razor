@@ -1,35 +1,28 @@
 ﻿@page "/dashboard/cliente/pedidos"
 @layout ClienteDashboardLayout
-@inject NavigationManager Navigation
+@using API
+@using DTOs
 
-@* -------------------------------------------------------------- *@
-@* Contenedor Principal de la seccion *@
-@* -------------------------------------------------------------- *@
 <div class="container-fluid py-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2 class="text-danger fw-bold">Mis Pedidos</h2>
-        <button class="btn btn-primary" @onclick="IrAProductos">
+        <button class="btn btn-primary btn-lg" @onclick="AbrirModalNuevoPedido">
             <i class="bi bi-plus-circle"></i> Hacer Nuevo Pedido
         </button>
     </div>
 
-    @* -------------------------------------------------------------- *@
-    @* Boton mostrar todos los pedidos *@
     <div class="btn-group mb-4 d-flex flex-wrap" role="group">
         <button type="button"
-                class="btn @(estadoFiltro == null ? "btn-danger" : "btn-outline-danger")"
-                @onclick="MostrarTodosPedidos">
+        class="btn @(estadoFiltro == null ? "btn-danger" : "btn-outline-danger")"
+        @onclick="MostrarTodos">
             Todos (@pedidos.Count)
         </button>
-
-        @* -------------------------------------------------------------- *@
-        @* Filtra por cada Estado de pedido y agrega los botones de forma dinamica*@
         @foreach (var estado in Enum.GetValues<EstadoPedido>())
         {
             <button type="button"
-                    class="btn @(estadoFiltro == estado ? "btn-danger" : "btn-outline-danger")"
-                    @onclick="@(() => FiltrarPorEstado(estado))">
-                @estado.ToString() (@pedidos.Count(p => p.Estado == estado))
+            class="btn @(estadoFiltro == estado ? "btn-danger" : "btn-outline-danger")"
+            @onclick="@(() => FiltrarPorEstado(estado))">
+                @ObtenerTextoEstado(estado) (@pedidos.Count(p => p.Estado == estado.ToString()))
             </button>
         }
     </div>
@@ -40,81 +33,96 @@
             <div class="spinner-border text-danger" role="status" style="width: 3rem; height: 3rem;">
                 <span class="visually-hidden">Cargando...</span>
             </div>
-            <p class="mt-3 text-muted">Cargando pedidos...</p>
+            <p class="mt-3 text-muted">Cargando tus pedidos...</p>
         </div>
     }
-
-    @* -------------------------------------------------------------- *@
-    @* Si no hay pedidos *@
-    else if (pedidosFiltrados.Count == 0)
+    else if (errorMessage != null)
+    {
+        <div class="alert alert-danger" role="alert">
+            <i class="bi bi-exclamation-triangle-fill me-2"></i>
+            Error al cargar pedidos: @errorMessage
+            <button class="btn btn-sm btn-outline-danger ms-3" @onclick="CargarPedidos">
+                <i class="bi bi-arrow-clockwise"></i> Reintentar
+            </button>
+        </div>
+    }
+    else if (pedidosFiltrados == null || pedidosFiltrados.Count == 0)
     {
         <div class="card text-center py-5">
             <div class="card-body">
                 <h1 class="display-1">📦</h1>
                 <h3 class="text-muted">No tienes pedidos @(estadoFiltro != null ? "en este estado" : "")</h3>
-                <p class="text-secondary">Comienza ordenando algo delicioso de nuestro menú</p>
-                <button class="btn btn-primary mt-3" @onclick="IrAProductos">
-                    Ver Menú
+                <p class="text-secondary mb-4">¡Empieza a ordenar ahora!</p>
+                <button class="btn btn-primary btn-lg" @onclick="AbrirModalNuevoPedido">
+                    <i class="bi bi-cart-plus"></i> Hacer Mi Primer Pedido
                 </button>
             </div>
         </div>
     }
     else
     {
-        @* -------------------------------------------------------------- *@
-        @* Cards de pedidos *@
         <div class="row g-4">
             @foreach (var pedido in pedidosFiltrados)
             {
-                <div class="col-12 col-lg-6 col-xl-4">
-                    <div class="card h-100 shadow-sm border-0" style="border-left: 5px solid @ObtenerColorBorde(pedido.Estado) !important;">
+                <div class="col-12 col-lg-6">
+                    <div class="card h-100 shadow-sm border-0" style="border-left: 5px solid @ObtenerColorEstado(pedido.Estado) !important;">
                         <div class="card-header d-flex justify-content-between align-items-center" style="background-color: var(--rojo-muy-claro);">
                             <div class="d-flex align-items-center gap-2">
                                 <span class="fs-3">📋</span>
                                 <div>
                                     <h5 class="mb-0 text-danger fw-bold">Pedido #@pedido.Id</h5>
-                                    <small class="text-muted">@pedido.Fecha.ToString("dd/MM/yyyy HH:mm")</small>
+                                    <small class="text-muted">@pedido.FechaHoraInicio.ToString("dd/MM/yyyy HH:mm")</small>
                                 </div>
                             </div>
-                            <span class="badge @ObtenerClaseBootstrap(pedido.Estado) fs-6">
-                                @pedido.Estado.ToString()
+                            <span class="badge @ObtenerClaseEstado(pedido.Estado) fs-6">
+                                @ObtenerTextoEstado(Enum.Parse<EstadoPedido>(pedido.Estado))
                             </span>
                         </div>
 
                         <div class="card-body">
-                            <div class="mb-3">
-                                <strong class="text-muted d-block mb-2">📝 Items del pedido:</strong>
-                                <ul class="list-unstyled ms-3">
-                                    @foreach (var item in pedido.Items)
-                                    {
-                                        <li class="mb-1">
-                                            <span class="badge bg-secondary">@item.Cantidad</span>
-                                            <span class="ms-2">@item.Producto</span>
-                                        </li>
-                                    }
-                                </ul>
-                            </div>
-
-                            @if (!string.IsNullOrEmpty(pedido.Observaciones))
+                            @if (!string.IsNullOrEmpty(pedido.Descripcion))
                             {
                                 <div class="alert alert-light border mb-3">
                                     <small class="text-muted d-block mb-1">💬 Observaciones:</small>
-                                    <small class="fst-italic">@pedido.Observaciones</small>
+                                    <small>@pedido.Descripcion</small>
                                 </div>
                             }
 
-                            @if (pedido.Estado == EstadoPedido.EnPreparacion)
+                            @if (pedido.Productos != null && pedido.Productos.Any())
                             {
-                                <div class="alert alert-primary mb-3">
-                                    <i class="bi bi-clock-history"></i>
-                                    <small>Tu pedido está siendo preparado</small>
+                                <div class="mb-3">
+                                    <small class="text-muted d-block mb-2 fw-semibold">📝 Items:</small>
+                                    <ul class="list-unstyled ms-2">
+                                        @foreach (var prod in pedido.Productos)
+                                        {
+                                            <li class="mb-1">
+                                                <span class="badge bg-secondary">ID: @prod.Id</span>
+                                            </li>
+                                        }
+                                    </ul>
                                 </div>
                             }
-                            else if (pedido.Estado == EstadoPedido.Completado)
+
+                            @if (pedido.FechaHoraFinEstimada != null)
                             {
-                                <div class="alert alert-success mb-3">
+                                <div class="alert @(pedido.Estado == "Pendiente" || pedido.Estado == "EnPreparacion" ? "alert-warning" : "alert-info") mb-0">
+                                    <i class="bi bi-clock"></i>
+                                    <small><strong>Estimado:</strong> @pedido.FechaHoraFinEstimada?.ToString("dd/MM/yyyy HH:mm")</small>
+                                </div>
+                            }
+
+                            @if (pedido.Estado == "EnPreparacion")
+                            {
+                                <div class="alert alert-primary mb-0 mt-2">
+                                    <i class="bi bi-hourglass-split"></i>
+                                    <small>Tu pedido está siendo preparado...</small>
+                                </div>
+                            }
+                            else if (pedido.Estado == "Completado")
+                            {
+                                <div class="alert alert-success mb-0 mt-2">
                                     <i class="bi bi-check-circle-fill"></i>
-                                    <small>Pedido completado - ¡Disfruta tu comida!</small>
+                                    <small>¡Pedido completado! Disfruta tu comida 😊</small>
                                 </div>
                             }
                         </div>
@@ -122,17 +130,17 @@
                         <div class="card-footer bg-light">
                             <div class="d-flex justify-content-between align-items-center mb-3">
                                 <span class="text-muted">Total:</span>
-                                <strong class="h4 mb-0 text-danger">$@pedido.Total.ToString("F2")</strong>
+                                <strong class="h4 mb-0 text-danger">$@pedido.Subtotal.ToString("F2")</strong>
                             </div>
 
-                            <div class="d-flex gap-2 flex-wrap">
+                            <div class="d-flex gap-2">
                                 <button class="btn btn-outline-primary flex-fill" @onclick="@(() => VerDetalles(pedido))">
                                     <i class="bi bi-eye"></i> Ver Detalles
                                 </button>
-                                @if (pedido.Estado == EstadoPedido.Pendiente)
+                                @if (pedido.Estado == "Pendiente")
                                 {
-                                    <button class="btn btn-outline-danger" @onclick="@(() => ConfirmarCancelacion(pedido))" title="Cancelar pedido">
-                                        <i class="bi bi-x-circle"></i>
+                                    <button class="btn btn-outline-secondary flex-fill" @onclick="@(() => AbrirModalEditar(pedido))">
+                                        <i class="bi bi-pencil"></i> Editar
                                     </button>
                                 }
                             </div>
@@ -142,9 +150,8 @@
             }
         </div>
     }
-    @* -------------------------------------------------------------- *@
-    @* Modal Detalles *@
-    @* -------------------------------------------------------------- *@
+
+    @* Modal Ver Detalles *@
     @if (showDetailsModal && pedidoSeleccionado != null)
     {
         <div class="modal show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.5);" @onclick="CerrarDetalles">
@@ -155,217 +162,312 @@
                         <button type="button" class="btn-close" @onclick="CerrarDetalles"></button>
                     </div>
                     <div class="modal-body">
-                        <div class="mb-4">
-                            <h6 class="text-danger fw-bold mb-3">Información del Pedido</h6>
-                            <div class="row">
-                                <div class="col-md-6 mb-2">
-                                    <strong>Número:</strong> #@pedidoSeleccionado.Id
-                                </div>
-                                <div class="col-md-6 mb-2">
-                                    <strong>Fecha:</strong> @pedidoSeleccionado.Fecha.ToString("dd/MM/yyyy HH:mm")
-                                </div>
-                                <div class="col-md-6 mb-2">
-                                    <strong>Estado:</strong>
-                                    <span class="badge @ObtenerClaseBootstrap(pedidoSeleccionado.Estado) ms-2">
-                                        @pedidoSeleccionado.Estado.ToString()
-                                    </span>
-                                </div>
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <h6 class="text-danger fw-bold mb-3">Información del Pedido</h6>
+                                <p class="mb-2"><strong>Estado:</strong> <span class="badge @ObtenerClaseEstado(pedidoSeleccionado.Estado)">@ObtenerTextoEstado(Enum.Parse<EstadoPedido>(pedidoSeleccionado.Estado))</span></p>
+                                <p class="mb-2"><strong>Fecha de Pedido:</strong> @pedidoSeleccionado.FechaHoraInicio.ToString("dd/MM/yyyy HH:mm")</p>
+                                @if (pedidoSeleccionado.FechaHoraFinEstimada != null)
+                                {
+                                    <p class="mb-2"><strong>Entrega Estimada:</strong> @pedidoSeleccionado.FechaHoraFinEstimada?.ToString("dd/MM/yyyy HH:mm")</p>
+                                }
+                                @if (pedidoSeleccionado.FechaHoraFin != null)
+                                {
+                                    <p class="mb-2"><strong>Completado:</strong> @pedidoSeleccionado.FechaHoraFin?.ToString("dd/MM/yyyy HH:mm")</p>
+                                }
                             </div>
                         </div>
 
-                        <div class="mb-4">
-                            <h6 class="text-danger fw-bold mb-3">Productos Pedidos</h6>
-                            <div class="table-responsive">
-                                <table class="table table-bordered table-hover">
-                                    <thead class="table-light">
-                                        <tr>
-                                            <th>Producto</th>
-                                            <th class="text-center">Cantidad</th>
-                                            <th class="text-end">Precio Unit.</th>
-                                            <th class="text-end">Subtotal</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach (var item in pedidoSeleccionado.Items)
-                                        {
-                                            <tr>
-                                                <td>@item.Producto</td>
-                                                <td class="text-center">@item.Cantidad</td>
-                                                <td class="text-end">$@item.Precio.ToString("F2")</td>
-                                                <td class="text-end fw-bold">$@((item.Cantidad * item.Precio).ToString("F2"))</td>
-                                            </tr>
-                                        }
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-
-                        @if (!string.IsNullOrEmpty(pedidoSeleccionado.Observaciones))
+                        @if (!string.IsNullOrEmpty(pedidoSeleccionado.Descripcion))
                         {
                             <div class="mb-4">
                                 <h6 class="text-danger fw-bold mb-3">Observaciones</h6>
                                 <div class="alert alert-light border">
-                                    <p class="mb-0 fst-italic">@pedidoSeleccionado.Observaciones</p>
+                                    <p class="mb-0">@pedidoSeleccionado.Descripcion</p>
+                                </div>
+                            </div>
+                        }
+
+                        @if (pedidoSeleccionado.Productos != null && pedidoSeleccionado.Productos.Any())
+                        {
+                            <div class="mb-4">
+                                <h6 class="text-danger fw-bold mb-3">Productos del Pedido</h6>
+                                <div class="list-group">
+                                    @foreach (var prod in pedidoSeleccionado.Productos)
+                                    {
+                                        <div class="list-group-item">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <span>Producto ID: @prod.Id</span>
+                                            </div>
+                                        </div>
+                                    }
                                 </div>
                             </div>
                         }
 
                         <div class="text-end pt-3 border-top">
-                            <h4 class="text-danger mb-0">Total: $@pedidoSeleccionado.Total.ToString("F2")</h4>
+                            <h3 class="text-danger mb-0">Total: $@pedidoSeleccionado.Subtotal.ToString("F2")</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+    @* Modal Nuevo Pedido / Editar *@
+    @if (showPedidoModal)
+    {
+        <div class="modal show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.5);">
+            <div class="modal-dialog modal-dialog-centered modal-xl modal-dialog-scrollable">
+                <div class="modal-content" style="max-height: 90vh;">
+                    <div class="modal-header" style="background-color: var(--rojo-muy-claro);">
+                        <h5 class="modal-title text-danger fw-bold">
+                            @(isEditMode ? $"Editar Pedido #{pedidoActual.Id}" : "Nuevo Pedido")
+                        </h5>
+                        <button type="button" class="btn-close" @onclick="CerrarModalPedido"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <!-- Columna Izquierda: Productos Disponibles -->
+                            <div class="col-lg-7 border-end">
+                                <h6 class="text-danger fw-bold mb-3">Selecciona tus Productos</h6>
+
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text"><i class="bi bi-search"></i></span>
+                                    <input type="text" class="form-control" placeholder="Buscar productos..."
+                                    @bind="searchProducto" @bind:event="oninput" @onkeyup="FiltrarProductos" />
+                                </div>
+
+                                @if (loadingProductos)
+                                {
+                                    <div class="text-center py-4">
+                                        <div class="spinner-border text-danger"></div>
+                                        <p class="text-muted mt-2">Cargando productos...</p>
+                                    </div>
+                                }
+                                else if (productosFiltrados.Count == 0)
+                                {
+                                    <div class="alert alert-warning">No se encontraron productos</div>
+                                }
+                                else
+                                {
+                                    <div class="row g-3" style="max-height: 500px; overflow-y: auto;">
+                                        @foreach (var producto in productosFiltrados)
+                                        {
+                                            <div class="col-12">
+                                                <div class="card shadow-sm h-100">
+                                                    <div class="card-body p-3">
+                                                        <div class="d-flex justify-content-between align-items-center">
+                                                            <div class="flex-grow-1">
+                                                                <h6 class="mb-1 fw-bold text-danger">@producto.Nombre</h6>
+                                                                <p class="text-muted small mb-2">@producto.Descripcion</p>
+                                                                <span class="h5 text-danger mb-0">$@producto.Precio.ToString("F2")</span>
+                                                            </div>
+                                                            <button class="btn btn-primary" @onclick="@(() => AgregarProductoAlPedido(producto))">
+                                                                <i class="bi bi-plus-circle"></i>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+                                    </div>
+                                }
+                            </div>
+
+                            <!-- Columna Derecha: Carrito del Pedido -->
+                            <div class="col-lg-5">
+                                <h6 class="text-danger fw-bold mb-3">Tu Pedido</h6>
+
+                                @if (productosEnPedido.Count == 0)
+                                {
+                                    <div class="alert alert-info">
+                                        <i class="bi bi-info-circle"></i> Agrega productos a tu pedido
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="list-group mb-3" style="max-height: 300px; overflow-y: auto;">
+                                        @foreach (var item in productosEnPedido)
+                                        {
+                                            <div class="list-group-item">
+                                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                                    <strong class="text-danger">@item.Producto.Nombre</strong>
+                                                    <button class="btn btn-sm btn-outline-danger" @onclick="@(() => QuitarProductoDelPedido(item))">
+                                                        <i class="bi bi-trash"></i>
+                                                    </button>
+                                                </div>
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <small class="text-muted">$@item.Producto.Precio.ToString("F2")</small>
+                                                </div>
+                                            </div>
+                                        }
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label class="form-label fw-semibold">Observaciones / Notas Especiales</label>
+                                        <textarea class="form-control" rows="3" @bind="pedidoActual.Descripcion"
+                                        placeholder="Ej: Sin cebolla, bien cocido, etc."></textarea>
+                                    </div>
+
+                                    <div class="alert alert-light border">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <span class="fw-bold">Subtotal:</span>
+                                            <span class="h4 text-danger mb-0">$@CalcularSubtotal().ToString("F2")</span>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        @if (pedidoSeleccionado.Estado == EstadoPedido.Pendiente)
-                        {
-                            <button class="btn btn-danger" @onclick="@(() => ConfirmarCancelacion(pedidoSeleccionado))">
-                                <i class="bi bi-x-circle"></i> Cancelar Pedido
-                            </button>
-                        }
-                        <button class="btn btn-secondary" @onclick="CerrarDetalles">Cerrar</button>
+                        <button type="button" class="btn btn-secondary" @onclick="CerrarModalPedido" disabled="@isSaving">
+                            Cancelar
+                        </button>
+                        <button type="button" class="btn btn-primary btn-lg" @onclick="ConfirmarPedido"
+                        disabled="@(isSaving || productosEnPedido.Count == 0)">
+                            @if (isSaving)
+                            {
+                                <span class="spinner-border spinner-border-sm me-2"></span>
+                            }
+                            <i class="bi bi-check-circle"></i> @(isEditMode ? "Actualizar Pedido" : "Confirmar Pedido")
+                        </button>
                     </div>
                 </div>
             </div>
         </div>
     }
-    @* -------------------------------------------------------------- *@
-    @* Modal Confirmación Cancelar *@
-    @* -------------------------------------------------------------- *@
-    @if (showCancelModal && pedidoACancelar != null)
-    {
-        <div class="modal show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.5);" @onclick="CerrarCancelModal">
-            <div class="modal-dialog modal-dialog-centered modal-sm" @onclick:stopPropagation="true">
-                <div class="modal-content">
-                    <div class="modal-header bg-danger text-white">
-                        <h5 class="modal-title fw-bold">Cancelar Pedido</h5>
-                        <button type="button" class="btn-close btn-close-white" @onclick="CerrarCancelModal"></button>
-                    </div>
-                    <div class="modal-body">
-                        <p>¿Estás seguro de que deseas cancelar el pedido <strong>#@pedidoACancelar.Id</strong>?</p>
-                        <p class="text-danger small mb-0">
-                            <i class="bi bi-exclamation-triangle"></i> Esta acción no se puede deshacer.
-                        </p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" @onclick="CerrarCancelModal">No, mantener</button>
-                        <button type="button" class="btn btn-danger" @onclick="CancelarPedido">Sí, cancelar</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    }
-    @* -------------------------------------------------------------- *@
-    @* Toast de confirmación *@
-    @* -------------------------------------------------------------- *@
+
+    @* Toast *@
     @if (mostrarToast)
     {
         <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1050;">
             <div class="toast show" role="alert">
-                <div class="toast-header @(toastExito ? "bg-success" : "bg-info") text-white">
-                    <i class="bi @(toastExito ? "bi-check-circle-fill" : "bi-info-circle-fill") me-2"></i>
-                    <strong class="me-auto">@(toastExito ? "¡Éxito!" : "Información")</strong>
+                <div class="toast-header @(toastExito ? "bg-success" : "bg-danger") text-white">
+                    <i class="bi @(toastExito ? "bi-check-circle-fill" : "bi-x-circle-fill") me-2"></i>
+                    <strong class="me-auto">@(toastExito ? "¡Éxito!" : "Error")</strong>
                     <button type="button" class="btn-close btn-close-white" @onclick="@(() => mostrarToast = false)"></button>
                 </div>
-                <div class="toast-body">
-                    @mensajeToast
-                </div>
+                <div class="toast-body">@mensajeToast</div>
             </div>
         </div>
     }
 </div>
 
 @code {
-    private List<Pedido> pedidos = new();
-    private List<Pedido> pedidosFiltrados = new();
+    private List<PedidoDTO> pedidos = new();
+    private List<PedidoDTO> pedidosFiltrados = new();
+    private List<ProductoDTO> productosDisponibles = new();
+    private List<ProductoDTO> productosFiltrados = new();
+    private List<ProductoPedidoItem> productosEnPedido = new();
+
     private bool isLoading = false;
-    private EstadoPedido? estadoFiltro = null;
+    private bool loadingProductos = false;
+    private bool isSaving = false;
     private bool showDetailsModal = false;
-    private bool showCancelModal = false;
-    private Pedido? pedidoSeleccionado = null;
-    private Pedido? pedidoACancelar = null;
+    private bool showPedidoModal = false;
+    private bool isEditMode = false;
+    private PedidoDTO pedidoActual = new();
+    private PedidoDTO? pedidoSeleccionado = null;
     private bool mostrarToast = false;
     private string mensajeToast = string.Empty;
     private bool toastExito = true;
+    private string? errorMessage = null;
+    private EstadoPedido? estadoFiltro = null;
+    private string searchProducto = string.Empty;
+    private int clienteIdActual = 1; // TODO: Obtener del usuario logueado
+
+    public enum EstadoPedido
+    {
+        Pendiente,
+        EnPreparacion,
+        Completado,
+        Cancelado
+    }
+
+    private class ProductoPedidoItem
+    {
+        public ProductoDTO Producto { get; set; } = default!;
+    }
 
     protected override async Task OnInitializedAsync()
     {
-        await LoadPedidos();
+        await CargarPedidos();
+        await CargarProductos();
     }
 
-    private async Task LoadPedidos()
+    private async Task CargarPedidos()
     {
         isLoading = true;
-        await Task.Delay(500);
+        errorMessage = null;
 
-        pedidos = new List<Pedido>
+        try
         {
-            new Pedido
-            {
-                Id = 2001,
-                Fecha = DateTime.Now.AddMinutes(-30),
-                Estado = EstadoPedido.EnPreparacion,
-                Total = 1850.00m,
-                Observaciones = "Sin cebolla por favor",
-                Items = new List<PedidoItem>
-                {
-                    new PedidoItem { Producto = "Pizza Margarita", Cantidad = 2, Precio = 850.00m },
-                    new PedidoItem { Producto = "Coca Cola 1.5L", Cantidad = 1, Precio = 150.00m }
-                }
-            },
-            new Pedido
-            {
-                Id = 2002,
-                Fecha = DateTime.Now.AddHours(-2),
-                Estado = EstadoPedido.Completado,
-                Total = 950.00m,
-                Items = new List<PedidoItem>
-                {
-                    new PedidoItem { Producto = "Milanesa Napolitana", Cantidad = 1, Precio = 950.00m }
-                }
-            },
-            new Pedido
-            {
-                Id = 2003,
-                Fecha = DateTime.Now.AddMinutes(-5),
-                Estado = EstadoPedido.Pendiente,
-                Total = 1200.00m,
-                Observaciones = "Agregar extra de queso",
-                Items = new List<PedidoItem>
-                {
-                    new PedidoItem { Producto = "Hamburguesa Completa", Cantidad = 2, Precio = 600.00m }
-                }
-            },
-            new Pedido
-            {
-                Id = 2004,
-                Fecha = DateTime.Now.AddDays(-1),
-                Estado = EstadoPedido.Completado,
-                Total = 1500.00m,
-                Items = new List<PedidoItem>
-                {
-                    new PedidoItem { Producto = "Pizza Margarita", Cantidad = 1, Precio = 850.00m },
-                    new PedidoItem { Producto = "Ensalada Caesar", Cantidad = 1, Precio = 550.00m },
-                    new PedidoItem { Producto = "Tiramisu", Cantidad = 1, Precio = 450.00m }
-                }
-            }
-        };
+            var todosPedidos = await PedidoApi.GetAllAsync();
+            // Filtrar solo los pedidos del cliente actual
+            pedidos = todosPedidos.Where(p => p.ClienteId == clienteIdActual).ToList();
+            pedidosFiltrados = pedidos;
+        }
+        catch (Exception ex)
+        {
+            errorMessage = ex.Message;
+            pedidos = new List<PedidoDTO>();
+            pedidosFiltrados = new List<PedidoDTO>();
+        }
+        finally
+        {
+            isLoading = false;
+            StateHasChanged();
+        }
+    }
 
-        pedidosFiltrados = pedidos;
-        isLoading = false;
+    private async Task CargarProductos()
+    {
+        loadingProductos = true;
+        try
+        {
+            productosDisponibles = (await ProductoApi.GetAllAsync()).ToList();
+            productosFiltrados = productosDisponibles;
+        }
+        catch (Exception ex)
+        {
+            MostrarToast($"Error al cargar productos: {ex.Message}", false);
+        }
+        finally
+        {
+            loadingProductos = false;
+            StateHasChanged();
+        }
+    }
+
+    private void FiltrarProductos()
+    {
+        if (string.IsNullOrWhiteSpace(searchProducto))
+        {
+            productosFiltrados = productosDisponibles;
+        }
+        else
+        {
+            var search = searchProducto.ToLower();
+            productosFiltrados = productosDisponibles
+                .Where(p => p.Nombre.ToLower().Contains(search) || p.Descripcion.ToLower().Contains(search))
+                .ToList();
+        }
     }
 
     private void FiltrarPorEstado(EstadoPedido estado)
     {
         estadoFiltro = estado;
-        pedidosFiltrados = pedidos.Where(p => p.Estado == estado).ToList();
+        pedidosFiltrados = pedidos.Where(p => p.Estado == estado.ToString()).ToList();
     }
 
-    private void MostrarTodosPedidos()
+    private void MostrarTodos()
     {
         estadoFiltro = null;
         pedidosFiltrados = pedidos;
     }
 
-    private void VerDetalles(Pedido pedido)
+    private void VerDetalles(PedidoDTO pedido)
     {
         pedidoSeleccionado = pedido;
         showDetailsModal = true;
@@ -377,76 +479,114 @@
         pedidoSeleccionado = null;
     }
 
-    private void ConfirmarCancelacion(Pedido pedido)
+    private void AbrirModalNuevoPedido()
     {
-        pedidoACancelar = pedido;
-        showCancelModal = true;
-        if (showDetailsModal)
-        {
-            CerrarDetalles();
-        }
-    }
-
-    private void CerrarCancelModal()
-    {
-        showCancelModal = false;
-        pedidoACancelar = null;
-    }
-
-
-    public string ObtenerClaseBootstrap(EstadoPedido estado)
-    {
-        return estado switch
-        {
-            EstadoPedido.Pendiente => "bg-warning text-dark",
-            EstadoPedido.EnPreparacion => "bg-primary",
-            EstadoPedido.Completado => "bg-success",
-            EstadoPedido.Cancelado => "bg-danger",
-            _ => "bg-secondary"
-        };
-    }
-
-    public string ObtenerColorBorde(EstadoPedido estado)
-    {
-        return estado switch
-        {
-            EstadoPedido.Pendiente => "#ff9800",
-            EstadoPedido.EnPreparacion => "#2196f3",
-            EstadoPedido.Completado => "#4caf50",
-            EstadoPedido.Cancelado => "#f44336",
-            _ => "#9e9e9e"
-        };
-    }
-
-    private async Task CancelarPedido()
-    {
-        if (pedidoACancelar != null)
-        {
-            // Aquí harías la llamada al backend
-            // await PedidoService.CancelarPedidoAsync(pedidoACancelar.Id);
-
-            pedidoACancelar.Estado = EstadoPedido.Cancelado;
-
-            MostrarMensajeToast("Pedido cancelado exitosamente", true);
-
-            CerrarCancelModal();
-
-            // Refiltrar para actualizar contadores
-            if (estadoFiltro != null)
+        isEditMode = false;
+        pedidoActual = new PedidoDTO
             {
-                FiltrarPorEstado(estadoFiltro.Value);
+                FechaHoraInicio = DateTime.Now,
+                Estado = EstadoPedido.Pendiente.ToString(),
+                ClienteId = clienteIdActual,
+                Descripcion = "",
+                Productos = new List<ProductoDTO>()
+            };
+        productosEnPedido = new List<ProductoPedidoItem>();
+        searchProducto = string.Empty;
+        productosFiltrados = productosDisponibles;
+        showPedidoModal = true;
+    }
+
+    private void AbrirModalEditar(PedidoDTO pedido)
+    {
+        isEditMode = true;
+        pedidoActual = new PedidoDTO
+            {
+                Id = pedido.Id,
+                Descripcion = pedido.Descripcion,
+                Estado = pedido.Estado,
+                FechaHoraInicio = pedido.FechaHoraInicio,
+                FechaHoraFin = pedido.FechaHoraFin,
+                FechaHoraFinEstimada = pedido.FechaHoraFinEstimada,
+                Subtotal = pedido.Subtotal,
+                ClienteId = pedido.ClienteId,
+                EmpleadoId = pedido.EmpleadoId,
+                Productos = pedido.Productos ?? new List<ProductoDTO>()
+            };
+
+        productosEnPedido = pedido.Productos?.Select(p => new ProductoPedidoItem { Producto = p }).ToList() ?? new List<ProductoPedidoItem>();
+        searchProducto = string.Empty;
+        productosFiltrados = productosDisponibles;
+        showPedidoModal = true;
+    }
+
+    private void CerrarModalPedido()
+    {
+        showPedidoModal = false;
+        pedidoActual = new();
+        productosEnPedido = new List<ProductoPedidoItem>();
+    }
+
+    private void AgregarProductoAlPedido(ProductoDTO producto)
+    {
+        productosEnPedido.Add(new ProductoPedidoItem { Producto = producto });
+        MostrarToast($"✓ {producto.Nombre} agregado al pedido", true);
+    }
+
+    private void QuitarProductoDelPedido(ProductoPedidoItem item)
+    {
+        productosEnPedido.Remove(item);
+    }
+
+    private float CalcularSubtotal()
+    {
+        return productosEnPedido.Sum(p => p.Producto.Precio);
+    }
+
+    private async Task ConfirmarPedido()
+    {
+        isSaving = true;
+
+        try
+        {
+            pedidoActual.Subtotal = CalcularSubtotal();
+            pedidoActual.Productos = productosEnPedido.Select(p => p.Producto).ToList();
+            pedidoActual.ClienteId = clienteIdActual;
+
+            if (isEditMode)
+            {
+                await PedidoApi.UpdateAsync(pedidoActual);
+                MostrarToast("¡Pedido actualizado exitosamente!", true);
+            }
+            else
+            {
+                pedidoActual.FechaHoraInicio = DateTime.Now;
+                pedidoActual.Estado = EstadoPedido.Pendiente.ToString();
+
+                try{
+                    await PedidoApi.AddAsync(pedidoActual);
+                    MostrarToast("¡Pedido realizado exitosamente! Pronto estará listo.", true);
+                }
+                catch
+                {
+                    MostrarToast("Error somewhere", false);
+                }
             }
 
+            CerrarModalPedido();
+            await CargarPedidos();
+        }
+        catch (Exception ex)
+        {
+            MostrarToast($"Error al confirmar pedido: {ex.Message}", false);
+        }
+        finally
+        {
+            isSaving = false;
             StateHasChanged();
         }
     }
 
-    private void IrAProductos()
-    {
-        Navigation.NavigateTo("/dashboard/cliente/productos");
-    }
-
-    private void MostrarMensajeToast(string mensaje, bool exito = true)
+    private void MostrarToast(string mensaje, bool exito)
     {
         mensajeToast = mensaje;
         toastExito = exito;
@@ -460,30 +600,39 @@
         });
     }
 
-    public enum EstadoPedido
+    private string ObtenerTextoEstado(EstadoPedido estado)
     {
-        Pendiente,
-        EnPreparacion,
-        Completado,
-        Cancelado
+        return estado switch
+        {
+            EstadoPedido.Pendiente => "Pendiente",
+            EstadoPedido.EnPreparacion => "En Preparación",
+            EstadoPedido.Completado => "Completado",
+            EstadoPedido.Cancelado => "Cancelado",
+            _ => "Desconocido"
+        };
     }
 
-    private class Pedido
+    private string ObtenerClaseEstado(string estado)
     {
-        public int Id { get; set; }
-        public DateTime Fecha { get; set; }
-        public EstadoPedido Estado { get; set; }
-        public decimal Total { get; set; }
-        public string Observaciones { get; set; } = string.Empty;
-        public List<PedidoItem> Items { get; set; } = new();
+        return estado switch
+        {
+            "Pendiente" => "bg-warning text-dark",
+            "EnPreparacion" => "bg-primary",
+            "Completado" => "bg-success",
+            "Cancelado" => "bg-danger",
+            _ => "bg-secondary"
+        };
     }
 
-    private class PedidoItem
+    private string ObtenerColorEstado(string estado)
     {
-        public string Producto { get; set; } = string.Empty;
-        public int Cantidad { get; set; }
-        public decimal Precio { get; set; }
+        return estado switch
+        {
+            "Pendiente" => "#ff9800",
+            "EnPreparacion" => "#2196f3",
+            "Completado" => "#4caf50",
+            "Cancelado" => "#f44336",
+            _ => "#9e9e9e"
+        };
     }
-
 }
-

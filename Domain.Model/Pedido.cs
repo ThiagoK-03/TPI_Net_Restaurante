@@ -29,7 +29,7 @@ namespace Domain.Model
         public Empleado Empleado { get; private set; }
 
         public Pedido() { }
-        public Pedido(int id, string descripcion, DateTime fechaHoraInicio, DateTime? fechaHoraFinEstimada, int clienteId, int empleadoId)
+        public Pedido(int id, string descripcion, DateTime fechaHoraInicio, DateTime? fechaHoraFinEstimada, int clienteId)
         {
             SetId(id);
             SetDescripcion(descripcion);
@@ -37,7 +37,6 @@ namespace Domain.Model
             SetFechaHoraInicio(fechaHoraInicio);
             SetFechaHoraFinEstimada(fechaHoraFinEstimada);
             ClienteId = clienteId;
-            EmpleadoId = empleadoId;
         }
 
         public void SetClienteId(int id)
@@ -49,8 +48,8 @@ namespace Domain.Model
 
         public void SetEmpleadoId(int id)
         {
-            if(id<=0) 
-                throw new ArgumentException("El Id debe ser mayor que 0.", nameof(id));
+            if(id<0) 
+                throw new ArgumentException("El Id debe ser positivo.", nameof(id));
             ClienteId= id;
         }
 
@@ -61,8 +60,6 @@ namespace Domain.Model
 
         public void SetDescripcion(string descripcion)
         {
-            if (string.IsNullOrWhiteSpace(descripcion))
-                throw new ArgumentException("La descripción no puede ser nula o vacía.", nameof(descripcion));
             Descripcion = descripcion;
         }
 
