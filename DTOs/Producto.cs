@@ -18,5 +18,15 @@ namespace DTOs
         public int Calificacion { get; set; }
 
         public float Precio { get; set; }
+
+        public ProductoDTO()
+        {
+            Id = 0;
+            Nombre = "";
+            Descripcion = "";
+            Imagen = "";
+            Calificacion = 0;
+            Precio = 0;
+        }
     }
 }

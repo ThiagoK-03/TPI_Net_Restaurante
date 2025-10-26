@@ -9,6 +9,17 @@ namespace DTOs
 {
     public class IngredienteDTO : DTOInterface
     {
+        public IngredienteDTO()
+        {
+            Id = 0;
+            Nombre = "";
+            Descripcion = "";
+            Stock = 0;
+            UnidadMedida = "";
+            Origen = "";
+            LimiteBajoStock = 0;
+        }
+
         public int Id { get; set; }
         public string Nombre { get; set; }
         public string Descripcion { get; set; }

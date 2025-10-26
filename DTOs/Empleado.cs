@@ -8,6 +8,16 @@ namespace DTOs
 {
     public class EmpleadoDto : DTOInterface
     {
+        public EmpleadoDto()
+        {
+            Id = 0;
+            RazonSocial = "";
+            Cuit = 0;
+            Turno = "";
+            HorasTrabajadas = 0;
+            PrecioPorHora = 0;
+            Sueldo = 0;
+        }
         public int Id { get; set; }
         public string RazonSocial { get; set; }
         public int Cuit { get; set; }

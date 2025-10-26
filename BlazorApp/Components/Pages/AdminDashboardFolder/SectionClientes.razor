@@ -3,75 +3,344 @@
 @using API
 @using DTOs
 
-
-
-<h1>SectionClientes</h1>
-<div class="section-conteiner">
-
-    @* Agregar Cliente *@
-    <div class="btn"> Agregar cliente </div>
-
-    @* Mostrar Clientes *@
-    <h1>Lista de Clientes</h1>
-    <div class="container">
-
-        @if (loadingClients)
-        {
-            <div> Cargando clientes . . . </div>
-        }
-        else
-        {
-            @if(clientes.Count > 0)
-            {
-                @foreach(ClienteDTO cliente in clientes)
-                {
-                    <div> @cliente.Nombre </div>
-                }
-            }
-            else
-            {
-                <div> No hay clientes registrados </div>
-            }
-            
-        }
-
+<div class="container-fluid py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="text-danger fw-bold">Gestión de Clientes</h2>
+        <button class="btn btn-primary" @onclick="AbrirModalAgregar">
+            <i class="bi bi-plus-circle"></i> Agregar Cliente
+        </button>
     </div>
 
-    @* Opc Editar Cliente *@
+    @if (isLoading)
+    {
+        <div class="text-center py-5">
+            <div class="spinner-border text-danger" role="status" style="width: 3rem; height: 3rem;">
+                <span class="visually-hidden">Cargando...</span>
+            </div>
+            <p class="mt-3 text-muted">Cargando clientes...</p>
+        </div>
+    }
+    else if (errorMessage != null)
+    {
+        <div class="alert alert-danger" role="alert">
+            <i class="bi bi-exclamation-triangle-fill me-2"></i>
+            Error al cargar clientes: @errorMessage
+            <button class="btn btn-sm btn-outline-danger ms-3" @onclick="CargarClientes">
+                <i class="bi bi-arrow-clockwise"></i> Reintentar
+            </button>
+        </div>
+    }
+    else if (clientes == null || clientes.Count == 0)
+    {
+        <div class="card text-center py-5">
+            <div class="card-body">
+                <h1 class="display-1">👥</h1>
+                <h3 class="text-muted">No hay clientes registrados</h3>
+                <p class="text-secondary">Comienza agregando el primer cliente</p>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-4">
+            @foreach (var cliente in clientes)
+            {
+                <div class="col">
+                    <div class="card h-100 shadow-sm border-0" style="border-top: 4px solid var(--rojo-principal) !important;">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center gap-3 mb-3">
+                                <div class="rounded-circle d-flex align-items-center justify-content-center fs-2"
+                                     style="width: 60px; height: 60px; background-color: var(--rojo-muy-claro);">
+                                    👤
+                                </div>
+                                <div>
+                                    <h6 class="card-title mb-1 text-danger fw-bold">@cliente.Nombre @cliente.Apellido</h6>
+                                    <small class="text-muted">ID: @cliente.Id</small>
+                                </div>
+                            </div>
 
-    @* Eliminar Cliente *@
+                            <hr>
 
+                            <div class="mb-2">
+                                <small class="text-muted d-block mb-1">📧 Email:</small>
+                                <small>@cliente.Email</small>
+                            </div>
+                            <div class="mb-3">
+                                <small class="text-muted d-block mb-1">📅 Registrado:</small>
+                                <small>@cliente.FechaAlta.ToString("dd/MM/yyyy")</small>
+                            </div>
+
+                            <div class="d-flex gap-2">
+                                <button class="btn btn-sm btn-outline-primary flex-fill" @onclick="@(() => AbrirModalEditar(cliente))">
+                                    <i class="bi bi-pencil"></i> Editar
+                                </button>
+                                <button class="btn btn-sm btn-outline-danger" @onclick="@(() => ConfirmarEliminacion(cliente))">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+
+    @* Modal Agregar/Editar *@
+    @if (showModal)
+    {
+        <div class="modal show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.5);" @onclick="CerrarModal">
+            <div class="modal-dialog modal-dialog-centered" @onclick:stopPropagation="true">
+                <div class="modal-content">
+                    <div class="modal-header" style="background-color: var(--rojo-muy-claro);">
+                        <h5 class="modal-title text-danger fw-bold">
+                            @(isEditMode ? "Editar Cliente" : "Nuevo Cliente")
+                        </h5>
+                        <button type="button" class="btn-close" @onclick="CerrarModal"></button>
+                    </div>
+                    <form @onsubmit="GuardarCliente">
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label fw-semibold">Nombre *</label>
+                                    <input type="text" class="form-control" @bind="clienteActual.Nombre" required />
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label fw-semibold">Apellido *</label>
+                                    <input type="text" class="form-control" @bind="clienteActual.Apellido" required />
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold">Email *</label>
+                                <input type="email" class="form-control" @bind="clienteActual.Email" required />
+                            </div>
+
+                            @if (isEditMode)
+                            {
+                                <div class="mb-3">
+                                    <label class="form-label fw-semibold">Fecha de Alta</label>
+                                    <input type="date" class="form-control" @bind="clienteActual.FechaAlta" />
+                                </div>
+                            }
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" @onclick="CerrarModal" disabled="@isSaving">
+                                Cancelar
+                            </button>
+                            <button type="submit" class="btn btn-primary" disabled="@isSaving">
+                                @if (isSaving)
+                                {
+                                    <span class="spinner-border spinner-border-sm me-2"></span>
+                                }
+                                <i class="bi bi-save"></i> @(isEditMode ? "Guardar Cambios" : "Crear Cliente")
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    }
+
+    @* Modal Confirmar Eliminación *@
+    @if (showDeleteModal)
+    {
+        <div class="modal show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.5);" @onclick="CerrarModalEliminar">
+            <div class="modal-dialog modal-dialog-centered modal-sm" @onclick:stopPropagation="true">
+                <div class="modal-content">
+                    <div class="modal-header bg-danger text-white">
+                        <h5 class="modal-title fw-bold">Confirmar Eliminación</h5>
+                        <button type="button" class="btn-close btn-close-white" @onclick="CerrarModalEliminar"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>¿Estás seguro de eliminar al cliente <strong>@clienteAEliminar?.Nombre @clienteAEliminar?.Apellido</strong>?</p>
+                        <p class="text-danger small mb-0">
+                            <i class="bi bi-exclamation-triangle"></i> Esta acción no se puede deshacer.
+                        </p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" @onclick="CerrarModalEliminar" disabled="@isDeleting">
+                            Cancelar
+                        </button>
+                        <button type="button" class="btn btn-danger" @onclick="EliminarCliente" disabled="@isDeleting">
+                            @if (isDeleting)
+                            {
+                                <span class="spinner-border spinner-border-sm me-2"></span>
+                            }
+                            <i class="bi bi-trash"></i> Eliminar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+    @* Toast *@
+    @if (mostrarToast)
+    {
+        <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1050;">
+            <div class="toast show" role="alert">
+                <div class="toast-header @(toastExito ? "bg-success" : "bg-danger") text-white">
+                    <i class="bi @(toastExito ? "bi-check-circle-fill" : "bi-x-circle-fill") me-2"></i>
+                    <strong class="me-auto">@(toastExito ? "¡Éxito!" : "Error")</strong>
+                    <button type="button" class="btn-close btn-close-white" @onclick="@(() => mostrarToast = false)"></button>
+                </div>
+                <div class="toast-body">@mensajeToast</div>
+            </div>
+        </div>
+    }
 </div>
 
-
-
-
 @code {
-    private List<ClienteDTO>? clientes = [];
-    private bool loadingClients = true;
-
+    private List<ClienteDTO> clientes = new();
+    private bool isLoading = false;
+    private bool isSaving = false;
+    private bool isDeleting = false;
+    private bool showModal = false;
+    private bool showDeleteModal = false;
+    private bool isEditMode = false;
+    private ClienteDTO clienteActual = new();
+    private ClienteDTO? clienteAEliminar = null;
+    private bool mostrarToast = false;
+    private string mensajeToast = string.Empty;
+    private bool toastExito = true;
+    private string? errorMessage = null;
 
     protected override async Task OnInitializedAsync()
     {
+        await CargarClientes();
+    }
+
+    private async Task CargarClientes()
+    {
+        isLoading = true;
+        errorMessage = null;
+
         try
         {
-            loadingClients = true;
-            await LoadClientes();
+            clientes = (await ClienteApi.GetAllAsync()).ToList();
         }
-        catch
+        catch (Exception ex)
         {
-
+            errorMessage = ex.Message;
+            clientes = new List<ClienteDTO>();
         }
         finally
         {
-            loadingClients = false;
+            isLoading = false;
+            StateHasChanged();
         }
     }
 
-    private async Task LoadClientes()
+    private void AbrirModalAgregar()
     {
-        await Task.Delay(500);
-        //clientes = await ClienteApiClient.GetAllAsync())?.ToList();
-        clientes = (await ClienteApi.GetAllAsync())?.ToList();
+        isEditMode = false;
+        clienteActual = new ClienteDTO
+            {
+                FechaAlta = DateTime.Now
+            };
+        showModal = true;
+    }
+
+    private void AbrirModalEditar(ClienteDTO cliente)
+    {
+        isEditMode = true;
+        clienteActual = new ClienteDTO
+            {
+                Id = cliente.Id,
+                Nombre = cliente.Nombre,
+                Apellido = cliente.Apellido,
+                Email = cliente.Email,
+                FechaAlta = cliente.FechaAlta
+            };
+        showModal = true;
+    }
+
+    private void CerrarModal()
+    {
+        showModal = false;
+        clienteActual = new();
+    }
+
+    private async Task GuardarCliente()
+    {
+        isSaving = true;
+
+        try
+        {
+            if (isEditMode)
+            {
+                await ClienteApi.UpdateAsync(clienteActual);
+                MostrarToast("Cliente actualizado exitosamente", true);
+            }
+            else
+            {
+                clienteActual.FechaAlta = DateTime.Now;
+                await ClienteApi.AddAsync(clienteActual);
+                MostrarToast("Cliente creado exitosamente", true);
+            }
+
+            CerrarModal();
+            await CargarClientes();
+        }
+        catch (Exception ex)
+        {
+            MostrarToast($"Error al guardar: {ex.Message}", false);
+        }
+        finally
+        {
+            isSaving = false;
+            StateHasChanged();
+        }
+    }
+
+    private void ConfirmarEliminacion(ClienteDTO cliente)
+    {
+        clienteAEliminar = cliente;
+        showDeleteModal = true;
+    }
+
+    private void CerrarModalEliminar()
+    {
+        showDeleteModal = false;
+        clienteAEliminar = null;
+    }
+
+    private async Task EliminarCliente()
+    {
+        if (clienteAEliminar != null)
+        {
+            isDeleting = true;
+
+            try
+            {
+                await ClienteApi.DeleteAsync(clienteAEliminar.Id);
+                MostrarToast("Cliente eliminado exitosamente", true);
+                CerrarModalEliminar();
+                await CargarClientes();
+            }
+            catch (Exception ex)
+            {
+                MostrarToast($"Error al eliminar: {ex.Message}", false);
+            }
+            finally
+            {
+                isDeleting = false;
+                StateHasChanged();
+            }
+        }
+    }
+
+    private void MostrarToast(string mensaje, bool exito)
+    {
+        mensajeToast = mensaje;
+        toastExito = exito;
+        mostrarToast = true;
+        StateHasChanged();
+
+        Task.Delay(3000).ContinueWith(_ =>
+        {
+            mostrarToast = false;
+            InvokeAsync(StateHasChanged);
+        });
     }
 }

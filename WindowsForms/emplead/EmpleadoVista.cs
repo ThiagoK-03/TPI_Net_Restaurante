@@ -8,7 +8,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using DTOs;
-using WindowsForms.clientes;
 using WindowsForms.producto;
 using WinFormsControlLibrary1;
 using API;

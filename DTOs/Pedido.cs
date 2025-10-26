@@ -17,10 +17,8 @@ namespace DTOs
         public float Subtotal { get; set; }
         public List<ProductoDTO> Productos { get; set; } = new();
         public int ClienteId { get; set; }
-
         public ClienteDTO cliente { get; set; }
         public int EmpleadoId {  get; set; }
-
         public EmpleadoDto empelado { get; set; }
 
     }

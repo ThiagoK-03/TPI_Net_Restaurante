@@ -31,7 +31,7 @@ namespace Application.Services
         public async Task<string> GetUserLoggedAsync()
         {
             await Task.Delay(500);
-            return "empleado";
+            return "admin";
         }
 
         public async Task<bool> IsAuthenticatedAsync()

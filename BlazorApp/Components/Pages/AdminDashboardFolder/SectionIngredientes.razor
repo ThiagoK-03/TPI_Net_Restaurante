@@ -1,8 +1,338 @@
 ﻿@page "/dashboard/admin/ingredientes"
 @layout AdminDashboardLayout
+@using API
+@using DTOs
 
-<h3>SectionIngredientes</h3>
+<div class="container-fluid py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="text-danger fw-bold">Gestión de Ingredientes</h2>
+        <button class="btn btn-primary" @onclick="AbrirModalAgregar">
+            <i class="bi bi-plus-circle"></i> Agregar Ingrediente
+        </button>
+    </div>
+
+    @if (isLoading)
+    {
+        <div class="text-center py-5">
+            <div class="spinner-border text-danger" role="status" style="width: 3rem; height: 3rem;">
+                <span class="visually-hidden">Cargando...</span>
+            </div>
+            <p class="mt-3 text-muted">Cargando ingredientes...</p>
+        </div>
+    }
+    else if (errorMessage != null)
+    {
+        <div class="alert alert-danger" role="alert">
+            <i class="bi bi-exclamation-triangle-fill me-2"></i>
+            Error al cargar ingredientes: @errorMessage
+            <button class="btn btn-sm btn-outline-danger ms-3" @onclick="CargarIngredientes">
+                <i class="bi bi-arrow-clockwise"></i> Reintentar
+            </button>
+        </div>
+    }
+    else if (ingredientes == null || ingredientes.Count == 0)
+    {
+        <div class="card text-center py-5">
+            <div class="card-body">
+                <h1 class="display-1">🥬</h1>
+                <h3 class="text-muted">No hay ingredientes registrados</h3>
+                <p class="text-secondary">Comienza agregando el primer ingrediente</p>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="card shadow-sm border-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead style="background: linear-gradient(135deg, var(--rojo-principal) 0%, var(--rojo-oscuro) 100%);" class="text-white">
+                        <tr>
+                            <th class="py-3">#</th>
+                            <th class="py-3">Ingrediente</th>
+                            <th class="py-3">Descripcion</th>
+                            <th class="py-3">Origen</th>
+                            <th class="py-3 text-end">Stock</th>
+                            <th class="py-3 text-center">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var ingrediente in ingredientes)
+                        {
+                            <tr>
+                                <td>@ingrediente.Id</td>
+                                <td>
+                                    <strong>@ingrediente.Nombre</strong>
+                                </td>
+                                <td class="text-black">@ingrediente.Descripcion</td>
+                                <td class="fw-bold text-black-50 fs-5">@ingrediente.Origen</td>
+                                <td class="text-end fw-bold text-danger fs-5">@ingrediente.Stock</td>
+                                <td class="text-center">
+                                    <button class="btn btn-sm btn-outline-primary me-1" @onclick="@(() => AbrirModalEditar(ingrediente))">
+                                        <i class="bi bi-pencil"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-danger" @onclick="@(() => ConfirmarEliminacion(ingrediente))">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    }
+
+    @* Modal Agregar/Editar *@
+    @if (showModal)
+    {
+        <div class="modal show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.5);" @onclick="CerrarModal">
+            <div class="modal-dialog modal-dialog-centered modal-lg" @onclick:stopPropagation="true">
+                <div class="modal-content">
+                    <div class="modal-header" style="background-color: var(--rojo-muy-claro);">
+                        <h5 class="modal-title text-danger fw-bold">
+                            @(isEditMode ? "Editar Ingrediente" : "Nuevo Ingrediente")
+                        </h5>
+                        <button type="button" class="btn-close" @onclick="CerrarModal"></button>
+                    </div>
+                    <form @onsubmit="GuardarIngrediente">
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold">Nombre del Ingrediente *</label>
+                                <input type="text" class="form-control" @bind="ingredienteActual.Nombre" required />
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold">Cantidad *</label>
+                                <input type="number" step="0.01" class="form-control" @bind="ingredienteActual.Stock" required />
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold">Descripcion *</label>
+                                <input type="text" class="form-control" @bind="ingredienteActual.Descripcion" required />
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold">Unidad de medida *</label>
+                                <input type="text" class="form-control" @bind="ingredienteActual.UnidadMedida" required />
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold">Origen *</label>
+                                <input type="text" class="form-control" @bind="ingredienteActual.Origen" required />
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" @onclick="CerrarModal" disabled="@isSaving">
+                                Cancelar
+                            </button>
+                            <button type="submit" class="btn btn-primary" disabled="@isSaving">
+                                @if (isSaving)
+                                {
+                                    <span class="spinner-border spinner-border-sm me-2"></span>
+                                }
+                                <i class="bi bi-save"></i> @(isEditMode ? "Guardar Cambios" : "Crear Ingrediente")
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    }
+
+    @* Modal Confirmar Eliminación *@
+    @if (showDeleteModal)
+    {
+        <div class="modal show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.5);" @onclick="CerrarModalEliminar">
+            <div class="modal-dialog modal-dialog-centered modal-sm" @onclick:stopPropagation="true">
+                <div class="modal-content">
+                    <div class="modal-header bg-danger text-white">
+                        <h5 class="modal-title fw-bold">Confirmar Eliminación</h5>
+                        <button type="button" class="btn-close btn-close-white" @onclick="CerrarModalEliminar"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>¿Estás seguro de eliminar el ingrediente <strong>@ingredienteAEliminar?.Nombre</strong>?</p>
+                        <p class="text-danger small mb-0">
+                            <i class="bi bi-exclamation-triangle"></i> Esta acción no se puede deshacer.
+                        </p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" @onclick="CerrarModalEliminar" disabled="@isDeleting">
+                            Cancelar
+                        </button>
+                        <button type="button" class="btn btn-danger" @onclick="EliminarIngrediente" disabled="@isDeleting">
+                            @if (isDeleting)
+                            {
+                                <span class="spinner-border spinner-border-sm me-2"></span>
+                            }
+                            <i class="bi bi-trash"></i> Eliminar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+    @* Toast *@
+    @if (mostrarToast)
+    {
+        <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1050;">
+            <div class="toast show" role="alert">
+                <div class="toast-header @(toastExito ? "bg-success" : "bg-danger") text-white">
+                    <i class="bi @(toastExito ? "bi-check-circle-fill" : "bi-x-circle-fill") me-2"></i>
+                    <strong class="me-auto">@(toastExito ? "¡Éxito!" : "Error")</strong>
+                    <button type="button" class="btn-close btn-close-white" @onclick="@(() => mostrarToast = false)"></button>
+                </div>
+                <div class="toast-body">@mensajeToast</div>
+            </div>
+        </div>
+    }
+</div>
 
 @code {
+    private List<IngredienteDTO> ingredientes = new();
+    private bool isLoading = false;
+    private bool isSaving = false;
+    private bool isDeleting = false;
+    private bool showModal = false;
+    private bool showDeleteModal = false;
+    private bool isEditMode = false;
+    private IngredienteDTO ingredienteActual = new();
+    private IngredienteDTO? ingredienteAEliminar = null;
+    private bool mostrarToast = false;
+    private string mensajeToast = string.Empty;
+    private bool toastExito = true;
+    private string? errorMessage = null;
 
+    protected override async Task OnInitializedAsync()
+    {
+        await CargarIngredientes();
+    }
+
+    private async Task CargarIngredientes()
+    {
+        isLoading = true;
+        errorMessage = null;
+
+        try
+        {
+            ingredientes = (await IngredienteApi.GetAllAsync()).ToList();
+        }
+        catch (Exception ex)
+        {
+            errorMessage = ex.Message;
+            ingredientes = new List<IngredienteDTO>();
+        }
+        finally
+        {
+            isLoading = false;
+            StateHasChanged();
+        }
+    }
+
+    private void AbrirModalAgregar()
+    {
+        isEditMode = false;
+        ingredienteActual = new IngredienteDTO();
+        showModal = true;
+    }
+
+    private void AbrirModalEditar(IngredienteDTO ingrediente)
+    {
+        isEditMode = true;
+        ingredienteActual = new IngredienteDTO
+            {
+                Id = ingrediente.Id,
+                Nombre = ingrediente.Nombre,
+                Stock = ingrediente.Stock
+            };
+        showModal = true;
+    }
+
+    private void CerrarModal()
+    {
+        showModal = false;
+        ingredienteActual = new();
+    }
+
+    private async Task GuardarIngrediente()
+    {
+        isSaving = true;
+
+        try
+        {
+            if (isEditMode)
+            {
+                await IngredienteApi.UpdateAsync(ingredienteActual);
+                MostrarToast("Ingrediente actualizado exitosamente", true);
+            }
+            else
+            {
+                await IngredienteApi.AddAsync(ingredienteActual);
+                MostrarToast("Ingrediente creado exitosamente", true);
+            }
+
+            CerrarModal();
+            await CargarIngredientes();
+        }
+        catch (Exception ex)
+        {
+            MostrarToast($"Error al guardar: {ex.Message}", false);
+        }
+        finally
+        {
+            isSaving = false;
+            StateHasChanged();
+        }
+    }
+
+    private void ConfirmarEliminacion(IngredienteDTO ingrediente)
+    {
+        ingredienteAEliminar = ingrediente;
+        showDeleteModal = true;
+    }
+
+    private void CerrarModalEliminar()
+    {
+        showDeleteModal = false;
+        ingredienteAEliminar = null;
+    }
+
+    private async Task EliminarIngrediente()
+    {
+        if (ingredienteAEliminar != null)
+        {
+            isDeleting = true;
+
+            try
+            {
+                await IngredienteApi.DeleteAsync(ingredienteAEliminar.Id);
+                MostrarToast("Ingrediente eliminado exitosamente", true);
+                CerrarModalEliminar();
+                await CargarIngredientes();
+            }
+            catch (Exception ex)
+            {
+                MostrarToast($"Error al eliminar: {ex.Message}", false);
+            }
+            finally
+            {
+                isDeleting = false;
+                StateHasChanged();
+            }
+        }
+    }
+
+    private void MostrarToast(string mensaje, bool exito)
+    {
+        mensajeToast = mensaje;
+        toastExito = exito;
+        mostrarToast = true;
+        StateHasChanged();
+
+        Task.Delay(3000).ContinueWith(_ =>
+        {
+            mostrarToast = false;
+            InvokeAsync(StateHasChanged);
+        });
+    }
 }

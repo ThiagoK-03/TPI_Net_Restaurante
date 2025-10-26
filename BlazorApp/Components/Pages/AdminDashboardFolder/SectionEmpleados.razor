@@ -1,8 +1,366 @@
 ﻿@page "/dashboard/admin/empleados"
 @layout AdminDashboardLayout
+@using DTOs
+@using API
 
-<h3>SectionEmpleados</h3>
+<div class="container-fluid py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="text-danger fw-bold">Gestión de Empleados</h2>
+        <button class="btn btn-primary" @onclick="AbrirModalAgregar">
+            <i class="bi bi-plus-circle"></i> Agregar Empleado
+        </button>
+    </div>
+
+    @if (isLoading)
+    {
+        <div class="text-center py-5">
+            <div class="spinner-border text-danger" role="status" style="width: 3rem; height: 3rem;">
+                <span class="visually-hidden">Cargando...</span>
+            </div>
+            <p class="mt-3 text-muted">Cargando empleados...</p>
+        </div>
+    }
+    else if (errorMessage != null)
+    {
+        <div class="alert alert-danger" role="alert">
+            <i class="bi bi-exclamation-triangle-fill me-2"></i>
+            Error al cargar empleados: @errorMessage
+            <button class="btn btn-sm btn-outline-danger ms-3" @onclick="CargarEmpleados">
+                <i class="bi bi-arrow-clockwise"></i> Reintentar
+            </button>
+        </div>
+    }
+    else if (empleados == null || empleados.Count == 0)
+    {
+        <div class="card text-center py-5">
+            <div class="card-body">
+                <h1 class="display-1">👨‍🍳</h1>
+                <h3 class="text-muted">No hay empleados registrados</h3>
+                <p class="text-secondary">Comienza agregando el primer empleado</p>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+            @foreach (var empleado in empleados)
+            {
+                <div class="col">
+                    <div class="card h-100 shadow-sm border-0" style="border-top: 4px solid var(--rojo-principal) !important;">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-start mb-3">
+                                <div class="d-flex align-items-center gap-3">
+                                    <div class="rounded-circle d-flex align-items-center justify-content-center fs-1"
+                                         style="width: 70px; height: 70px; background-color: var(--rojo-muy-claro);">
+                                        👨‍🍳
+                                    </div>
+                                    <div>
+                                        <h5 class="card-title mb-1 text-danger fw-bold">@empleado.RazonSocial</h5>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <hr>
+
+                            <div class="mb-2">
+                                <small class="text-muted">Cuit:</small>
+                                <span class="ms-2">@empleado.Cuit</span>
+                            </div>
+                            <div class="mb-2">
+                                <small class="text-muted">Turno:</small>
+                                <span class="ms-2">@empleado.Turno</span>
+                            </div>
+                            <div class="mb-3">
+                                <small class="text-muted">Horas trabajadas:</small>
+                                <span class="ms-2">@empleado.HorasTrabajadas</span>
+                            </div>
+                            <div class="mb-3">
+                                <small class="text-muted">Precio por hora:</small>
+                                <span class="ms-2">@empleado.PrecioPorHora</span>
+                            </div>
+                            <div class="mb-3">
+                                <small class="text-muted">Sueldo:</small>
+                                <span class="ms-2">@empleado.Sueldo</span>
+                            </div>
+
+                            <div class="d-flex gap-2">
+                                <button class="btn btn-sm btn-outline-primary flex-fill" @onclick="@(() => AbrirModalEditar(empleado))">
+                                    <i class="bi bi-pencil"></i> Editar
+                                </button>
+                                <button class="btn btn-sm btn-outline-danger" @onclick="@(() => ConfirmarEliminacion(empleado))">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+
+    @* Modal Agregar/Editar *@
+    @if (showModal)
+    {
+        <div class="modal show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.5);" @onclick="CerrarModal">
+            <div class="modal-dialog modal-dialog-centered modal-lg" @onclick:stopPropagation="true">
+                <div class="modal-content">
+                    <div class="modal-header" style="background-color: var(--rojo-muy-claro);">
+                        <h5 class="modal-title text-danger fw-bold">
+                            @(isEditMode ? "Editar Empleado" : "Nuevo Empleado")
+                        </h5>
+                        <button type="button" class="btn-close" @onclick="CerrarModal"></button>
+                    </div>
+                    <form @onsubmit="GuardarEmpleado">
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label fw-semibold">Nombre *</label>
+                                    <input type="text" class="form-control" @bind="empleadoActual.RazonSocial" required />
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label fw-semibold">Cuit *</label>
+                                    <input type="text" class="form-control" @bind="empleadoActual.Cuit" required />
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label fw-semibold">Turno *</label>
+                                    <input type="text" class="form-control" @bind="empleadoActual.Turno" required />
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold">Horas trabajadas </label>
+                                <input type="text" class="form-control" @bind="empleadoActual.HorasTrabajadas" />
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold">Precio por hora *</label>
+                                <input type="text" class="form-control" rows="2" @bind="empleadoActual.PrecioPorHora" required></input>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold">Sueldo</label>
+                                <input type="text" class="form-control" rows="2" @bind="empleadoActual.Sueldo"></input>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" @onclick="CerrarModal" disabled="@isSaving">
+                                Cancelar
+                            </button>
+                            <button type="submit" class="btn btn-primary" disabled="@isSaving">
+                                @if (isSaving)
+                                {
+                                    <span class="spinner-border spinner-border-sm me-2"></span>
+                                }
+                                <i class="bi bi-save"></i> @(isEditMode ? "Guardar Cambios" : "Crear Empleado")
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    }
+
+    @* Modal Confirmar Eliminación *@
+    @if (showDeleteModal)
+    {
+        <div class="modal show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.5);" @onclick="CerrarModalEliminar">
+            <div class="modal-dialog modal-dialog-centered modal-sm" @onclick:stopPropagation="true">
+                <div class="modal-content">
+                    <div class="modal-header bg-danger text-white">
+                        <h5 class="modal-title fw-bold">Confirmar Eliminación</h5>
+                        <button type="button" class="btn-close btn-close-white" @onclick="CerrarModalEliminar"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>¿Estás seguro de eliminar al empleado <strong>@empleadoAEliminar?.RazonSocial</strong>?</p>
+                        <p class="text-danger small mb-0">
+                            <i class="bi bi-exclamation-triangle"></i> Esta acción no se puede deshacer.
+                        </p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" @onclick="CerrarModalEliminar" disabled="@isDeleting">
+                            Cancelar
+                        </button>
+                        <button type="button" class="btn btn-danger" @onclick="EliminarEmpleado" disabled="@isDeleting">
+                            @if (isDeleting)
+                            {
+                                <span class="spinner-border spinner-border-sm me-2"></span>
+                            }
+                            <i class="bi bi-trash"></i> Eliminar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+    @* Toast *@
+    @if (mostrarToast)
+    {
+        <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1050;">
+            <div class="toast show" role="alert">
+                <div class="toast-header @(toastExito ? "bg-success" : "bg-danger") text-white">
+                    <i class="bi @(toastExito ? "bi-check-circle-fill" : "bi-x-circle-fill") me-2"></i>
+                    <strong class="me-auto">@(toastExito ? "¡Éxito!" : "Error")</strong>
+                    <button type="button" class="btn-close btn-close-white" @onclick="@(() => mostrarToast = false)"></button>
+                </div>
+                <div class="toast-body">@mensajeToast</div>
+            </div>
+        </div>
+    }
+</div>
 
 @code {
+    private List<EmpleadoDto> empleados = new();
+    private bool isLoading = false;
+    private bool isSaving = false;
+    private bool isDeleting = false;
+    private bool showModal = false;
+    private bool showDeleteModal = false;
+    private bool isEditMode = false;
+    private EmpleadoDto empleadoActual = new();
+    private EmpleadoDto? empleadoAEliminar = null;
+    private bool mostrarToast = false;
+    private string mensajeToast = string.Empty;
+    private bool toastExito = true;
+    private string? errorMessage = null;
 
+    protected override async Task OnInitializedAsync()
+    {
+        await CargarEmpleados();
+    }
+
+    private async Task CargarEmpleados()
+    {
+        isLoading = true;
+        errorMessage = null;
+
+        try
+        {
+            empleados = (await EmpleadoApi.GetAllAsync()).ToList();
+        }
+        catch (Exception ex)
+        {
+            errorMessage = ex.Message;
+            empleados = new List<EmpleadoDto>();
+        }
+        finally
+        {
+            isLoading = false;
+            StateHasChanged();
+        }
+    }
+
+    private void AbrirModalAgregar()
+    {
+        isEditMode = false;
+        empleadoActual = new EmpleadoDto();
+        showModal = true;
+    }
+
+    private void AbrirModalEditar(EmpleadoDto empleado)
+    {
+        isEditMode = true;
+        empleadoActual = new EmpleadoDto
+            {
+                Id = empleado.Id,
+                RazonSocial = empleado.RazonSocial,
+                Cuit = empleado.Cuit,
+                Turno = empleado.Turno,
+                HorasTrabajadas = empleado.HorasTrabajadas,
+                PrecioPorHora = empleado.PrecioPorHora,
+                Sueldo = empleado.Sueldo,
+            };
+        showModal = true;
+    }
+
+    private void CerrarModal()
+    {
+        showModal = false;
+        empleadoActual = new();
+    }
+
+    private async Task GuardarEmpleado()
+    {
+        isSaving = true;
+
+        try
+        {
+            if (isEditMode)
+            {
+                await EmpleadoApi.UpdateAsync(empleadoActual);
+                MostrarToast("Empleado actualizado exitosamente", true);
+            }
+            else
+            {
+                await EmpleadoApi.AddAsync(empleadoActual);
+                MostrarToast("Empleado creado exitosamente", true);
+            }
+
+            CerrarModal();
+            await CargarEmpleados();
+        }
+        catch (Exception ex)
+        {
+            MostrarToast($"Error al guardar: {ex.Message}", false);
+        }
+        finally
+        {
+            isSaving = false;
+            StateHasChanged();
+        }
+    }
+
+    private void ConfirmarEliminacion(EmpleadoDto empleado)
+    {
+        empleadoAEliminar = empleado;
+        showDeleteModal = true;
+    }
+
+    private void CerrarModalEliminar()
+    {
+        showDeleteModal = false;
+        empleadoAEliminar = null;
+    }
+
+    private async Task EliminarEmpleado()
+    {
+        if (empleadoAEliminar != null)
+        {
+            isDeleting = true;
+
+            try
+            {
+                await EmpleadoApi.DeleteAsync(empleadoAEliminar.Id);
+                MostrarToast("Empleado eliminado exitosamente", true);
+                CerrarModalEliminar();
+                await CargarEmpleados();
+            }
+            catch (Exception ex)
+            {
+                MostrarToast($"Error al eliminar: {ex.Message}", false);
+            }
+            finally
+            {
+                isDeleting = false;
+                StateHasChanged();
+            }
+        }
+    }
+
+    private void MostrarToast(string mensaje, bool exito)
+    {
+        mensajeToast = mensaje;
+        toastExito = exito;
+        mostrarToast = true;
+        StateHasChanged();
+
+        Task.Delay(3000).ContinueWith(_ =>
+        {
+            mostrarToast = false;
+            InvokeAsync(StateHasChanged);
+        });
+    }
 }

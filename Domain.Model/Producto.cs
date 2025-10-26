@@ -51,7 +51,7 @@ namespace Domain.Model
         public void SetImagen(string imagen)
         {
             if (string.IsNullOrWhiteSpace(imagen))
-                throw new ArgumentException("La imagen no puede ser nula o vacía.", nameof(imagen));
+                imagen = "";
             Imagen = imagen;
         }
 
