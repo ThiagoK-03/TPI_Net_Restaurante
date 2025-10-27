@@ -11,5 +11,6 @@
         Task LogoutAsync();
         Task CheckTokenExpirationAsync();
         Task<bool> HasPermissionAsync(string permission);
+        Task<string?> GetRoleAsync();
     }
 }

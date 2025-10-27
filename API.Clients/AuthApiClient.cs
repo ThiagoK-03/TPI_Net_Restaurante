@@ -3,6 +3,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
+using System.Security.Claims;
 
 namespace API.Clients
 {
@@ -79,6 +80,18 @@ namespace API.Clients
             var handler = new JwtSecurityTokenHandler();
             var claims = handler.ReadJwtToken(token).Claims;
             return claims.Any(c => c.Type == "permission" && c.Value == permission);
+        }
+
+        public async Task<string?> GetRoleAsync()
+        {
+            var token = await GetTokenAsync();
+            if (token != null)
+            {
+                var handler = new JwtSecurityTokenHandler();
+                var jsonToken = handler.ReadJwtToken(token);
+                return jsonToken.Claims.FirstOrDefault(c => c.Type == "role")?.Value;
+            }
+            return null;
         }
     }
 }

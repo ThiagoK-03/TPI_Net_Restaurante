@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,13 +11,27 @@ namespace Domain.Model
 {
     public class Empleado
     {
+        [Key]
         public int Id { get; private set; }
+        [Required]
         public string RazonSocial { get; private set; } = string.Empty;
+
+        [Required]
         public int Cuil { get; private set; }
+
+        [Required]
         public string Turno { get; private set; } = string.Empty;
+
+        [AllowNull]
         public int HorasTrabajadas { get; private set; }
+
+        [Required]
         public decimal PrecioPorHora { get; private set; }
+
+        [AllowNull]
         public decimal Sueldo { get; private set; }
+
+        [ForeignKey(nameof(Usuario))]
         public int UsuarioId { get; private set; } // FK
         public virtual Usuario Usuario { get; private set; } = null!;
 

@@ -1,4 +1,5 @@
-﻿@* @inject IAuthService AuthService *@
+﻿@using API.Clients
+@inject IAuthService AuthService
 
 <link href="/Header.css" rel="stylesheet" />
 
@@ -22,8 +23,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        // role = await AuthService.GetUserLoggedAsync();
-        // role = role.ToString();
+        role = await AuthService.GetRoleAsync();
     }
 
 }

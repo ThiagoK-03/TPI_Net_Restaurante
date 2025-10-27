@@ -1,6 +1,9 @@
 ﻿@page "/dashboard/empleado/ingredientes"
 @layout EmpleadoDashboardLayout
 
+@using DTOs
+@using API
+
 <div class="container-fluid py-4">
     <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
         <h2 class="text-danger fw-bold mb-0">Inventario de Ingredientes</h2>
@@ -29,7 +32,17 @@
             <p class="mt-3 text-muted">Cargando ingredientes...</p>
         </div>
     }
-    else if (filteredIngredientes.Count == 0)
+    else if (errorMessage != null)
+    {
+        <div class="alert alert-danger" role="alert">
+            <i class="bi bi-exclamation-triangle-fill me-2"></i>
+            Error al cargar ingredientes: @errorMessage
+            <button class="btn btn-sm btn-outline-danger ms-3" @onclick="CargarIngredientes">
+                <i class="bi bi-arrow-clockwise"></i> Reintentar
+            </button>
+        </div>
+    }
+    else if (ingredientesFiltrados.Count == 0)
     {
         <div class="card text-center py-5">
             <div class="card-body">
@@ -46,36 +59,24 @@
                 <table class="table table-hover align-middle mb-0">
                     <thead style="background: linear-gradient(135deg, var(--rojo-principal) 0%, var(--rojo-oscuro) 100%);" class="text-white">
                         <tr>
-                            <th scope="col" class="py-3">Ingrediente</th>
-                            <th scope="col" class="py-3">Categoría</th>
-                            <th scope="col" class="py-3 text-end">Cantidad</th>
-                            <th scope="col" class="py-3">Unidad</th>
-                            <th scope="col" class="py-3 text-center">Estado</th>
+                            <th class="py-3">#</th>
+                            <th class="py-3">Ingrediente</th>
+                            <th class="py-3 text-end">Cantidad Disponible</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var ingrediente in filteredIngredientes)
+                        @foreach (var ingrediente in ingredientesFiltrados)
                         {
-                            <tr class="@GetRowClass(ingrediente)">
+                            <tr class="@ObtenerClaseFilaTabla(ingrediente)">
+                                <td>@ingrediente.Id</td>
                                 <td>
                                     <div class="d-flex align-items-center">
-                                        <span class="fs-3 me-3">@GetIngredienteIcon(ingrediente.Categoria)</span>
+                                        <span class="fs-4 me-3">🥬</span>
                                         <strong>@ingrediente.Nombre</strong>
                                     </div>
                                 </td>
-                                <td>
-                                    <span class="badge" style="background-color: var(--rojo-muy-claro); color: var(--rojo-oscuro);">
-                                        @ingrediente.Categoria
-                                    </span>
-                                </td>
                                 <td class="text-end">
-                                    <span class="fw-bold fs-5 text-danger">@ingrediente.Cantidad</span>
-                                </td>
-                                <td>@ingrediente.Unidad</td>
-                                <td class="text-center">
-                                    <span class="badge @GetStockClass(ingrediente)">
-                                        @GetStockStatus(ingrediente)
-                                    </span>
+                                    <span class="fw-bold fs-5 text-danger">@ingrediente.Stock</span>
                                 </td>
                             </tr>
                         }
@@ -83,101 +84,66 @@
                 </table>
             </div>
             <div class="card-footer bg-white text-center text-muted py-3">
-                Mostrando @filteredIngredientes.Count de @ingredientes.Count ingredientes
+                Mostrando @ingredientesFiltrados.Count de @ingredientes.Count ingredientes
             </div>
         </div>
     }
 </div>
 
 @code {
-    private List<Ingrediente> ingredientes = new();
-    private List<Ingrediente> filteredIngredientes = new();
+    private List<IngredienteDTO> ingredientes = new();
+    private List<IngredienteDTO> ingredientesFiltrados = new();
     private bool isLoading = false;
     private string searchTerm = string.Empty;
+    private string? errorMessage = null;
 
     protected override async Task OnInitializedAsync()
     {
-        await LoadIngredientes();
+        await CargarIngredientes();
     }
 
-    private async Task LoadIngredientes()
+    private async Task CargarIngredientes()
     {
         isLoading = true;
-        await Task.Delay(500);
+        errorMessage = null;
 
-        ingredientes = new List<Ingrediente>
+        try
         {
-            new Ingrediente { Id = 1, Nombre = "Harina", Categoria = "Panadería", Cantidad = 50, Unidad = "kg", StockMinimo = 20 },
-            new Ingrediente { Id = 2, Nombre = "Tomate", Categoria = "Verduras", Cantidad = 15, Unidad = "kg", StockMinimo = 10 },
-            new Ingrediente { Id = 3, Nombre = "Mozzarella", Categoria = "Lácteos", Cantidad = 8, Unidad = "kg", StockMinimo = 15 },
-            new Ingrediente { Id = 4, Nombre = "Carne molida", Categoria = "Carnes", Cantidad = 25, Unidad = "kg", StockMinimo = 10 },
-            new Ingrediente { Id = 5, Nombre = "Aceite de oliva", Categoria = "Aceites", Cantidad = 12, Unidad = "litros", StockMinimo = 5 },
-            new Ingrediente { Id = 6, Nombre = "Sal", Categoria = "Condimentos", Cantidad = 30, Unidad = "kg", StockMinimo = 5 },
-            new Ingrediente { Id = 7, Nombre = "Lechuga", Categoria = "Verduras", Cantidad = 5, Unidad = "kg", StockMinimo = 8 },
-            new Ingrediente { Id = 8, Nombre = "Cebolla", Categoria = "Verduras", Cantidad = 2, Unidad = "kg", StockMinimo = 10 },
-        };
-
-        FilterIngredientes();
-        isLoading = false;
+            ingredientes = (await IngredienteApi.GetAllAsync()).ToList();
+            ingredientesFiltrados = ingredientes;
+        }
+        catch (Exception ex)
+        {
+            errorMessage = ex.Message;
+            ingredientes = new List<IngredienteDTO>();
+            ingredientesFiltrados = new List<IngredienteDTO>();
+        }
+        finally
+        {
+            isLoading = false;
+            StateHasChanged();
+        }
     }
 
     private void FilterIngredientes()
     {
         if (string.IsNullOrWhiteSpace(searchTerm))
         {
-            filteredIngredientes = ingredientes;
+            ingredientesFiltrados = ingredientes;
         }
         else
         {
             var search = searchTerm.ToLower();
-            filteredIngredientes = ingredientes
-                .Where(i => i.Nombre.ToLower().Contains(search) || i.Categoria.ToLower().Contains(search))
+            ingredientesFiltrados = ingredientes
+                .Where(i => i.Nombre.ToLower().Contains(search))
                 .ToList();
         }
     }
 
-    private string GetRowClass(Ingrediente ingrediente)
+    private string ObtenerClaseFilaTabla(IngredienteDTO ingrediente)
     {
-        if (ingrediente.Cantidad == 0) return "table-danger";
-        if (ingrediente.Cantidad < ingrediente.StockMinimo) return "table-warning";
+        if (ingrediente.Stock == 0) return "table-danger";
+        if (ingrediente.Stock < 10) return "table-warning";
         return "";
-    }
-
-    private string GetStockClass(Ingrediente ingrediente)
-    {
-        if (ingrediente.Cantidad == 0) return "bg-danger";
-        if (ingrediente.Cantidad < ingrediente.StockMinimo) return "bg-warning";
-        return "bg-success";
-    }
-
-    private string GetStockStatus(Ingrediente ingrediente)
-    {
-        if (ingrediente.Cantidad == 0) return "Sin stock";
-        if (ingrediente.Cantidad < ingrediente.StockMinimo) return "Stock bajo";
-        return "Disponible";
-    }
-
-    private string GetIngredienteIcon(string categoria)
-    {
-        return categoria switch
-        {
-            "Verduras" => "🥬",
-            "Carnes" => "🥩",
-            "Lácteos" => "🧀",
-            "Panadería" => "🍞",
-            "Aceites" => "🫒",
-            "Condimentos" => "🧂",
-            _ => "📦"
-        };
-    }
-
-    private class Ingrediente
-    {
-        public int Id { get; set; }
-        public string Nombre { get; set; } = string.Empty;
-        public string Categoria { get; set; } = string.Empty;
-        public decimal Cantidad { get; set; }
-        public string Unidad { get; set; } = string.Empty;
-        public decimal StockMinimo { get; set; }
     }
 }

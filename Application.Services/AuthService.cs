@@ -52,6 +52,7 @@ namespace Application.Services
                 new Claim(ClaimTypes.NameIdentifier, usuario.Id.ToString()),
                 new Claim(ClaimTypes.Name, usuario.Username),
                 new Claim(ClaimTypes.Email, usuario.Email),
+                new Claim(ClaimTypes.Role, usuario.Rol),
                 new Claim("jti", Guid.NewGuid().ToString())
                 };
             // Agregar permisos como claims para UI
@@ -123,6 +124,29 @@ namespace Application.Services
                 return null;
             }
         }
+
+        public string? GetRoleFromToken(string token)
+        {
+            try
+            {
+                var tokenHandler = new JwtSecurityTokenHandler();
+                var jsonToken = tokenHandler.ReadJwtToken(token);
+
+                var userRoleClaim = jsonToken.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role);
+                
+                if (userRoleClaim != null)
+                {
+                    return userRoleClaim.Value;
+                }
+                return null;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+
         private int GetExpirationMinutes()
         {
             var jwtSettings = configuration.GetSection("JwtSettings");

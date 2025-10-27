@@ -1,5 +1,5 @@
+using API.Clients;
 using BlazorApp.Components;
-using Application.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,8 +7,10 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
-// Configurar autenticación
-//builder.Services.AddSingleton<IAuthService, AuthService>();
+builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://localhost:7111/") });
+
+
+builder.Services.AddSingleton<IAuthService, AuthApiClient>();
 
 var app = builder.Build();
 

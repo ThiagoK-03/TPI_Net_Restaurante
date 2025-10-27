@@ -1,10 +1,12 @@
 ﻿@page "/dashboard/empleado/productos"
 @layout EmpleadoDashboardLayout
+@using DTOs
+@using API
 
 <div class="container-fluid py-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2 class="text-danger fw-bold">Gestión de Productos</h2>
-        <button class="btn btn-primary" @onclick="OpenAddProductModal">
+        <button class="btn btn-primary" @onclick="AbrirModalAgregar">
             <i class="bi bi-plus-circle"></i> Agregar Producto
         </button>
     </div>
@@ -18,13 +20,23 @@
             <p class="mt-3 text-muted">Cargando productos...</p>
         </div>
     }
+    else if (errorMessage != null)
+    {
+        <div class="alert alert-danger" role="alert">
+            <i class="bi bi-exclamation-triangle-fill me-2"></i>
+            Error al cargar productos: @errorMessage
+            <button class="btn btn-sm btn-outline-danger ms-3" @onclick="CargarProductos">
+                <i class="bi bi-arrow-clockwise"></i> Reintentar
+            </button>
+        </div>
+    }
     else if (productos.Count == 0)
     {
         <div class="card text-center py-5">
             <div class="card-body">
                 <h1 class="display-1">📦</h1>
                 <h3 class="text-muted">No hay productos registrados</h3>
-                <p class="text-secondary">Comienza agregando tu primer producto</p>
+                <p class="text-secondary">Comienza agregando el primer producto</p>
             </div>
         </div>
     }
@@ -43,21 +55,8 @@
                                 <div class="flex-grow-1">
                                     <h5 class="card-title text-danger fw-bold mb-1">@producto.Nombre</h5>
                                     <p class="card-text text-muted small mb-2">@producto.Descripcion</p>
-                                    <div class="d-flex align-items-center gap-3">
-                                        <span class="h4 mb-0 text-danger fw-bold">$@producto.Precio.ToString("F2")</span>
-                                        <span class="badge @(producto.Stock > 0 ? "bg-success" : "bg-danger")">
-                                            @(producto.Stock > 0 ? $"Stock: {producto.Stock}" : "Sin stock")
-                                        </span>
-                                    </div>
+                                    <span class="h4 mb-0 text-danger fw-bold">$@producto.Precio.ToString("F2")</span>
                                 </div>
-                            </div>
-                            <div class="d-flex gap-2 mt-3">
-                                <button class="btn btn-sm btn-outline-primary flex-fill" @onclick="() => OpenEditProductModal(producto)">
-                                    <i class="bi bi-pencil"></i> Editar
-                                </button>
-                                <button class="btn btn-sm btn-outline-danger flex-fill" @onclick="() => ConfirmDelete(producto)">
-                                    <i class="bi bi-trash"></i> Eliminar
-                                </button>
                             </div>
                         </div>
                     </div>
@@ -66,43 +65,49 @@
         </div>
     }
 
-    @* Modal Agregar/Editar *@
+    @* Modal Agregar Producto *@
     @if (showModal)
     {
-        <div class="modal show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.5);" @onclick="CloseModal">
-            <div class="modal-dialog modal-dialog-centered" @onclick:stopPropagation="true">
+        <div class="modal show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.5);" @onclick="CerrarModal">
+            <div class="modal-dialog modal-dialog-centered modal-lg" @onclick:stopPropagation="true">
                 <div class="modal-content">
                     <div class="modal-header" style="background-color: var(--rojo-muy-claro);">
-                        <h5 class="modal-title text-danger fw-bold">
-                            @(isEditMode ? "Editar Producto" : "Nuevo Producto")
-                        </h5>
-                        <button type="button" class="btn-close" @onclick="CloseModal"></button>
+                        <h5 class="modal-title text-danger fw-bold">Nuevo Producto</h5>
+                        <button type="button" class="btn-close" @onclick="CerrarModal"></button>
                     </div>
-                    <form @onsubmit="SaveProduct">
+                    <form @onsubmit="GuardarProducto">
                         <div class="modal-body">
                             <div class="mb-3">
-                                <label class="form-label fw-semibold">Nombre del Producto</label>
-                                <input type="text" class="form-control" @bind="currentProduct.Nombre" required />
+                                <label class="form-label fw-semibold">Nombre del Producto *</label>
+                                <input type="text" class="form-control" @bind="productoNuevo.Nombre"
+                                       placeholder="Ej: Pizza Margarita" required />
                             </div>
+
                             <div class="mb-3">
-                                <label class="form-label fw-semibold">Descripción</label>
-                                <textarea class="form-control" rows="3" @bind="currentProduct.Descripcion" required></textarea>
+                                <label class="form-label fw-semibold">Descripción *</label>
+                                <textarea class="form-control" rows="3" @bind="productoNuevo.Descripcion"
+                                          placeholder="Describe el producto..." required></textarea>
                             </div>
-                            <div class="row">
-                                <div class="col-md-6 mb-3">
-                                    <label class="form-label fw-semibold">Precio</label>
-                                    <input type="number" step="0.01" class="form-control" @bind="currentProduct.Precio" required />
-                                </div>
-                                <div class="col-md-6 mb-3">
-                                    <label class="form-label fw-semibold">Stock</label>
-                                    <input type="number" class="form-control" @bind="currentProduct.Stock" required />
+
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold">Precio *</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">$</span>
+                                    <input type="number" step="0.01" class="form-control" @bind="productoNuevo.Precio"
+                                           placeholder="0.00" required />
                                 </div>
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" @onclick="CloseModal">Cancelar</button>
-                            <button type="submit" class="btn btn-primary">
-                                @(isEditMode ? "Guardar Cambios" : "Crear Producto")
+                            <button type="button" class="btn btn-secondary" @onclick="CerrarModal" disabled="@isSaving">
+                                Cancelar
+                            </button>
+                            <button type="submit" class="btn btn-primary" disabled="@isSaving">
+                                @if (isSaving)
+                                {
+                                    <span class="spinner-border spinner-border-sm me-2"></span>
+                                }
+                                <i class="bi bi-save"></i> Crear Producto
                             </button>
                         </div>
                     </form>
@@ -111,133 +116,106 @@
         </div>
     }
 
-    @* Modal Confirmación Eliminar *@
-    @if (showDeleteModal)
+    @* Toast *@
+    @if (mostrarToast)
     {
-        <div class="modal show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.5);" @onclick="CloseDeleteModal">
-            <div class="modal-dialog modal-dialog-centered modal-sm" @onclick:stopPropagation="true">
-                <div class="modal-content">
-                    <div class="modal-header bg-danger text-white">
-                        <h5 class="modal-title fw-bold">Confirmar Eliminación</h5>
-                        <button type="button" class="btn-close btn-close-white" @onclick="CloseDeleteModal"></button>
-                    </div>
-                    <div class="modal-body">
-                        <p>¿Estás seguro de que deseas eliminar el producto <strong>@productToDelete?.Nombre</strong>?</p>
-                        <p class="text-danger small mb-0"><i class="bi bi-exclamation-triangle"></i> Esta acción no se puede deshacer.</p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" @onclick="CloseDeleteModal">Cancelar</button>
-                        <button type="button" class="btn btn-danger" @onclick="DeleteProduct">Eliminar</button>
-                    </div>
+        <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1050;">
+            <div class="toast show" role="alert">
+                <div class="toast-header @(toastExito ? "bg-success" : "bg-danger") text-white">
+                    <i class="bi @(toastExito ? "bi-check-circle-fill" : "bi-x-circle-fill") me-2"></i>
+                    <strong class="me-auto">@(toastExito ? "¡Éxito!" : "Error")</strong>
+                    <button type="button" class="btn-close btn-close-white" @onclick="@(() => mostrarToast = false)"></button>
                 </div>
+                <div class="toast-body">@mensajeToast</div>
             </div>
         </div>
     }
 </div>
 
 @code {
-    private List<Producto> productos = new();
+    private ProductoApi ProductoApi { get; set; } = default!;
+
+    private List<ProductoDTO> productos = new();
     private bool isLoading = false;
+    private bool isSaving = false;
     private bool showModal = false;
-    private bool showDeleteModal = false;
-    private bool isEditMode = false;
-    private Producto currentProduct = new();
-    private Producto? productToDelete = null;
+    private ProductoDTO productoNuevo = new();
+    private bool mostrarToast = false;
+    private string mensajeToast = string.Empty;
+    private bool toastExito = true;
+    private string? errorMessage = null;
 
     protected override async Task OnInitializedAsync()
     {
-        await LoadProductos();
+        await CargarProductos();
     }
 
-    private async Task LoadProductos()
+    private async Task CargarProductos()
     {
         isLoading = true;
-        await Task.Delay(500);
+        errorMessage = null;
 
-        productos = new List<Producto>
+        try
         {
-            new Producto { Id = 1, Nombre = "Pizza Margarita", Descripcion = "Pizza clásica con tomate y mozzarella", Precio = 850.00m, Stock = 25 },
-            new Producto { Id = 2, Nombre = "Hamburguesa Completa", Descripcion = "Hamburguesa con lechuga, tomate y queso", Precio = 650.00m, Stock = 30 },
-            new Producto { Id = 3, Nombre = "Empanadas x12", Descripcion = "Docena de empanadas de carne", Precio = 1200.00m, Stock = 0 },
-            new Producto { Id = 4, Nombre = "Milanesa Napolitana", Descripcion = "Milanesa con salsa y queso gratinado", Precio = 950.00m, Stock = 15 }
-        };
-
-        isLoading = false;
-    }
-
-    private void OpenAddProductModal()
-    {
-        isEditMode = false;
-        currentProduct = new Producto();
-        showModal = true;
-    }
-
-    private void OpenEditProductModal(Producto producto)
-    {
-        isEditMode = true;
-        currentProduct = new Producto
-            {
-                Id = producto.Id,
-                Nombre = producto.Nombre,
-                Descripcion = producto.Descripcion,
-                Precio = producto.Precio,
-                Stock = producto.Stock
-            };
-        showModal = true;
-    }
-
-    private void CloseModal()
-    {
-        showModal = false;
-        currentProduct = new();
-    }
-
-    private async Task SaveProduct()
-    {
-        if (isEditMode)
-        {
-            var index = productos.FindIndex(p => p.Id == currentProduct.Id);
-            if (index >= 0)
-                productos[index] = currentProduct;
+            productos = (await ProductoApi.GetAllAsync()).ToList();
         }
-        else
+        catch (Exception ex)
         {
-            currentProduct.Id = productos.Any() ? productos.Max(p => p.Id) + 1 : 1;
-            productos.Add(currentProduct);
+            errorMessage = ex.Message;
+            productos = new List<ProductoDTO>();
         }
-
-        CloseModal();
-        StateHasChanged();
-    }
-
-    private void ConfirmDelete(Producto producto)
-    {
-        productToDelete = producto;
-        showDeleteModal = true;
-    }
-
-    private void CloseDeleteModal()
-    {
-        showDeleteModal = false;
-        productToDelete = null;
-    }
-
-    private async Task DeleteProduct()
-    {
-        if (productToDelete != null)
+        finally
         {
-            productos.Remove(productToDelete);
-            CloseDeleteModal();
+            isLoading = false;
             StateHasChanged();
         }
     }
 
-    private class Producto
+    private void AbrirModalAgregar()
     {
-        public int Id { get; set; }
-        public string Nombre { get; set; } = string.Empty;
-        public string Descripcion { get; set; } = string.Empty;
-        public decimal Precio { get; set; }
-        public int Stock { get; set; }
+        productoNuevo = new ProductoDTO();
+        showModal = true;
+    }
+
+    private void CerrarModal()
+    {
+        showModal = false;
+        productoNuevo = new();
+    }
+
+    private async Task GuardarProducto()
+    {
+        isSaving = true;
+
+        try
+        {
+            await ProductoApi.AddAsync(productoNuevo);
+            MostrarToast("Producto creado exitosamente", true);
+            CerrarModal();
+            await CargarProductos();
+        }
+        catch (Exception ex)
+        {
+            MostrarToast($"Error al crear producto: {ex.Message}", false);
+        }
+        finally
+        {
+            isSaving = false;
+            StateHasChanged();
+        }
+    }
+
+    private void MostrarToast(string mensaje, bool exito)
+    {
+        mensajeToast = mensaje;
+        toastExito = exito;
+        mostrarToast = true;
+        StateHasChanged();
+
+        Task.Delay(3000).ContinueWith(_ =>
+        {
+            mostrarToast = false;
+            InvokeAsync(StateHasChanged);
+        });
     }
 }

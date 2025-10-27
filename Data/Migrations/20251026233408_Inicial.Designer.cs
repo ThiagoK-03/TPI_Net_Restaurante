@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250928235312_InitialCreate1")]
-    partial class InitialCreate1
+    [Migration("20251026233408_Inicial")]
+    partial class Inicial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -33,27 +33,22 @@ namespace Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Apellido")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)");
-
                     b.Property<DateTime>("FechaAlta")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
 
-                    b.Property<string>("Nombre")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                    b.Property<decimal>("Penalizacion")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("decimal(5,2)")
+                        .HasDefaultValue(0m);
+
+                    b.Property<int>("UsuarioId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Email")
+                    b.HasIndex("UsuarioId")
                         .IsUnique();
 
                     b.ToTable("Clientes");
@@ -67,7 +62,7 @@ namespace Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("Cuit")
+                    b.Property<int>("Cuil")
                         .HasMaxLength(15)
                         .HasColumnType("int");
 
@@ -83,16 +78,24 @@ namespace Data.Migrations
                         .HasColumnType("nvarchar(150)");
 
                     b.Property<decimal>("Sueldo")
-                        .HasColumnType("decimal(10,2)");
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("decimal(10,2)")
+                        .HasComputedColumnSql("[HorasTrabajadas] * [PrecioPorHora]");
 
                     b.Property<string>("Turno")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<int>("UsuarioId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("Cuit")
+                    b.HasIndex("Cuil")
+                        .IsUnique();
+
+                    b.HasIndex("UsuarioId")
                         .IsUnique();
 
                     b.ToTable("Empleados");
@@ -254,12 +257,97 @@ namespace Data.Migrations
                     b.ToTable("Proveedores");
                 });
 
+            modelBuilder.Entity("Domain.Model.Usuario", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Apellido")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<bool>("Estado")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true);
+
+                    b.Property<string>("FotoPerfil")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("Nombre")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("PasswordHash")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<string>("Rol")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<string>("Telefono")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<string>("Username")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Email")
+                        .IsUnique();
+
+                    b.HasIndex("Username")
+                        .IsUnique();
+
+                    b.ToTable("Usuarios");
+                });
+
+            modelBuilder.Entity("Domain.Model.Cliente", b =>
+                {
+                    b.HasOne("Domain.Model.Usuario", "Usuario")
+                        .WithOne("Cliente")
+                        .HasForeignKey("Domain.Model.Cliente", "UsuarioId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Usuario");
+                });
+
+            modelBuilder.Entity("Domain.Model.Empleado", b =>
+                {
+                    b.HasOne("Domain.Model.Usuario", "Usuario")
+                        .WithOne("Empleado")
+                        .HasForeignKey("Domain.Model.Empleado", "UsuarioId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Usuario");
+                });
+
             modelBuilder.Entity("Domain.Model.Pedido", b =>
                 {
                     b.HasOne("Domain.Model.Cliente", "Cliente")
-                        .WithMany()
+                        .WithMany("HistorialPedidos")
                         .HasForeignKey("ClienteId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("Domain.Model.Empleado", "Empleado")
@@ -280,9 +368,21 @@ namespace Data.Migrations
                         .HasForeignKey("PedidoId");
                 });
 
+            modelBuilder.Entity("Domain.Model.Cliente", b =>
+                {
+                    b.Navigation("HistorialPedidos");
+                });
+
             modelBuilder.Entity("Domain.Model.Pedido", b =>
                 {
                     b.Navigation("Productos");
+                });
+
+            modelBuilder.Entity("Domain.Model.Usuario", b =>
+                {
+                    b.Navigation("Cliente");
+
+                    b.Navigation("Empleado");
                 });
 #pragma warning restore 612, 618
         }
