@@ -1,4 +1,4 @@
-using Application.Services;
+﻿using Application.Services;
 using Data;
 using Domain.Model;
 using DTOs;
@@ -30,7 +30,7 @@ builder.Services.AddScoped<ProveedorService>();
 builder.Services.AddScoped<PedidoService>();
 
 builder.Services.AddScoped<AuthService>();
-builder.Services.AddScoped<UsuarioRepository>(); // O usa AddDbContext para inyecci�n
+builder.Services.AddScoped<UsuarioRepository>(); // O usa AddDbContext para inyección
 
 // JWT Auth
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -81,5 +81,35 @@ app.MapCrudEndpoints<ProveedorDTO, ProveedorService>("proveedores");
 app.MapCrudEndpoints<ProductoDTO, ProductoService>("productos");
 app.MapCrudEndpoints<IngredienteDTO, IngredienteService>("ingredientes");
 app.MapCrudEndpoints<PedidoDTO, PedidoService>("pedidos");
+
+using (var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+
+    // Asegura que la base de datos esté creada
+    context.Database.EnsureCreated();
+
+    // Si no hay usuarios, agrega uno admin por defecto
+    if (!context.Usuarios.Any())
+    {
+        var admin = new Usuario(
+            username: "admin",
+            email: "admin@rest.com",
+            telefono: "123456789",
+            nombre: "Admin",
+            apellido: "Super",
+            rol: "Admin",
+            password: "1234"
+        );
+
+        context.Usuarios.Add(admin);
+        context.SaveChanges();
+        Console.WriteLine("Usuario admin creado exitosamente ✅");
+    }
+    else
+    {
+        Console.WriteLine("Usuarios ya existen, no se creó admin.");
+    }
+}
 
 app.Run();

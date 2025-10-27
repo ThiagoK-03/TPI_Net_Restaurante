@@ -15,34 +15,56 @@ namespace WindowsForms
 {
     public partial class LoginForm : MenuBase
     {
-        private readonly IAuthService _authService;
         public LoginForm()
         {
             InitializeComponent();
-            //_authService = new AuthService();
         }
 
-        private void btnLogin_Click(object sender, EventArgs e)
+        private async void btnLogin_Click(object sender, EventArgs e)
         {
-            string usuario = txtUsuario.Text.Trim();
-            string password = txtPassword.Text.Trim();
-
-            // Credenciales hardcodeadas
-            //if (_authService.Login(usuario, password))
-            if (true)
-                {
-                this.Hide();
-                Menu menu = new Menu();
-                menu.FormClosed += (s, args) => this.Close();
-                menu.Show();
-            }
-            else
+            try
             {
-                MessageBox.Show("Usuario o contraseña incorrectos",
-                                "Error de login",
-                                MessageBoxButtons.OK,
-                                MessageBoxIcon.Error);
+                string username = txtUsuario.Text.Trim();
+                string password = txtPassword.Text.Trim();
+
+                var authService = AuthServiceProvider.Instance;
+                bool success = await authService.LoginAsync(username, password);
+
+                if (success)
+                {
+                    this.DialogResult = DialogResult.OK;
+                    this.Close();
+                }
+                else
+                {
+                    MessageBox.Show("Usuario o contraseña incorrectos.", "Error de autenticación",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    txtPassword.Clear();
+                    txtPassword.Focus();
+                }
             }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error al iniciar sesión: {ex.Message}", "Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+            //// Credenciales hardcodeadas
+            ////if (_authService.Login(usuario, password))
+            //if (true)
+            //    {
+            //    this.Hide();
+            //    Menu menu = new Menu();
+            //    menu.FormClosed += (s, args) => this.Close();
+            //    menu.Show();
+            //}
+            //else
+            //{
+            //    MessageBox.Show("Usuario o contraseña incorrectos",
+            //                    "Error de login",
+            //                    MessageBoxButtons.OK,
+            //                    MessageBoxIcon.Error);
+            //}
         }
     }
 }

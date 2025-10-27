@@ -10,7 +10,7 @@ builder.Services.AddRazorComponents()
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://localhost:7111/") });
 
 
-builder.Services.AddSingleton<IAuthService, AuthApiClient>();
+// builder.Services.AddSingleton<IAuthService, AuthApiClient>();
 
 var app = builder.Build();
 

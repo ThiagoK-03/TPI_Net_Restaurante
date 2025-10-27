@@ -17,9 +17,9 @@ namespace Application.Services
     {
         private readonly UsuarioRepository usuarioRepository;
         private readonly IConfiguration configuration;
-        public AuthService(IConfiguration configuration, UsuarioRepository usuarioRepository)
+        public AuthService(IConfiguration configuration)
         {
-            this.usuarioRepository = usuarioRepository;
+            usuarioRepository = new UsuarioRepository();
             this.configuration = configuration;
         }
         public async Task<LoginResponse?> LoginAsync(LoginRequest request)

@@ -25,7 +25,7 @@ public class AuthHelper
             _navManager.NavigateTo("/login");
     }
 
-    public async Task<string> GetSection()
+    public async Task<string> GetSection() 
     {
         var result = await _localStorage.GetAsync<string>("userRole");
         switch (result.Value)

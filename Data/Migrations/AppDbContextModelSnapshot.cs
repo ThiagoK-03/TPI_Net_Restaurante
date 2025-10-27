@@ -48,7 +48,7 @@ namespace Data.Migrations
                     b.HasIndex("UsuarioId")
                         .IsUnique();
 
-                    b.ToTable("Clientes");
+                    b.ToTable("Clientes", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Model.Empleado", b =>
@@ -95,7 +95,7 @@ namespace Data.Migrations
                     b.HasIndex("UsuarioId")
                         .IsUnique();
 
-                    b.ToTable("Empleados");
+                    b.ToTable("Empleados", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Model.Ingrediente", b =>
@@ -134,7 +134,7 @@ namespace Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Ingredientes");
+                    b.ToTable("Ingredientes", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Model.Pedido", b =>
@@ -173,7 +173,7 @@ namespace Data.Migrations
 
                     b.HasIndex("EmpleadoId");
 
-                    b.ToTable("Pedidos");
+                    b.ToTable("Pedidos", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Model.Producto", b =>
@@ -212,7 +212,7 @@ namespace Data.Migrations
 
                     b.HasIndex("PedidoId");
 
-                    b.ToTable("Productos");
+                    b.ToTable("Productos", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Model.Proveedor", b =>
@@ -251,7 +251,7 @@ namespace Data.Migrations
                     b.HasIndex("Cuit")
                         .IsUnique();
 
-                    b.ToTable("Proveedores");
+                    b.ToTable("Proveedores", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Model.Usuario", b =>
@@ -314,7 +314,7 @@ namespace Data.Migrations
                     b.HasIndex("Username")
                         .IsUnique();
 
-                    b.ToTable("Usuarios");
+                    b.ToTable("Usuarios", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Model.Cliente", b =>

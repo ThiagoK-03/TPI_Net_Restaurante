@@ -51,6 +51,19 @@ namespace Domain.Model
             SetPassword(password);
             Estado = true;
         }
+        //Contructor para probar usuario precargado
+        public Usuario(int id,string username, string email, string telefono, string nombre, string apellido, string rol, string password)
+        {
+            Id = id;
+            SetUsername(username);
+            SetEmail(email);
+            SetTelefono(telefono);
+            SetNombre(nombre);
+            SetApellido(apellido);
+            SetRol(rol);
+            SetPassword(password);
+            Estado = true;
+        }
 
         // Constructor vacío para EF Core
         public Usuario() { }
