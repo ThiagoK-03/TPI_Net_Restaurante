@@ -14,7 +14,10 @@
 </head>
 
 <body>
-    <Routes @rendermode=RenderMode.InteractiveServer />
+    <Routes @rendermode=RenderMode.InteractiveServer />        @* ESTE ESTABA PRIMERO *@
+
+    @* <Routes @rendermode=RenderMode.InteractiveWebAssembly />     ESTE HAY QUE PROBARLO SI NO ANDA EL OTRO *@   
+
     <script src="_framework/blazor.web.js"></script>
 </body>
 

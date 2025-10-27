@@ -2,6 +2,7 @@
 using Microsoft.JSInterop;
 using API.Clients;
 using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 
 namespace Auth.Blazor
 {
@@ -152,5 +153,28 @@ namespace Auth.Blazor
                 return false;
             }
         }
+
+        public async Task<string?> GetRoleAsync()
+        {
+            try
+            {
+                var token = await GetTokenAsync();
+                if (string.IsNullOrEmpty(token))
+                    return null;
+
+                var handler = new JwtSecurityTokenHandler();
+                var jwtToken = handler.ReadJwtToken(token);
+
+                var roleClaim = jwtToken.Claims.FirstOrDefault(c =>
+                    c.Type == "rol" || c.Type == "role" || c.Type == "roles" || c.Type == ClaimTypes.Role);
+
+                return roleClaim?.Value;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
     }
 }

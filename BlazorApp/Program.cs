@@ -1,18 +1,43 @@
 using API.Clients;
 using BlazorApp.Components;
+using Auth.Blazor;
 
 var builder = WebApplication.CreateBuilder(args);
+
+
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
-builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://localhost:7111/") });
+//builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://localhost:7111/") });
 
 
-// builder.Services.AddSingleton<IAuthService, AuthApiClient>();
+//// Configurar autenticación
+////builder.Services.AddSingleton<IAuthService, BlazorWasmAuthService>();
+//builder.Services.AddScoped<IAuthService, BlazorWasmAuthService>();
+
+
+//var app = builder.Build();
+
+builder.Services.AddSingleton<IAuthService, BlazorServerAuthService>();
 
 var app = builder.Build();
+
+// Configurar AuthServiceProvider para ApiClients
+var authService = app.Services.GetRequiredService<IAuthService>();
+AuthServiceProvider.Register(authService);
+
+
+// Configurar AuthServiceProvider para ApiClients
+//using (var scope = app.Services.CreateScope())
+//{
+//    var authService = scope.ServiceProvider.GetRequiredService<IAuthService>();
+//    AuthServiceProvider.Register(authService);
+//    // Use authService here
+//}
+
+
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
