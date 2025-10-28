@@ -16,8 +16,7 @@ namespace DTOs
         public string Email { get; set; }
         public int Telefono {  get; set; }
         public string TipoIngrediente {  get; set; }
-        //public string Nombre { get; set; } ---- Nombre = RazonSocial..?
+        public List<int>? IngredientesIds { get; set; } = new List<int>();
 
-        //public string Compañia { get; set; } //Agregue este atributo
     }
 }

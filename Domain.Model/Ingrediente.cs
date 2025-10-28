@@ -4,33 +4,58 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Text.RegularExpressions;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Domain.Model
 {
     public class Ingrediente
     {
+        [Key]
         public int Id { get; private set; }
+
+        [Required]
+        public Proveedor Proveedor { get; private set; }
+
+        [ForeignKey(nameof(Proveedor))]
+        public int ProveedorId {  get; private set; }
+
+        // Relacion N:N Con Producto (Del otro lado tambien lleva una Collection
+        public virtual ICollection<Producto> Productos { get; private set; } = new List<Producto>();
+
+        [Required]
         public string Nombre { get; private set; }
+        [Required]
         public string Descripcion { get; private set; }
 
+        [Required]
         public int Stock { get; private set; }
 
-        //listaProveedor / Nose como poner esto no me queda claro
-        public string UnidadMedida { get; private set; }
+        public string? UnidadMedida { get; private set; }
 
-        public string Origen { get; private set; }
+        public string? Origen { get; private set; }
 
-        public int LimiteBajoStock { get; private set; }
+        public int? LimiteBajoStock { get; private set; }
 
+        protected Ingrediente() { } // requerido por EF
 
-        public Ingrediente(int id, string nombre, string descripcion, int stock, string unidadMedida, string origen, int limiteBajoStock ) {
+        public Ingrediente(int id, string nombre, Proveedor proveedor, string descripcion, int stock, string? unidadMedida, string? origen, int? limiteBajoStock) {
             SetId(id);
             SetNombre(nombre);
+            SetProveedor(proveedor);
             SetDescripcion(descripcion);
             SetStock(stock);
             SetUnidadMedida(unidadMedida);
             SetOrigen(origen);
             SetLimiteBajoStock(limiteBajoStock);
+
+        }
+
+        public void SetProveedor(Proveedor proveedor)
+        {
+            if (proveedor == null) throw new ArgumentException("El Proveedor es requerido.", nameof(proveedor));
+            Proveedor = proveedor;
+            ProveedorId = proveedor.Id;
         }
 
         public void SetId(int id)
@@ -59,25 +84,42 @@ namespace Domain.Model
             Stock = stock;
         }
 
-        public void SetUnidadMedida(string unidadMedida)
+        public void SetUnidadMedida(string? unidadMedida)
         {
-            if (string.IsNullOrWhiteSpace(unidadMedida))
-                throw new ArgumentException("La unidad de medida no puede ser nula o vacía.", nameof(unidadMedida));
             UnidadMedida = unidadMedida;
         }
 
-        public void SetOrigen(string origen)
+        public void SetOrigen(string? origen)
         {
             if (string.IsNullOrWhiteSpace(origen))
                 throw new ArgumentException("El origen no puede ser nulo o vacío.", nameof(origen));
             Origen = origen;
         }
 
-        public void SetLimiteBajoStock(int limiteBajoStock)
+        public void SetLimiteBajoStock(int? limiteBajoStock)
         {
             if (limiteBajoStock < 0)
                 throw new ArgumentException("El limiteBajoStock debe ser mayor o igual que 0.", nameof(limiteBajoStock));
             LimiteBajoStock = limiteBajoStock;
+        }
+
+        public void AgregarProducto(Producto producto)
+        {
+            if (producto == null)
+                throw new ArgumentNullException(nameof(producto));
+
+            if (Productos.Any(p => p.Id == producto.Id))
+                return; // ya está agregado
+
+            Productos.Add(producto);
+        }
+
+        public void QuitarProducto(Producto producto)
+        {
+            if (producto == null)
+                throw new ArgumentNullException(nameof(producto));
+
+            Productos.Remove(producto);
         }
     }
 

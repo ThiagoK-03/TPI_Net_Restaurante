@@ -88,15 +88,15 @@
                                 </div>
                             }
 
-                            @if (pedido.Productos != null && pedido.Productos.Any())
+                            @if (pedido.ProductosIds != null && pedido.ProductosIds.Any())
                             {
                                 <div class="mb-3">
                                     <small class="text-muted d-block mb-2 fw-semibold">📝 Items:</small>
                                     <ul class="list-unstyled ms-2">
-                                        @foreach (var prod in pedido.Productos)
+                                        @foreach (var prodId in pedido.ProductosIds)
                                         {
                                             <li class="mb-1">
-                                                <span class="badge bg-secondary">ID: @prod.Id</span>
+                                                <span class="badge bg-secondary">ID: @prodId</span>
                                             </li>
                                         }
                                     </ul>
@@ -188,16 +188,16 @@
                             </div>
                         }
 
-                        @if (pedidoSeleccionado.Productos != null && pedidoSeleccionado.Productos.Any())
+                        @if (pedidoSeleccionado.ProductosIds != null && pedidoSeleccionado.ProductosIds.Any())
                         {
                             <div class="mb-4">
                                 <h6 class="text-danger fw-bold mb-3">Productos del Pedido</h6>
                                 <div class="list-group">
-                                    @foreach (var prod in pedidoSeleccionado.Productos)
+                                    @foreach (var prodId in pedidoSeleccionado.ProductosIds)
                                     {
                                         <div class="list-group-item">
                                             <div class="d-flex justify-content-between align-items-center">
-                                                <span>Producto ID: @prod.Id</span>
+                                                <span>Producto ID: @prodId</span>
                                             </div>
                                         </div>
                                     }
@@ -488,7 +488,7 @@
                 Estado = EstadoPedido.Pendiente.ToString(),
                 ClienteId = clienteIdActual,
                 Descripcion = "",
-                Productos = new List<ProductoDTO>()
+                ProductosIds = new List<int>()
             };
         productosEnPedido = new List<ProductoPedidoItem>();
         searchProducto = string.Empty;

@@ -48,7 +48,7 @@ namespace Data.Migrations
                     b.HasIndex("UsuarioId")
                         .IsUnique();
 
-                    b.ToTable("Clientes", (string)null);
+                    b.ToTable("Clientes");
                 });
 
             modelBuilder.Entity("Domain.Model.Empleado", b =>
@@ -95,7 +95,7 @@ namespace Data.Migrations
                     b.HasIndex("UsuarioId")
                         .IsUnique();
 
-                    b.ToTable("Empleados", (string)null);
+                    b.ToTable("Empleados");
                 });
 
             modelBuilder.Entity("Domain.Model.Ingrediente", b =>
@@ -111,7 +111,7 @@ namespace Data.Migrations
                         .HasMaxLength(300)
                         .HasColumnType("nvarchar(300)");
 
-                    b.Property<decimal>("LimiteBajoStock")
+                    b.Property<decimal?>("LimiteBajoStock")
                         .HasColumnType("decimal(8,3)");
 
                     b.Property<string>("Nombre")
@@ -120,21 +120,24 @@ namespace Data.Migrations
                         .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("Origen")
-                        .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
+
+                    b.Property<int>("ProveedorId")
+                        .HasColumnType("int");
 
                     b.Property<decimal>("Stock")
                         .HasColumnType("decimal(8,3)");
 
                     b.Property<string>("UnidadMedida")
-                        .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Ingredientes", (string)null);
+                    b.HasIndex("ProveedorId");
+
+                    b.ToTable("Ingredientes");
                 });
 
             modelBuilder.Entity("Domain.Model.Pedido", b =>
@@ -150,22 +153,27 @@ namespace Data.Migrations
 
                     b.Property<string>("Descripcion")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)");
 
-                    b.Property<int>("EmpleadoId")
+                    b.Property<int?>("EmpleadoId")
                         .HasColumnType("int");
 
                     b.Property<int>("Estado")
+                        .HasMaxLength(50)
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("FechaHoraFin")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime?>("FechaHoraFinEstimada")
+                    b.Property<DateTime>("FechaHoraFinEstimada")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("FechaHoraInicio")
                         .HasColumnType("datetime2");
+
+                    b.Property<decimal>("Subtotal")
+                        .HasColumnType("decimal(10,2)");
 
                     b.HasKey("Id");
 
@@ -173,7 +181,7 @@ namespace Data.Migrations
 
                     b.HasIndex("EmpleadoId");
 
-                    b.ToTable("Pedidos", (string)null);
+                    b.ToTable("Pedidos");
                 });
 
             modelBuilder.Entity("Domain.Model.Producto", b =>
@@ -184,7 +192,7 @@ namespace Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<decimal>("Calificacion")
+                    b.Property<decimal?>("Calificacion")
                         .HasColumnType("decimal(3,2)");
 
                     b.Property<string>("Descripcion")
@@ -193,7 +201,6 @@ namespace Data.Migrations
                         .HasColumnType("nvarchar(255)");
 
                     b.Property<string>("Imagen")
-                        .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
@@ -202,17 +209,12 @@ namespace Data.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<int?>("PedidoId")
-                        .HasColumnType("int");
-
                     b.Property<decimal>("Precio")
                         .HasColumnType("decimal(10,2)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PedidoId");
-
-                    b.ToTable("Productos", (string)null);
+                    b.ToTable("Productos");
                 });
 
             modelBuilder.Entity("Domain.Model.Proveedor", b =>
@@ -251,7 +253,7 @@ namespace Data.Migrations
                     b.HasIndex("Cuit")
                         .IsUnique();
 
-                    b.ToTable("Proveedores", (string)null);
+                    b.ToTable("Proveedores");
                 });
 
             modelBuilder.Entity("Domain.Model.Usuario", b =>
@@ -314,7 +316,37 @@ namespace Data.Migrations
                     b.HasIndex("Username")
                         .IsUnique();
 
-                    b.ToTable("Usuarios", (string)null);
+                    b.ToTable("Usuarios");
+                });
+
+            modelBuilder.Entity("PedidoProducto", b =>
+                {
+                    b.Property<int>("PedidoId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductoId")
+                        .HasColumnType("int");
+
+                    b.HasKey("PedidoId", "ProductoId");
+
+                    b.HasIndex("ProductoId");
+
+                    b.ToTable("PedidoProducto");
+                });
+
+            modelBuilder.Entity("ProductoIngrediente", b =>
+                {
+                    b.Property<int>("IngredienteId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductoId")
+                        .HasColumnType("int");
+
+                    b.HasKey("IngredienteId", "ProductoId");
+
+                    b.HasIndex("ProductoId");
+
+                    b.ToTable("ProductoIngrediente");
                 });
 
             modelBuilder.Entity("Domain.Model.Cliente", b =>
@@ -339,6 +371,17 @@ namespace Data.Migrations
                     b.Navigation("Usuario");
                 });
 
+            modelBuilder.Entity("Domain.Model.Ingrediente", b =>
+                {
+                    b.HasOne("Domain.Model.Proveedor", "Proveedor")
+                        .WithMany("Ingredientes")
+                        .HasForeignKey("ProveedorId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Proveedor");
+                });
+
             modelBuilder.Entity("Domain.Model.Pedido", b =>
                 {
                     b.HasOne("Domain.Model.Cliente", "Cliente")
@@ -348,21 +391,43 @@ namespace Data.Migrations
                         .IsRequired();
 
                     b.HasOne("Domain.Model.Empleado", "Empleado")
-                        .WithMany()
+                        .WithMany("PedidosAtendidos")
                         .HasForeignKey("EmpleadoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.Navigation("Cliente");
 
                     b.Navigation("Empleado");
                 });
 
-            modelBuilder.Entity("Domain.Model.Producto", b =>
+            modelBuilder.Entity("PedidoProducto", b =>
                 {
                     b.HasOne("Domain.Model.Pedido", null)
-                        .WithMany("Productos")
-                        .HasForeignKey("PedidoId");
+                        .WithMany()
+                        .HasForeignKey("PedidoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Model.Producto", null)
+                        .WithMany()
+                        .HasForeignKey("ProductoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("ProductoIngrediente", b =>
+                {
+                    b.HasOne("Domain.Model.Ingrediente", null)
+                        .WithMany()
+                        .HasForeignKey("IngredienteId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Model.Producto", null)
+                        .WithMany()
+                        .HasForeignKey("ProductoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Domain.Model.Cliente", b =>
@@ -370,9 +435,14 @@ namespace Data.Migrations
                     b.Navigation("HistorialPedidos");
                 });
 
-            modelBuilder.Entity("Domain.Model.Pedido", b =>
+            modelBuilder.Entity("Domain.Model.Empleado", b =>
                 {
-                    b.Navigation("Productos");
+                    b.Navigation("PedidosAtendidos");
+                });
+
+            modelBuilder.Entity("Domain.Model.Proveedor", b =>
+                {
+                    b.Navigation("Ingredientes");
                 });
 
             modelBuilder.Entity("Domain.Model.Usuario", b =>

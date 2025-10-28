@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -9,13 +10,27 @@ namespace Domain.Model
 {
     public class Proveedor
     {
+        [Key]
         public int Id { get; private set; }
+
+        [Required]
         public string RazonSocial { get; private set; }
+
+        [Required]
         public int Cuit {  get; private set; }
+
+        [Required]
         public string Email { get; private set; }
+        
+        [Required]
         public int Telefono { get; private set; }
+
+        [Required]
         public string TipoIngrediente {  get; private set; }
-        //public string Compañia { get; private set; }
+
+        public List<Ingrediente> Ingredientes { get; private set; } = new List<Ingrediente>();
+
+        protected Proveedor() { } // Requerido por EF
 
         public Proveedor(int id, string razonSocial, int cuit, string email, int telefono, string tipoIngrediente)
         {
@@ -25,6 +40,23 @@ namespace Domain.Model
             SetEmail(email);
             SetTelefono(telefono);
             SetTipoIngrediente(tipoIngrediente);
+        }
+
+        public void SetIngredientes(List<Ingrediente> ingredientes)
+        {
+            if (ingredientes == null || ingredientes.Count == 0)
+                throw new ArgumentException("Debe tener al menos un ingrediente .", nameof(ingredientes));
+            foreach (var ingrediente in ingredientes)
+            {
+                AgregarIngrediente(ingrediente);
+            }
+        }
+
+        private void AgregarIngrediente(Ingrediente ingrediente)
+        {
+            if (ingrediente == null)
+                throw new ArgumentException("El ingrediente no puede ser nulo.", nameof(ingrediente));
+            Ingredientes.Add(ingrediente);
         }
 
         public void SetId(int id)
@@ -72,15 +104,6 @@ namespace Domain.Model
             }
             TipoIngrediente = tipoIngrediente;
         }
-
-        //public void setCompañia(string compañia) //Agregue este metodo junto al atributo de Compañia
-        //{
-        //    if (string.IsNullOrWhiteSpace(compañia))
-        //    {
-        //        throw new ArgumentException("La compañia no puede ser nulo o vacio.", nameof(compañia));
-        //    }
-        //    Compañia = compañia;
-        //}
       
     }
 }

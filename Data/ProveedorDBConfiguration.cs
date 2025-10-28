@@ -36,6 +36,12 @@ namespace Data
             // Índice único para CUIT
             entity.HasIndex(p => p.Cuit)
                 .IsUnique();
+
+            // Relación 1:N con Ingredientes
+            entity.HasMany(p => p.Ingredientes)
+                  .WithOne(i => i.Proveedor)
+                  .HasForeignKey(i => i.ProveedorId)
+                  .OnDelete(DeleteBehavior.Restrict); // Evita borrar ingredientes si se borra un proveedor
         }
     }
 }

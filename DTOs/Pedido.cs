@@ -14,12 +14,12 @@ namespace DTOs
         public DateTime FechaHoraInicio { get; set; }
         public DateTime? FechaHoraFin { get; set; }
         public DateTime? FechaHoraFinEstimada { get; set; }
-        public float Subtotal { get; set; }
-        public List<ProductoDTO> Productos { get; set; } = new();
+        public decimal Subtotal { get; set; }
+        public List<int> ProductosIds { get; set; } = new List<int>();
         public int ClienteId { get; set; }
-        public ClienteDTO cliente { get; set; }
-        public int EmpleadoId {  get; set; }
-        public EmpleadoDto empelado { get; set; }
+        public string? ClienteNombre { get; set; }
+        public int? EmpleadoId { get; set; }
+        public string? EmpleadoNombre { get; set; }
 
     }
 }

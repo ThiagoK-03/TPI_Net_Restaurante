@@ -9,28 +9,26 @@ namespace DTOs
 {
     public class IngredienteDTO : DTOInterface
     {
-        public IngredienteDTO()
-        {
-            Id = 0;
-            Nombre = "";
-            Descripcion = "";
-            Stock = 0;
-            UnidadMedida = "";
-            Origen = "";
-            LimiteBajoStock = 0;
-        }
 
         public int Id { get; set; }
-        public string Nombre { get; set; }
-        public string Descripcion { get; set; }
+
+        public string Nombre { get; set; } = string.Empty;
+
+        public string Descripcion { get; set; } = string.Empty;
 
         public int Stock { get; set; }
 
-        //listaProveedor / Nose como poner esto no me queda claro
-        public string UnidadMedida { get; set; }
+        public string? UnidadMedida { get; set; }
 
-        public string Origen {  get; set; }
+        public string? Origen { get; set; }
 
-        public int LimiteBajoStock { get; set; }
+        public int? LimiteBajoStock { get; set; }
+
+        public int ProveedorId { get; set; }
+
+        public string? ProveedorNombre { get; set; }
+
+        public List<int>? ProductosIds { get; set; }
+
     }
 }

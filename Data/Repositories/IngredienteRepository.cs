@@ -53,12 +53,24 @@ namespace Data.Repositories
             var existingIngrediente = context.Ingredientes.Find(ingrediente.Id);
             if (existingIngrediente != null)
             {
+
+
                 existingIngrediente.SetNombre(ingrediente.Nombre);
+                existingIngrediente.SetProveedor(ingrediente.Proveedor);
                 existingIngrediente.SetDescripcion(ingrediente.Descripcion);
                 existingIngrediente.SetStock(ingrediente.Stock);
-                existingIngrediente.SetUnidadMedida(ingrediente.UnidadMedida);
-                existingIngrediente.SetOrigen(ingrediente.Origen);
-                existingIngrediente.SetLimiteBajoStock(ingrediente.LimiteBajoStock);
+                existingIngrediente.SetUnidadMedida(ingrediente.UnidadMedida ?? existingIngrediente.UnidadMedida);
+                existingIngrediente.SetOrigen(ingrediente.Origen ?? existingIngrediente.Origen);
+                existingIngrediente.SetLimiteBajoStock(ingrediente.LimiteBajoStock ?? existingIngrediente.LimiteBajoStock);
+
+
+                existingIngrediente.Productos.Clear(); // Limpiar relaciones actuales
+
+                foreach (var producto in ingrediente.Productos)
+                {
+                    if (producto != null) existingIngrediente.AgregarProducto(producto);
+                }
+                
 
                 context.SaveChanges();
                 return true;

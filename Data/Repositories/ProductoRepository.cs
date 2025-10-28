@@ -58,6 +58,7 @@ namespace Data.Repositories
                 existingProducto.SetImagen(producto.Imagen);
                 existingProducto.SetCalificacion(producto.Calificacion);
                 existingProducto.SetPrecio(producto.Precio);
+                existingProducto.SetIngredientes(producto.Ingredientes.ToList());
 
                 context.SaveChanges();
                 return true;

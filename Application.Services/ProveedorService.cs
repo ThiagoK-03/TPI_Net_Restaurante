@@ -37,7 +37,7 @@ namespace Application.Services
         {
             ProveedorRepository repository = new ProveedorRepository();
             Proveedor proveedor = repository.Get(id);
-            
+
             if (proveedor == null)
                 return null;
 
@@ -48,7 +48,8 @@ namespace Application.Services
                 Cuit = proveedor.Cuit,
                 Email = proveedor.Email,
                 Telefono = proveedor.Telefono,
-                TipoIngrediente = proveedor.TipoIngrediente
+                TipoIngrediente = proveedor.TipoIngrediente,
+                IngredientesIds = proveedor.Ingredientes.Select(i => i.Id).ToList()
             };
         }
         public IEnumerable<ProveedorDTO> GetAll()
@@ -64,7 +65,8 @@ namespace Application.Services
                     Cuit = proveedor.Cuit,
                     Email = proveedor.Email,
                     Telefono = proveedor.Telefono,
-                    TipoIngrediente = proveedor.TipoIngrediente
+                    TipoIngrediente = proveedor.TipoIngrediente,
+                    IngredientesIds = proveedor.Ingredientes.Select(i => i.Id).ToList()
                 })
                 .ToList();
         }
@@ -75,14 +77,25 @@ namespace Application.Services
             ProveedorRepository repository = new ProveedorRepository();
             if (repository.CuitExists(dto.Cuit))
             {
-                throw new ArgumentException($"Ya existe un cliente con el Cuit '{dto.Cuit}'.");
+                throw new ArgumentException($"Ya existe un proveedor con el Cuit '{dto.Cuit}'.");
             }
             if (repository.EmailExists(dto.Email))
             {
-                throw new ArgumentException($"Ya existe un cliente con el Email '{dto.Email}'.");
+                throw new ArgumentException($"Ya existe un proveedor con el Email '{dto.Email}'.");
             }
 
             Proveedor proveedor = new Proveedor(dto.Id, dto.RazonSocial, dto.Cuit, dto.Email, dto.Telefono, dto.TipoIngrediente);
+
+            if(dto.IngredientesIds != null && dto.IngredientesIds.Count > 0)
+            {
+                IngredienteRepository ingredienteRepository = new IngredienteRepository();
+                var ingredientes = dto.IngredientesIds
+                    .Select(id => ingredienteRepository.Get(id))
+                    .Where(ingrediente => ingrediente != null)
+                    .ToList()!;
+                proveedor.SetIngredientes(ingredientes!);
+            }
+
             return repository.Update(proveedor);
         }
     }
