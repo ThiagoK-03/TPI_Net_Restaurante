@@ -13,10 +13,24 @@ namespace Application.Services
     {
         public IngredienteDTO Add(IngredienteDTO dto)
         {
-            IngredienteRepository repository = new IngredienteRepository();
+            IngredienteRepository _ingredienteRepository = new IngredienteRepository();
+            ProveedorRepository _proveedorRepository = new ProveedorRepository();
 
-            Ingrediente ingrediente = new Ingrediente(0, dto.Nombre, dto.Descripcion, dto.Stock, dto.UnidadMedida, dto.Origen, dto.LimiteBajoStock);
-            repository.Add(ingrediente);
+            var proveedor = _proveedorRepository.Get(dto.ProveedorId) 
+                ?? throw new Exception($"Proveedor con ID {dto.ProveedorId} no existe.");
+
+            Ingrediente ingrediente = new Ingrediente(
+                0,
+                dto.Nombre,
+                proveedor,
+                dto.Descripcion,
+                dto.Stock,
+                dto.UnidadMedida,
+                dto.Origen,
+                dto.LimiteBajoStock
+             );
+
+            _ingredienteRepository.Add(ingrediente);
             dto.Id = ingrediente.Id;
             return dto;
         }
@@ -39,6 +53,7 @@ namespace Application.Services
             {
                 Id = ingrediente.Id,
                 Nombre = ingrediente.Nombre,
+                ProveedorId = ingrediente.ProveedorId,  
                 Descripcion = ingrediente.Descripcion,
                 Stock = ingrediente.Stock,
                 UnidadMedida = ingrediente.UnidadMedida,
@@ -55,6 +70,7 @@ namespace Application.Services
             {
                 Id = ingrediente.Id,
                 Nombre = ingrediente.Nombre,
+                ProveedorNombre = ingrediente.Proveedor.RazonSocial,
                 Descripcion = ingrediente.Descripcion,
                 Stock = ingrediente.Stock,
                 UnidadMedida = ingrediente.UnidadMedida,
@@ -65,9 +81,39 @@ namespace Application.Services
 
         public bool Update(IngredienteDTO dto)
         {
-            IngredienteRepository repository = new IngredienteRepository();
-            Ingrediente ingrediente = new Ingrediente(dto.Id,dto.Nombre, dto.Descripcion,dto.Stock,dto.UnidadMedida,dto.Origen,dto.LimiteBajoStock);
-            return repository.Update(ingrediente);
+            IngredienteRepository _ingredienteRepository = new IngredienteRepository();
+            ProveedorRepository _proveedorRepository = new ProveedorRepository();
+            ProductoRepository _productoRepository = new ProductoRepository();
+
+            var proveedor = _proveedorRepository.Get(dto.ProveedorId)
+                ?? throw new Exception($"Proveedor con ID {dto.ProveedorId} no existe.");
+
+            var ingredienteUpdate = _ingredienteRepository.Get(dto.Id)
+                ?? throw new Exception($"Ingrediente con ID {dto.Id} no existe.");
+
+
+            ingredienteUpdate.SetNombre(dto.Nombre);
+            ingredienteUpdate.SetProveedor(proveedor);
+            ingredienteUpdate.SetDescripcion(dto.Descripcion);
+            ingredienteUpdate.SetStock(dto.Stock);
+            ingredienteUpdate.SetUnidadMedida(dto.UnidadMedida ?? ingredienteUpdate.UnidadMedida);
+            ingredienteUpdate.SetOrigen(dto.Origen ?? ingredienteUpdate.Origen);
+            ingredienteUpdate.SetLimiteBajoStock(dto.LimiteBajoStock ?? ingredienteUpdate.LimiteBajoStock);
+
+            if (dto.ProductosIds != null)
+            {
+                ingredienteUpdate.Productos.Clear(); // Limpiar relaciones actuales
+
+                foreach (var productoId in dto.ProductosIds)
+                {
+                    var producto = _productoRepository.Get(productoId);
+                    if (producto != null)
+                        ingredienteUpdate.AgregarProducto(producto);
+                }
+            }
+
+
+            return _ingredienteRepository.Update(ingredienteUpdate);
         }
 
 

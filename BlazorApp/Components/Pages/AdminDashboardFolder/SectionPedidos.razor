@@ -172,15 +172,15 @@
                             </div>
                         }
 
-                        @if (pedidoSeleccionado.Productos != null && pedidoSeleccionado.Productos.Any())
+                        @if (pedidoSeleccionado.ProductosIds != null && pedidoSeleccionado.ProductosIds.Any())
                         {
                             <div class="mb-3">
                                 <h6 class="text-danger fw-bold">Productos</h6>
                                 <ul class="list-group">
-                                    @foreach (var prod in pedidoSeleccionado.Productos)
+                                    @foreach (var prodId in pedidoSeleccionado.ProductosIds)
                                     {
                                         <li class="list-group-item d-flex justify-content-between">
-                                            <span>Producto ID: @prod.Id</span>
+                                            <span>Producto ID: @prodId</span>
                                         </li>
                                     }
                                 </ul>
@@ -440,7 +440,7 @@
                 Subtotal = pedido.Subtotal,
                 ClienteId = pedido.ClienteId,
                 EmpleadoId = pedido.EmpleadoId,
-                Productos = pedido.Productos
+                ProductosIds = pedido.ProductosIds
             };
         showModal = true;
     }

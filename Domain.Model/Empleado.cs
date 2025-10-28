@@ -22,43 +22,41 @@ namespace Domain.Model
         [Required]
         public string Turno { get; private set; } = string.Empty;
 
-        [AllowNull]
-        public int HorasTrabajadas { get; private set; }
+        public int? HorasTrabajadas { get; private set; }
 
         [Required]
         public decimal PrecioPorHora { get; private set; }
 
-        [AllowNull]
-        public decimal Sueldo { get; private set; }
+        public decimal? Sueldo { get; private set; }
 
         [ForeignKey(nameof(Usuario))]
         public int UsuarioId { get; private set; } // FK
         public virtual Usuario Usuario { get; private set; } = null!;
+        public virtual ICollection<Pedido> PedidosAtendidos { get; private set; } = new List<Pedido>(); // 1:N con Pedido
 
         // Constructor principal: Toma Usuario en lugar de solo ID para consistencia
-        public Empleado(Usuario usuario, string razonSocial, int cuil, string turno, int horasTrabajadas, decimal precioPorHora)
+        public Empleado(Usuario usuario, string razonSocial, int cuil, string turno, decimal precioPorHora)
         {
             SetUsuario(usuario);
             SetRazonSocial(razonSocial);
             SetCuil(cuil);
             SetTurno(turno);
-            SetHorasTrabajadas(horasTrabajadas);
             SetPrecioPorHora(precioPorHora);
             CalcularSueldo();
         }
 
         // Constructor con ID para actualizaciones (EF Core)
-        public Empleado(int id, Usuario usuario, string razonSocial, int cuil, string turno, int horasTrabajadas, decimal precioPorHora)
-        {
-            SetId(id);
-            SetUsuario(usuario);
-            SetRazonSocial(razonSocial);
-            SetCuil(cuil);
-            SetTurno(turno);
-            SetHorasTrabajadas(horasTrabajadas);
-            SetPrecioPorHora(precioPorHora);
-            CalcularSueldo();
-        }
+        //public Empleado(int id, Usuario usuario, string razonSocial, int cuil, string turno, int horasTrabajadas, decimal precioPorHora)
+        //{
+        //    SetId(id);
+        //    SetUsuario(usuario);
+        //    SetRazonSocial(razonSocial);
+        //    SetCuil(cuil);
+        //    SetTurno(turno);
+        //    SetHorasTrabajadas(horasTrabajadas);
+        //    SetPrecioPorHora(precioPorHora);
+        //    CalcularSueldo();
+        //}
 
         // Constructor vacío para EF Core
         public Empleado() { }
@@ -73,7 +71,7 @@ namespace Domain.Model
         {
             if (usuario == null) throw new ArgumentException("Usuario requerido");
             Usuario = usuario;
-            UsuarioId = usuario.Id;
+            //UsuarioId = usuario.Id;
         }
 
         public void SetRazonSocial(string razonSocial)
@@ -96,7 +94,7 @@ namespace Domain.Model
             Turno = turno;
         }
 
-        public void SetHorasTrabajadas(int horas)
+        public void SetHorasTrabajadas(int? horas)
         {
             if (horas < 0)
                 throw new ArgumentException("Las horas trabajadas no pueden ser negativas.", nameof(horas));
@@ -115,6 +113,13 @@ namespace Domain.Model
         private void CalcularSueldo()
         {
             Sueldo = HorasTrabajadas * PrecioPorHora;
+        }
+
+        public void AtenderPedido(Pedido pedido)
+        {
+            if (pedido == null) throw new ArgumentNullException(nameof(pedido));
+            if (PedidosAtendidos.Any(p => p.Id == pedido.Id)) return; // Evita duplicados
+            PedidosAtendidos.Add(pedido);
         }
     }
 }

@@ -58,6 +58,11 @@ namespace Data.Repositories
                 existingProveedor.SetEmail(proveedor.Email);
                 existingProveedor.SetTelefono(proveedor.Telefono);
                 existingProveedor.SetTipoIngrediente(proveedor.TipoIngrediente);
+                
+                if(proveedor.Ingredientes != null && proveedor.Ingredientes.Count > 0)
+                {
+                    existingProveedor.SetIngredientes(proveedor.Ingredientes);
+                }   
 
                 context.SaveChanges();
                 return true;

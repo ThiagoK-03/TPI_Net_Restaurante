@@ -4,23 +4,6 @@ namespace DTOs
 {
     public class EmpleadoDto : DTOInterface
     {
-        public EmpleadoDto()
-        {
-            Id = 0;
-            RazonSocial = string.Empty;
-            Cuil = 0;
-            Turno = string.Empty;
-            HorasTrabajadas = 0;
-            PrecioPorHora = 0;
-            Sueldo = 0;
-            Nombre = string.Empty;
-            Apellido = string.Empty;
-            Email = string.Empty;
-            Telefono = string.Empty;
-            Username = string.Empty;
-            Password = string.Empty;
-        }
-
         public int Id { get; set; }
         [Required]
         public string RazonSocial { get; set; } = string.Empty;
@@ -29,10 +12,10 @@ namespace DTOs
         [Required]
         public string Turno { get; set; } = string.Empty;
         [Required, Range(0, int.MaxValue)]
-        public int HorasTrabajadas { get; set; }
+        public int? HorasTrabajadas { get; set; }
         [Required, Range(0, double.MaxValue)]
         public decimal PrecioPorHora { get; set; }
-        public decimal Sueldo { get; set; }
+        public decimal? Sueldo { get; set; }
 
         // Campos de Usuario
         [Required]

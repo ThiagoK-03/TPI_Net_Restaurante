@@ -28,11 +28,11 @@ namespace Application.Services
 
             // traer productos del pedido
             var productos = new List<Producto>();
-            foreach (ProductoDTO productoDTO in dto.Productos)
+            foreach (int productoId in dto.ProductosIds)
             {
-                var producto = productoRepository.Get(productoDTO.Id);
+                var producto = productoRepository.Get(productoId);
                 if (producto == null)
-                    throw new ArgumentException($"Producto con Id {productoDTO.Id} no existe");
+                    throw new ArgumentException($"Producto con Id {productoId} no existe");
                 productos.Add(producto);
             }
 
@@ -42,13 +42,10 @@ namespace Application.Services
                 dto.Descripcion,
                 DateTime.Now,
                 dto.FechaHoraFinEstimada,
-                cliente.Id
+                cliente,
+                productos
                 
             );
-
-            //pedido.SetEmpleadoId(0);
-            // asignar productos
-            pedido.SetProductos(productos);
 
             pedidoRepository.Add(pedido);
 
@@ -71,15 +68,15 @@ namespace Application.Services
                 FechaHoraFin = pedido.FechaHoraFin,
                 Estado = pedido.Estado.ToString(),
                 ClienteId = pedido.ClienteId,
-                EmpleadoId = pedido.EmpleadoId
+                EmpleadoId = pedido.EmpleadoId,
+                ProductosIds = pedido.Productos.Select(prod => prod.Id).ToList(),
+                Subtotal = pedido.CalculateTotal()
 
-                //Lista Ingredientes?
-                //Subtotal
             }).ToList();
         }
 
         //GET ONE
-        public PedidoDTO Get(int id)
+        public PedidoDTO? Get(int id)
         {
             PedidoRepository repository = new PedidoRepository();
             Pedido? pedido = repository.Get(id);
@@ -96,10 +93,9 @@ namespace Application.Services
                 FechaHoraFin = pedido.FechaHoraFin,
                 Estado = pedido.Estado.ToString(),
                 ClienteId = pedido.ClienteId,
-                EmpleadoId = pedido.EmpleadoId
-                
-                //Lista ingredientes?
-                //Subtotal
+                EmpleadoId = pedido.EmpleadoId,
+                ProductosIds = pedido.Productos.Select(prod => prod.Id).ToList(),
+                Subtotal = pedido.CalculateTotal()
             };
         }
 
@@ -107,13 +103,46 @@ namespace Application.Services
         public bool Update(PedidoDTO pedido)
         {
             PedidoRepository repository = new PedidoRepository();
+            ClienteRepository clienteRepository = new ClienteRepository();
+            EmpleadoRepository empleadoRepository = new EmpleadoRepository();
+            ProductoRepository productoRepository = new ProductoRepository();
 
-            
-            Pedido pedidoUpdated = new Pedido(pedido.Id, pedido.Descripcion, pedido.FechaHoraInicio, pedido.FechaHoraFinEstimada, pedido.ClienteId);
-            
-            //Estado?
-            //Lista productos??
-            //Empleado????????????
+            var cliente = clienteRepository.Get(pedido.ClienteId)
+                ?? throw new Exception($"Cliente con ID {pedido.ClienteId} no existe.");
+
+
+                    
+            List<Producto> productos = new List<Producto>();
+            foreach (int productoId in pedido.ProductosIds)
+            {
+                var producto = productoRepository.Get(productoId)
+                    ?? throw new Exception($"Producto con ID {productoId} no existe.");
+                productos.Add(producto);
+            }
+
+
+            Pedido pedidoUpdated = new Pedido(
+                pedido.Id, 
+                pedido.Descripcion, 
+                pedido.FechaHoraInicio,
+                pedido.FechaHoraFinEstimada, 
+                cliente,
+                productos
+            );
+
+            if (pedido.EmpleadoId != null)
+            {
+                var empleado = empleadoRepository.Get((int)pedido.EmpleadoId)
+                    ?? throw new Exception($"Empleado con ID {pedido.EmpleadoId} no existe.");
+                pedidoUpdated.SetEmpleado(empleado);
+            }
+            if(Enum.TryParse<EstadoPedido>(pedido.Estado, out var estado))
+            {
+                pedidoUpdated.SetEstado(estado);
+            }
+
+            if(pedido.FechaHoraFin != null)
+                pedidoUpdated.SetFechaHoraFin(pedido.FechaHoraFin);
 
             return repository.Update(pedidoUpdated);
         }

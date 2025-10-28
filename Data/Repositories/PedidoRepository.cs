@@ -65,8 +65,8 @@ namespace Data.Repositories
                 existingPedido.SetEstado(pedido.Estado);
                 existingPedido.SetFechaHoraFin(pedido.FechaHoraFin);
                 existingPedido.SetFechaHoraFinEstimada(pedido.FechaHoraFinEstimada);
-                existingPedido.SetClienteId(pedido.ClienteId);
-                existingPedido.SetEmpleadoId(pedido.EmpleadoId);
+                existingPedido.SetCliente(pedido.Cliente);
+                existingPedido.SetEmpleado(pedido.Empleado);
 
                 context.SaveChanges();
                 return true;

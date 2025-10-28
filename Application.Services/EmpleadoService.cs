@@ -31,12 +31,11 @@ namespace Application.Services
             usuarioRepository.Add(usuario);
             usuarioRepository.Save();
 
-            var empleado = new Empleado(usuario, dto.RazonSocial, dto.Cuil, dto.Turno, dto.HorasTrabajadas, dto.PrecioPorHora);
+            var empleado = new Empleado(usuario, dto.RazonSocial, dto.Cuil, dto.Turno, dto.PrecioPorHora);
 
             empleadoRepository.Add(empleado);
 
             dto.Id = empleado.Id;
-            dto.Sueldo = empleado.Sueldo;
 
             return dto;
         }

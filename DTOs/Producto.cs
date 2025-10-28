@@ -11,22 +11,16 @@ namespace DTOs
     {
         public int Id { get; set; }
         public string Nombre { get; set; }
-        public string Descripcion { get; set; }
+        public string? Descripcion { get; set; }
 
-        public string Imagen { get; set; }
+        public string? Imagen { get; set; }
 
-        public int Calificacion { get; set; }
+        public decimal? Calificacion { get; set; }
 
-        public float Precio { get; set; }
+        public decimal Precio { get; set; }
+        public List<int> IngredientesIds { get; set; } = new();
+        public List<int>? PedidosIds { get; set; } = new();
 
-        public ProductoDTO()
-        {
-            Id = 0;
-            Nombre = "";
-            Descripcion = "";
-            Imagen = "";
-            Calificacion = 0;
-            Precio = 0;
-        }
+
     }
 }

@@ -27,15 +27,31 @@ namespace Data
                 .HasColumnType("decimal(8,3)"); // Para cantidades precisas
 
             entity.Property(i => i.UnidadMedida)
-                .IsRequired()
-                .HasMaxLength(20); 
+                .HasMaxLength(20);
 
             entity.Property(i => i.Origen)
-                .HasMaxLength(100); 
+                .HasMaxLength(100);
 
             entity.Property(i => i.LimiteBajoStock)
-                .IsRequired()
                 .HasColumnType("decimal(8,3)");
+
+            entity.HasOne(i => i.Proveedor)
+                .WithMany(p => p.Ingredientes) // asumí que Proveedor tiene ICollection<Ingrediente>
+                .HasForeignKey(i => i.ProveedorId)
+                .OnDelete(DeleteBehavior.Restrict); // o Cascade según negocio
+
+
+            entity
+                .HasMany(i => i.Productos)
+                .WithMany(p => p.Ingredientes) // asumí que Producto tiene ICollection<Ingrediente>
+                .UsingEntity<Dictionary<string, object>>(
+                    "ProductoIngrediente", // tabla intermedia
+                    j => j.HasOne<Producto>().WithMany().HasForeignKey("ProductoId"),
+                    j => j.HasOne<Ingrediente>().WithMany().HasForeignKey("IngredienteId")
+                );
+
+
+
         }
     }
 }
