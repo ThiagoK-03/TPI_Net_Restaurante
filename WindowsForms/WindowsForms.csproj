@@ -18,6 +18,30 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="ingrediente\IngredienteVistaCliente.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="ingrediente\IngredienteVistaEmpleado.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="MenuCliente.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Pedido\PedidoDetalleEmpleado.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Pedido\PedidoVistaEmpleado.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="producto\ProductoDetalleEmpleado.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="producto\ProductoVistaCliente.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="producto\ProductoVistaEmpleado.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Update="Properties\Resources.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>

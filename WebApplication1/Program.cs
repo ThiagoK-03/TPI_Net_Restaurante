@@ -102,6 +102,8 @@ using (var scope = app.Services.CreateScope())
             password: "1234"
         );
 
+        
+
         context.Usuarios.Add(admin);
         context.SaveChanges();
         Console.WriteLine("Usuario admin creado exitosamente ✅");

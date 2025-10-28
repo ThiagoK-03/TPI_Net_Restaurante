@@ -68,5 +68,10 @@ namespace WindowsForms
             EmpleadoVista empleadoVista = new EmpleadoVista();
             empleadoVista.ShowDialog();
         }
+
+        private void btn_salir_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

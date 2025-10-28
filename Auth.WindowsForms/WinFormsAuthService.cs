@@ -10,6 +10,7 @@ namespace Auth.WindowsForms
         private static string? _currentToken;
         private static DateTime _tokenExpiration;
         private static string? _currentUsername;
+        private static string? _currentRole;   
 
         public event Action<bool>? AuthenticationStateChanged;
 
