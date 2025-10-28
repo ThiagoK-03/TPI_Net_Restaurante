@@ -58,7 +58,7 @@ namespace WindowsForms.producto
                     this.Producto.Descripcion = tbxDescripcion.Text;
                     this.Producto.Imagen = tbxImagen.Text;
                     this.Producto.Calificacion = int.Parse(tbxCalificacion.Text);
-                    this.Producto.Precio = float.Parse(tbxPrecio.Text);
+                    this.Producto.Precio = decimal.Parse(tbxPrecio.Text);
 
                     if (this.Mode == FormMode.Update)
                     {

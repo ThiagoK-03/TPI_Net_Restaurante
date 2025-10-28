@@ -7,6 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Include="Components\Pages\ClienteDashboardFolder\SectionPedidos.txt" />
+    <Content Include="Components\Pages\ClienteDashboardFolder\SectionProductos.txt" />
+    <Content Include="Components\Pages\EmpleadoDashboardFoler\SectionPedidos.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\API.Clients\API.Clients.csproj" />
     <ProjectReference Include="..\API\API.csproj" />
     <ProjectReference Include="..\Auth.Blazor\Auth.Blazor.csproj" />
