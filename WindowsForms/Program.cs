@@ -1,3 +1,4 @@
+using System;
 using API.Clients;
 using Auth.WindowsForms;
 
@@ -45,7 +46,22 @@ namespace WindowsForms
 
                 try
                 {
-                    System.Windows.Forms.Application.Run(new Menu());
+                    
+                    if (string.Equals(await authService.GetRoleAsync(), "Admin", StringComparison.OrdinalIgnoreCase))
+                    {
+                        System.Windows.Forms.Application.Run(new Menu());
+                    }
+
+                    else if (string.Equals(await authService.GetRoleAsync(), "Empleado", StringComparison.OrdinalIgnoreCase))
+                    {
+                        System.Windows.Forms.Application.Run(new MenuEmpleado());
+                    }
+
+                    else if (string.Equals(await authService.GetRoleAsync(), "Cliente", StringComparison.OrdinalIgnoreCase))
+                    {
+                        System.Windows.Forms.Application.Run(new MenuCliente());
+                    }
+
                     break; // La aplicación se cerró normalmente
                 }
                 catch (UnauthorizedAccessException ex)
