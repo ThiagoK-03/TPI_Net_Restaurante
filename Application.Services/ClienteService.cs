@@ -34,6 +34,7 @@ namespace Application.Services
             var fechaAlta = DateTime.Now;
             var cliente = new Cliente(usuario, fechaAlta, dto.Penalizacion);
 
+            System.Diagnostics.Debug.WriteLine($"userid : {usuario.Id} user : {usuario} ");
             clienteRepository.Add(cliente);
 
             dto.Id = cliente.Id;
@@ -69,31 +70,43 @@ namespace Application.Services
         public bool Update(ClienteDTO dto)
         {
             var clienteRepository = new ClienteRepository();
+            var usuarioRepository = new UsuarioRepository();
 
-            // Validar que el email no esté duplicado (excluyendo el actual)
+
+
             if (clienteRepository.EmailExists(dto.Email, dto.Id))
-            {
                 throw new ArgumentException($"Ya existe otro cliente con el Email '{dto.Email}'.");
-            }
 
             var existingCliente = clienteRepository.Get(dto.Id);
             if (existingCliente == null)
                 return false;
 
-            // Actualizar Usuario (campos comunes)
-            existingCliente.Usuario.SetNombre(dto.Nombre);
-            existingCliente.Usuario.SetApellido(dto.Apellido);
-            existingCliente.Usuario.SetEmail(dto.Email);
-            existingCliente.Usuario.SetTelefono(dto.Telefono);
-            if (!string.IsNullOrEmpty(dto.Password))
-                existingCliente.Usuario.SetPassword(dto.Password); // Solo si se proporciona nuevo
+            // actualizar usuario primero
+            var existingUsuario = usuarioRepository.Get(existingCliente.Usuario.Id);
+            if (existingUsuario == null)
+                return false;
 
-            // Actualizar campos específicos de Cliente
+            existingUsuario.SetNombre(dto.Nombre);
+            existingUsuario.SetApellido(dto.Apellido);
+            existingUsuario.SetEmail(dto.Email);
+            existingUsuario.SetTelefono(dto.Telefono);
+            existingUsuario.SetUsername(dto.Username);
+            if (!string.IsNullOrEmpty(dto.Password))
+                existingUsuario.SetPassword(dto.Password);
+
+            usuarioRepository.Update(existingUsuario);
+            usuarioRepository.Save();
+            
+            // actualizar cliente
             existingCliente.SetFechaAlta(dto.FechaAlta);
             existingCliente.SetPenalizacion(dto.Penalizacion);
 
-            return clienteRepository.Update(existingCliente);
+            
+            clienteRepository.Update(existingCliente);
+            return true;
+
         }
+
 
         private static ClienteDTO ToDto(Cliente cliente)
         {

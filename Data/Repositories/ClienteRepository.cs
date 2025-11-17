@@ -18,6 +18,8 @@ namespace Data.Repositories
         public void Add(Cliente cliente)
         {
             using var context = CreateContext();
+            // Adjuntar el usuario existente como entidad ya persistida
+            context.Attach(cliente.Usuario);
             context.Clientes.Add(cliente);
             context.SaveChanges();
         }
@@ -57,6 +59,7 @@ namespace Data.Repositories
         public bool Update(Cliente cliente)
         {
             using var context = CreateContext();
+            context.Attach(cliente.Usuario);
             context.Clientes.Update(cliente); // Usa EF Update para attach y persistir cambios
             context.SaveChanges();
             return context.Entry(cliente).State == Microsoft.EntityFrameworkCore.EntityState.Modified;

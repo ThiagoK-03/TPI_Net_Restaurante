@@ -98,6 +98,7 @@ namespace Domain.Model
         {
             if (horas < 0)
                 throw new ArgumentException("Las horas trabajadas no pueden ser negativas.", nameof(horas));
+            System.Diagnostics.Debug.WriteLine($"SET HORAS TRABAJADAS - {horas}");
             HorasTrabajadas = horas;
             CalcularSueldo();
         }

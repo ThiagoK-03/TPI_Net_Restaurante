@@ -57,7 +57,7 @@ namespace API
 
         public static async Task UpdateAsync(ProductoDTO producto)
         {
-            HttpResponseMessage response = await client.PutAsJsonAsync("productos", producto);
+            HttpResponseMessage response = await client.PutAsJsonAsync($"productos/{producto.Id}", producto);
             response.EnsureSuccessStatusCode();
         }
     }

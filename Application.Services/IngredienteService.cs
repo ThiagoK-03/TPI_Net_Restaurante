@@ -66,17 +66,29 @@ namespace Application.Services
         {
             IngredienteRepository repository = new IngredienteRepository();
 
-            return repository.GetAll().Select(ingrediente => new IngredienteDTO
+            ProveedorRepository _proveedorRepository = new ProveedorRepository();
+
+            var ingredientes = repository.GetAll();
+            var ingredientesDTO = new List<IngredienteDTO>();
+
+            foreach (var ingrediente in ingredientes)
             {
-                Id = ingrediente.Id,
-                Nombre = ingrediente.Nombre,
-                ProveedorNombre = ingrediente.Proveedor.RazonSocial,
-                Descripcion = ingrediente.Descripcion,
-                Stock = ingrediente.Stock,
-                UnidadMedida = ingrediente.UnidadMedida,
-                Origen = ingrediente.Origen,
-                LimiteBajoStock = ingrediente.LimiteBajoStock,
-            }).ToList();
+                var proveedor = _proveedorRepository.Get(ingrediente.ProveedorId);
+
+                ingredientesDTO.Add(new IngredienteDTO
+                {
+                    Id = ingrediente.Id,
+                    Nombre = ingrediente.Nombre,
+                    ProveedorNombre = proveedor != null ? proveedor.RazonSocial : "Desconocido",
+                    Descripcion = ingrediente.Descripcion,
+                    Stock = ingrediente.Stock,
+                    UnidadMedida = ingrediente.UnidadMedida,
+                    Origen = ingrediente.Origen,
+                    LimiteBajoStock = ingrediente.LimiteBajoStock,
+                });
+            }
+               
+            return ingredientesDTO;
         }
 
         public bool Update(IngredienteDTO dto)

@@ -32,6 +32,7 @@ namespace Application.Services
             usuarioRepository.Save();
 
             var empleado = new Empleado(usuario, dto.RazonSocial, dto.Cuil, dto.Turno, dto.PrecioPorHora);
+            empleado.SetHorasTrabajadas(dto.HorasTrabajadas ?? 0); // Asignar horas trabajadas si se proporciona
 
             empleadoRepository.Add(empleado);
 
@@ -61,6 +62,7 @@ namespace Application.Services
         public bool Update(EmpleadoDto dto)
         {
             var empleadoRepository = new EmpleadoRepository();
+            var usuarioRepository = new UsuarioRepository();
 
             if (empleadoRepository.CuilExists(dto.Cuil, dto.Id))
             {
@@ -71,13 +73,25 @@ namespace Application.Services
             if (existingEmpleado == null)
                 return false;
 
+
+
             // Actualizar Usuario
-            existingEmpleado.Usuario.SetNombre(dto.Nombre);
-            existingEmpleado.Usuario.SetApellido(dto.Apellido);
-            existingEmpleado.Usuario.SetEmail(dto.Email);
-            existingEmpleado.Usuario.SetTelefono(dto.Telefono);
+
+            var existingUser = usuarioRepository.Get(existingEmpleado.UsuarioId);
+            if (existingUser == null)
+                return false;
+
+            existingUser.SetNombre(dto.Nombre);
+            existingUser.SetApellido(dto.Apellido);
+            existingUser.SetEmail(dto.Email);
+            existingUser.SetTelefono(dto.Telefono);
+            existingUser.SetUsername(dto.Username);
+            System.Diagnostics.Debug.WriteLine($"username :  - {dto.Username}");
             if (!string.IsNullOrEmpty(dto.Password))
-                existingEmpleado.Usuario.SetPassword(dto.Password);
+                existingUser.SetPassword(dto.Password);
+
+            usuarioRepository.Update(existingUser);
+            usuarioRepository.Save();
 
             // Actualizar campos específicos de Empleado
             existingEmpleado.SetRazonSocial(dto.RazonSocial);
@@ -86,8 +100,9 @@ namespace Application.Services
             existingEmpleado.SetHorasTrabajadas(dto.HorasTrabajadas);
             existingEmpleado.SetPrecioPorHora(dto.PrecioPorHora);
             // Sueldo se recalcula en setters
+            empleadoRepository.Update(existingEmpleado);
 
-            return empleadoRepository.Update(existingEmpleado);
+            return true;
         }
 
         // DELETE

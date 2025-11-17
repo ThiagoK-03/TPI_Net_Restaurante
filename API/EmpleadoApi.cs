@@ -59,7 +59,7 @@ namespace API
 
         public static async Task UpdateAsync(EmpleadoDto empleado)
         {
-            HttpResponseMessage response = await client.PutAsJsonAsync("empleados", empleado);
+            HttpResponseMessage response = await client.PutAsJsonAsync($"empleados/{empleado.Id}", empleado);
             response.EnsureSuccessStatusCode();
         }
     }

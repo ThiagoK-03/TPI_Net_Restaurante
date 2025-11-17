@@ -11,11 +11,11 @@ namespace Application.Services
         {
             ProveedorRepository repository = new ProveedorRepository();
             if (repository.CuitExists(dto.Cuit)){
-                throw new ArgumentException($"Ya existe un cliente con el Cuit '{dto.Cuit}'.");
+                throw new ArgumentException($"Ya existe un proveedor con el Cuit '{dto.Cuit}'.");
             }
             if (repository.EmailExists(dto.Email))
             {
-                throw new ArgumentException($"Ya existe un cliente con el Email '{dto.Email}'.");
+                throw new ArgumentException($"Ya existe un proveedor con el Email '{dto.Email}'.");
             }
 
             Proveedor proveedor = new Proveedor(0, dto.RazonSocial, dto.Cuit, dto.Email, dto.Telefono, dto.TipoIngrediente);
@@ -75,15 +75,6 @@ namespace Application.Services
         public bool Update(ProveedorDTO dto) //Fue modificado respecto al original para solucionar un problema
         {
             ProveedorRepository repository = new ProveedorRepository();
-            if (repository.CuitExists(dto.Cuit))
-            {
-                throw new ArgumentException($"Ya existe un proveedor con el Cuit '{dto.Cuit}'.");
-            }
-            if (repository.EmailExists(dto.Email))
-            {
-                throw new ArgumentException($"Ya existe un proveedor con el Email '{dto.Email}'.");
-            }
-
             Proveedor proveedor = new Proveedor(dto.Id, dto.RazonSocial, dto.Cuit, dto.Email, dto.Telefono, dto.TipoIngrediente);
 
             if(dto.IngredientesIds != null && dto.IngredientesIds.Count > 0)

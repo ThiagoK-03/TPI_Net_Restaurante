@@ -51,11 +51,6 @@ namespace WindowsForms.ingrediente
             Mode = FormMode.Add;
         }
 
-        
-        
-
-        
-
         private async void btnAceptar_click(object sender, EventArgs e) //Boton de aceptar
         {
             if (this.ValidateIngrediente())
@@ -70,6 +65,7 @@ namespace WindowsForms.ingrediente
                     this.Ingrediente.UnidadMedida = tbxUnidadMedida.Text;
                     this.Ingrediente.Origen = tbxOrigen.Text;
                     this.Ingrediente.LimiteBajoStock = int.Parse(tbxLimiteBajoStock.Text);
+                    this.Ingrediente.ProveedorId = (int)cboxProveedores.SelectedValue;
 
                     if (this.Mode == FormMode.Update)
                     {
@@ -96,6 +92,10 @@ namespace WindowsForms.ingrediente
 
         private void SetIngrediente()
         {
+            if (this.Ingrediente.Nombre == null)
+            {
+                return;
+            }
             this.tbxId.Text = this.Ingrediente.Id.ToString();
             this.tbxNombre.Text = this.Ingrediente.Nombre;
             this.tbxDescripcion.Text = this.Ingrediente.Descripcion;
@@ -103,6 +103,7 @@ namespace WindowsForms.ingrediente
             this.tbxUnidadMedida.Text = this.Ingrediente.UnidadMedida;
             this.tbxOrigen.Text = this.Ingrediente.Origen;
             this.tbxLimiteBajoStock.Text = this.Ingrediente.LimiteBajoStock.ToString();
+            this.cboxProveedores.SelectedValue = this.Ingrediente.ProveedorId;
         }
 
         private void SetFormMode(FormMode value)
@@ -123,6 +124,14 @@ namespace WindowsForms.ingrediente
             }
         }
 
+        private async void onLoad(object sender, EventArgs e)
+        {
+            var proveedores = await ProveedorApi.GetAllAsync();
+            cboxProveedores.DataSource = proveedores;
+            cboxProveedores.DisplayMember = "RazonSocial";
+            cboxProveedores.ValueMember = "Id";
+        }
+
         private bool ValidateIngrediente()
         {
             bool isValid = true;
@@ -133,6 +142,7 @@ namespace WindowsForms.ingrediente
             errorProvider.SetError(tbxUnidadMedida, string.Empty);
             errorProvider.SetError(tbxOrigen, string.Empty);
             errorProvider.SetError(tbxLimiteBajoStock, string.Empty);
+            errorProvider.SetError(cboxProveedores, string.Empty);
 
             if (this.tbxNombre.Text == string.Empty)
             {
@@ -168,6 +178,12 @@ namespace WindowsForms.ingrediente
             {
                 isValid = false;
                 errorProvider.SetError(tbxLimiteBajoStock, "El Limite de Bajo Stock es Requerido");
+            }
+
+            if (this.cboxProveedores.SelectedItem == null)
+            {
+                isValid = false;
+                errorProvider.SetError(cboxProveedores, "El Proveedor es Requerido");
             }
 
             return isValid;

@@ -58,7 +58,7 @@ namespace Application.Services
         public IEnumerable<PedidoDTO> GetAll()
         {
             PedidoRepository repository = new PedidoRepository();
-
+            
             return repository.GetAll().Select(pedido => new PedidoDTO
             {
                 Id = pedido.Id,
@@ -66,10 +66,11 @@ namespace Application.Services
                 FechaHoraInicio = pedido.FechaHoraInicio,
                 FechaHoraFinEstimada = pedido.FechaHoraFinEstimada,
                 FechaHoraFin = pedido.FechaHoraFin,
-                Estado = pedido.Estado.ToString(),
+                Estado = (PedidoDTO.EstadoPedido)Enum.Parse<EstadoPedido>(pedido.Estado.ToString()),
                 ClienteId = pedido.ClienteId,
                 EmpleadoId = pedido.EmpleadoId,
-                ProductosIds = pedido.Productos.Select(prod => prod.Id).ToList(),
+                ProductosIds = pedido.Productos?.Select(prod => prod.Id).ToList() ?? new List<int>(),
+                
                 Subtotal = pedido.CalculateTotal()
 
             }).ToList();
@@ -91,10 +92,10 @@ namespace Application.Services
                 FechaHoraInicio = pedido.FechaHoraInicio,
                 FechaHoraFinEstimada = pedido.FechaHoraFinEstimada,
                 FechaHoraFin = pedido.FechaHoraFin,
-                Estado = pedido.Estado.ToString(),
+                Estado = (PedidoDTO.EstadoPedido)Enum.Parse<EstadoPedido>(pedido.Estado.ToString()),
                 ClienteId = pedido.ClienteId,
                 EmpleadoId = pedido.EmpleadoId,
-                ProductosIds = pedido.Productos.Select(prod => prod.Id).ToList(),
+                ProductosIds = pedido.Productos?.Select(prod => prod.Id).ToList() ?? new List<int>(),
                 Subtotal = pedido.CalculateTotal()
             };
         }
@@ -136,7 +137,7 @@ namespace Application.Services
                     ?? throw new Exception($"Empleado con ID {pedido.EmpleadoId} no existe.");
                 pedidoUpdated.SetEmpleado(empleado);
             }
-            if(Enum.TryParse<EstadoPedido>(pedido.Estado, out var estado))
+            if(Enum.TryParse<EstadoPedido>(pedido.Estado.ToString(), out var estado))
             {
                 pedidoUpdated.SetEstado(estado);
             }

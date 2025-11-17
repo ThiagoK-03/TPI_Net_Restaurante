@@ -8,9 +8,16 @@ namespace DTOs
 {
     public class PedidoDTO : DTOInterface
     {
+        public enum EstadoPedido
+        {
+            Pendiente,
+            EnProceso,
+            Completado,
+            Cancelado
+        }
         public int Id { get; set; }
         public string Descripcion { get; set; }
-        public string Estado { get; set; }
+        public EstadoPedido Estado { get; set; }
         public DateTime FechaHoraInicio { get; set; }
         public DateTime? FechaHoraFin { get; set; }
         public DateTime? FechaHoraFinEstimada { get; set; }

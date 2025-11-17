@@ -56,11 +56,14 @@ namespace WindowsForms.cliente
             {
                 try
                 {
-                    
+
                     this.Cliente.Nombre = tbxNombre.Text;
                     this.Cliente.Apellido = tbxApellido.Text;
                     this.Cliente.Email = tbxEmail.Text;
-                    this.Cliente.FechaAlta = DateTime.Parse(tbxFechaAlta.Text);
+                    this.Cliente.FechaAlta = DateTime.Now;
+                    this.Cliente.Username = tbxUsername.Text;
+                    this.Cliente.Password = tbxPassword.Text;
+                    this.Cliente.Telefono = tbxTelefono.Text;
 
                     //El Detalle se esta llevando la responsabilidad de llamar al servicio
                     //pero tal vez deberia ser solo una vista y que esta responsabilidad quede
@@ -94,8 +97,9 @@ namespace WindowsForms.cliente
             this.tbxId.Text = this.Cliente.Id.ToString();
             this.tbxNombre.Text = this.Cliente.Nombre;
             this.tbxApellido.Text = this.Cliente.Apellido;
-            this.tbxFechaAlta.Text = this.Cliente.FechaAlta.ToString();
             this.tbxEmail.Text = this.Cliente.Email;
+            this.tbxTelefono.Text = this.Cliente.Telefono.ToString();
+            this.tbxUsername.Text = this.Cliente.Username;
         }
 
         private void SetFormMode(FormMode value)
@@ -106,8 +110,6 @@ namespace WindowsForms.cliente
             {
                 lblId.Visible = false;
                 tbxId.Visible = false;
-                lblFechaAlta.Visible = false;
-                tbxFechaAlta.Visible = false;
             }
 
             if (Mode == FormMode.Update)
@@ -115,9 +117,6 @@ namespace WindowsForms.cliente
                 lblId.Visible = true;
                 tbxId.Visible = true;
                 tbxId.Enabled = false;
-                lblFechaAlta.Visible = true;
-                tbxFechaAlta.Visible = true;
-                tbxFechaAlta.Enabled = false;
             }
         }
 
@@ -151,6 +150,23 @@ namespace WindowsForms.cliente
                 isValid = false;
                 errorProvider.SetError(tbxEmail, "El formato del Email no es válido");
             }
+
+            if (this.tbxTelefono.Text == string.Empty)
+            {
+                isValid = false;
+                errorProvider.SetError(tbxTelefono, "El telefono es Requerido");
+            }
+            if (this.tbxUsername.Text == string.Empty)
+            {
+                isValid = false;
+                errorProvider.SetError(tbxUsername, "El username es Requerido");
+            }
+            if (this.tbxPassword.Text == string.Empty && Mode == FormMode.Add)
+            {
+                isValid = false;
+                errorProvider.SetError(tbxPassword, "La contraseña es Requerido");
+            }
+
 
             return isValid;
         }

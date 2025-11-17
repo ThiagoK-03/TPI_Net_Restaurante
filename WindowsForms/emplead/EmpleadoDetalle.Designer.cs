@@ -47,6 +47,16 @@
             btnAceptar = new WinFormsControlLibrary1.RedButton();
             backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             errorProvider = new ErrorProvider(components);
+            tbxUsername = new WinFormsControlLibrary1.BasicTxtBox();
+            lblUsername = new WinFormsControlLibrary1.BasicLabel();
+            lblContraseña = new WinFormsControlLibrary1.BasicLabel();
+            lblEmail = new WinFormsControlLibrary1.BasicLabel();
+            tbxContraseña = new WinFormsControlLibrary1.BasicTxtBox();
+            tbxEmail = new WinFormsControlLibrary1.BasicTxtBox();
+            lblTelefono = new WinFormsControlLibrary1.BasicLabel();
+            tbxTelefono = new WinFormsControlLibrary1.BasicTxtBox();
+            lblApellido = new WinFormsControlLibrary1.BasicLabel();
+            tbxApellido = new WinFormsControlLibrary1.BasicTxtBox();
             topBar.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)errorProvider).BeginInit();
             SuspendLayout();
@@ -90,7 +100,7 @@
             lblCuit.BackColor = Color.Transparent;
             lblCuit.Font = new Font("Javanese Text", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             lblCuit.ForeColor = Color.MistyRose;
-            lblCuit.Location = new Point(60, 112);
+            lblCuit.Location = new Point(60, 139);
             lblCuit.Name = "lblCuit";
             lblCuit.Size = new Size(34, 27);
             lblCuit.TabIndex = 7;
@@ -102,7 +112,7 @@
             lblTurno.BackColor = Color.Transparent;
             lblTurno.Font = new Font("Javanese Text", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             lblTurno.ForeColor = Color.MistyRose;
-            lblTurno.Location = new Point(59, 139);
+            lblTurno.Location = new Point(59, 166);
             lblTurno.Name = "lblTurno";
             lblTurno.Size = new Size(44, 27);
             lblTurno.TabIndex = 8;
@@ -114,7 +124,7 @@
             lblHorasTrabajadas.BackColor = Color.Transparent;
             lblHorasTrabajadas.Font = new Font("Javanese Text", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             lblHorasTrabajadas.ForeColor = Color.MistyRose;
-            lblHorasTrabajadas.Location = new Point(59, 166);
+            lblHorasTrabajadas.Location = new Point(59, 193);
             lblHorasTrabajadas.Name = "lblHorasTrabajadas";
             lblHorasTrabajadas.Size = new Size(104, 27);
             lblHorasTrabajadas.TabIndex = 9;
@@ -126,7 +136,7 @@
             lblPrecioXHora.BackColor = Color.Transparent;
             lblPrecioXHora.Font = new Font("Javanese Text", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             lblPrecioXHora.ForeColor = Color.MistyRose;
-            lblPrecioXHora.Location = new Point(59, 193);
+            lblPrecioXHora.Location = new Point(59, 220);
             lblPrecioXHora.Name = "lblPrecioXHora";
             lblPrecioXHora.Size = new Size(95, 27);
             lblPrecioXHora.TabIndex = 10;
@@ -138,7 +148,7 @@
             lblSueldo.BackColor = Color.Transparent;
             lblSueldo.Font = new Font("Javanese Text", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             lblSueldo.ForeColor = Color.MistyRose;
-            lblSueldo.Location = new Point(59, 220);
+            lblSueldo.Location = new Point(59, 247);
             lblSueldo.Name = "lblSueldo";
             lblSueldo.Size = new Size(48, 27);
             lblSueldo.TabIndex = 11;
@@ -168,7 +178,7 @@
             // 
             txbCuit.BackColor = Color.MistyRose;
             txbCuit.BorderStyle = BorderStyle.None;
-            txbCuit.Location = new Point(191, 115);
+            txbCuit.Location = new Point(191, 142);
             txbCuit.Name = "txbCuit";
             txbCuit.PlaceholderText = "Content";
             txbCuit.Size = new Size(158, 16);
@@ -178,7 +188,7 @@
             // 
             txbTurno.BackColor = Color.MistyRose;
             txbTurno.BorderStyle = BorderStyle.None;
-            txbTurno.Location = new Point(191, 142);
+            txbTurno.Location = new Point(191, 169);
             txbTurno.Name = "txbTurno";
             txbTurno.PlaceholderText = "Content";
             txbTurno.Size = new Size(158, 16);
@@ -188,7 +198,7 @@
             // 
             txbHorasTrabajadas.BackColor = Color.MistyRose;
             txbHorasTrabajadas.BorderStyle = BorderStyle.None;
-            txbHorasTrabajadas.Location = new Point(191, 169);
+            txbHorasTrabajadas.Location = new Point(191, 196);
             txbHorasTrabajadas.Name = "txbHorasTrabajadas";
             txbHorasTrabajadas.PlaceholderText = "Content";
             txbHorasTrabajadas.Size = new Size(158, 16);
@@ -198,7 +208,7 @@
             // 
             txbPrecioPorHora.BackColor = Color.MistyRose;
             txbPrecioPorHora.BorderStyle = BorderStyle.None;
-            txbPrecioPorHora.Location = new Point(191, 196);
+            txbPrecioPorHora.Location = new Point(191, 223);
             txbPrecioPorHora.Name = "txbPrecioPorHora";
             txbPrecioPorHora.PlaceholderText = "Content";
             txbPrecioPorHora.Size = new Size(158, 16);
@@ -208,7 +218,7 @@
             // 
             txbSueldo.BackColor = Color.MistyRose;
             txbSueldo.BorderStyle = BorderStyle.None;
-            txbSueldo.Location = new Point(191, 223);
+            txbSueldo.Location = new Point(191, 250);
             txbSueldo.Name = "txbSueldo";
             txbSueldo.PlaceholderText = "Content";
             txbSueldo.Size = new Size(158, 16);
@@ -221,7 +231,7 @@
             btnCancelar.FlatStyle = FlatStyle.Flat;
             btnCancelar.Font = new Font("Microsoft Sans Serif", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             btnCancelar.ForeColor = Color.MistyRose;
-            btnCancelar.Location = new Point(317, 263);
+            btnCancelar.Location = new Point(327, 416);
             btnCancelar.Name = "btnCancelar";
             btnCancelar.Size = new Size(75, 23);
             btnCancelar.TabIndex = 19;
@@ -236,7 +246,7 @@
             btnAceptar.FlatStyle = FlatStyle.Flat;
             btnAceptar.Font = new Font("Microsoft Sans Serif", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             btnAceptar.ForeColor = Color.MistyRose;
-            btnAceptar.Location = new Point(398, 263);
+            btnAceptar.Location = new Point(408, 416);
             btnAceptar.Name = "btnAceptar";
             btnAceptar.Size = new Size(75, 23);
             btnAceptar.TabIndex = 20;
@@ -248,11 +258,131 @@
             // 
             errorProvider.ContainerControl = this;
             // 
+            // tbxUsername
+            // 
+            tbxUsername.BackColor = Color.MistyRose;
+            tbxUsername.BorderStyle = BorderStyle.None;
+            tbxUsername.Location = new Point(191, 277);
+            tbxUsername.Name = "tbxUsername";
+            tbxUsername.PlaceholderText = "Content";
+            tbxUsername.Size = new Size(158, 16);
+            tbxUsername.TabIndex = 21;
+            // 
+            // lblUsername
+            // 
+            lblUsername.AutoSize = true;
+            lblUsername.BackColor = Color.Transparent;
+            lblUsername.Font = new Font("Javanese Text", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lblUsername.ForeColor = Color.MistyRose;
+            lblUsername.Location = new Point(60, 274);
+            lblUsername.Name = "lblUsername";
+            lblUsername.Size = new Size(66, 27);
+            lblUsername.TabIndex = 22;
+            lblUsername.Text = "Username";
+            // 
+            // lblContraseña
+            // 
+            lblContraseña.AutoSize = true;
+            lblContraseña.BackColor = Color.Transparent;
+            lblContraseña.Font = new Font("Javanese Text", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lblContraseña.ForeColor = Color.MistyRose;
+            lblContraseña.Location = new Point(60, 301);
+            lblContraseña.Name = "lblContraseña";
+            lblContraseña.Size = new Size(72, 27);
+            lblContraseña.TabIndex = 23;
+            lblContraseña.Text = "Contraseña";
+            // 
+            // lblEmail
+            // 
+            lblEmail.AutoSize = true;
+            lblEmail.BackColor = Color.Transparent;
+            lblEmail.Font = new Font("Javanese Text", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lblEmail.ForeColor = Color.MistyRose;
+            lblEmail.Location = new Point(60, 328);
+            lblEmail.Name = "lblEmail";
+            lblEmail.Size = new Size(42, 27);
+            lblEmail.TabIndex = 24;
+            lblEmail.Text = "Email";
+            // 
+            // tbxContraseña
+            // 
+            tbxContraseña.BackColor = Color.MistyRose;
+            tbxContraseña.BorderStyle = BorderStyle.None;
+            tbxContraseña.Location = new Point(191, 304);
+            tbxContraseña.Name = "tbxContraseña";
+            tbxContraseña.PlaceholderText = "Content";
+            tbxContraseña.Size = new Size(158, 16);
+            tbxContraseña.TabIndex = 25;
+            // 
+            // tbxEmail
+            // 
+            tbxEmail.BackColor = Color.MistyRose;
+            tbxEmail.BorderStyle = BorderStyle.None;
+            tbxEmail.Location = new Point(191, 331);
+            tbxEmail.Name = "tbxEmail";
+            tbxEmail.PlaceholderText = "Content";
+            tbxEmail.Size = new Size(158, 16);
+            tbxEmail.TabIndex = 26;
+            // 
+            // lblTelefono
+            // 
+            lblTelefono.AutoSize = true;
+            lblTelefono.BackColor = Color.Transparent;
+            lblTelefono.Font = new Font("Javanese Text", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lblTelefono.ForeColor = Color.MistyRose;
+            lblTelefono.Location = new Point(60, 355);
+            lblTelefono.Name = "lblTelefono";
+            lblTelefono.Size = new Size(57, 27);
+            lblTelefono.TabIndex = 27;
+            lblTelefono.Text = "Telefono";
+            // 
+            // tbxTelefono
+            // 
+            tbxTelefono.BackColor = Color.MistyRose;
+            tbxTelefono.BorderStyle = BorderStyle.None;
+            tbxTelefono.Location = new Point(191, 358);
+            tbxTelefono.Name = "tbxTelefono";
+            tbxTelefono.PlaceholderText = "Content";
+            tbxTelefono.Size = new Size(158, 16);
+            tbxTelefono.TabIndex = 28;
+            // 
+            // lblApellido
+            // 
+            lblApellido.AutoSize = true;
+            lblApellido.BackColor = Color.Transparent;
+            lblApellido.Font = new Font("Javanese Text", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lblApellido.ForeColor = Color.MistyRose;
+            lblApellido.Location = new Point(59, 112);
+            lblApellido.Name = "lblApellido";
+            lblApellido.Size = new Size(55, 27);
+            lblApellido.TabIndex = 29;
+            lblApellido.Text = "Apellido";
+            // 
+            // tbxApellido
+            // 
+            tbxApellido.BackColor = Color.MistyRose;
+            tbxApellido.BorderStyle = BorderStyle.None;
+            tbxApellido.Location = new Point(191, 115);
+            tbxApellido.Name = "tbxApellido";
+            tbxApellido.PlaceholderText = "Content";
+            tbxApellido.Size = new Size(158, 16);
+            tbxApellido.TabIndex = 30;
+            // 
             // EmpleadoDetalle
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(495, 314);
+            ClientSize = new Size(495, 451);
+            Controls.Add(tbxApellido);
+            Controls.Add(lblApellido);
+            Controls.Add(tbxTelefono);
+            Controls.Add(lblTelefono);
+            Controls.Add(tbxEmail);
+            Controls.Add(tbxContraseña);
+            Controls.Add(lblEmail);
+            Controls.Add(lblContraseña);
+            Controls.Add(lblUsername);
+            Controls.Add(tbxUsername);
             Controls.Add(btnAceptar);
             Controls.Add(btnCancelar);
             Controls.Add(txbSueldo);
@@ -288,6 +418,16 @@
             Controls.SetChildIndex(txbSueldo, 0);
             Controls.SetChildIndex(btnCancelar, 0);
             Controls.SetChildIndex(btnAceptar, 0);
+            Controls.SetChildIndex(tbxUsername, 0);
+            Controls.SetChildIndex(lblUsername, 0);
+            Controls.SetChildIndex(lblContraseña, 0);
+            Controls.SetChildIndex(lblEmail, 0);
+            Controls.SetChildIndex(tbxContraseña, 0);
+            Controls.SetChildIndex(tbxEmail, 0);
+            Controls.SetChildIndex(lblTelefono, 0);
+            Controls.SetChildIndex(tbxTelefono, 0);
+            Controls.SetChildIndex(lblApellido, 0);
+            Controls.SetChildIndex(tbxApellido, 0);
             topBar.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)errorProvider).EndInit();
             ResumeLayout(false);
@@ -314,5 +454,15 @@
         private WinFormsControlLibrary1.RedButton btnAceptar;
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
         private ErrorProvider errorProvider;
+        private WinFormsControlLibrary1.BasicLabel lblUsername;
+        private WinFormsControlLibrary1.BasicTxtBox tbxUsername;
+        private WinFormsControlLibrary1.BasicTxtBox tbxEmail;
+        private WinFormsControlLibrary1.BasicTxtBox tbxContraseña;
+        private WinFormsControlLibrary1.BasicLabel lblEmail;
+        private WinFormsControlLibrary1.BasicLabel lblContraseña;
+        private WinFormsControlLibrary1.BasicTxtBox tbxTelefono;
+        private WinFormsControlLibrary1.BasicLabel lblTelefono;
+        private WinFormsControlLibrary1.BasicLabel lblApellido;
+        private WinFormsControlLibrary1.BasicTxtBox tbxApellido;
     }
 }

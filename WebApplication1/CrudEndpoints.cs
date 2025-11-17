@@ -1,5 +1,7 @@
 ﻿using Application.Services;
+using Domain.Model;
 using DTOs;
+using Microsoft.AspNetCore.Mvc;
 
 namespace WebApplication1
 {
@@ -29,11 +31,14 @@ namespace WebApplication1
                 return Results.Created($"/{baseRoute}/{created.Id}", created);
             });
 
-            app.MapPut($"/{baseRoute}/{{id}}", (TService service, int id, TEntity entity) =>
-            {
-                if (id != entity.Id) return Results.BadRequest();
-                return service.Update(entity) ? Results.Ok(entity) : Results.NotFound();
-            });
+            app.MapPut($"/{baseRoute}/{{id}}",
+                (int id, TEntity entity, TService service) =>
+                {
+                    entity.Id = id;
+                    return service.Update(entity) ? Results.Ok(entity) : Results.NotFound();
+                });
+
+
 
             app.MapDelete($"/{baseRoute}/{{id}}", (TService service, int id) =>
             {

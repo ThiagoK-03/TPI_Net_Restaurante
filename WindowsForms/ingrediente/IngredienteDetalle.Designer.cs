@@ -46,6 +46,8 @@
             lblUnidadDeMedida = new WinFormsControlLibrary1.BasicLabel();
             lblOrigen = new WinFormsControlLibrary1.BasicLabel();
             lblLimiteBajoStock = new WinFormsControlLibrary1.BasicLabel();
+            cboxProveedores = new ComboBox();
+            lblProveedores = new WinFormsControlLibrary1.BasicLabel();
             topBar.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)errorProvider).BeginInit();
             SuspendLayout();
@@ -247,11 +249,34 @@
             lblLimiteBajoStock.TabIndex = 40;
             lblLimiteBajoStock.Text = "Limite Bajo Stock";
             // 
+            // cboxProveedores
+            // 
+            cboxProveedores.BackColor = Color.MistyRose;
+            cboxProveedores.FormattingEnabled = true;
+            cboxProveedores.Location = new Point(138, 239);
+            cboxProveedores.Name = "cboxProveedores";
+            cboxProveedores.Size = new Size(121, 23);
+            cboxProveedores.TabIndex = 41;
+            // 
+            // lblProveedores
+            // 
+            lblProveedores.AutoSize = true;
+            lblProveedores.BackColor = Color.Transparent;
+            lblProveedores.Font = new Font("Javanese Text", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lblProveedores.ForeColor = Color.MistyRose;
+            lblProveedores.Location = new Point(265, 239);
+            lblProveedores.Name = "lblProveedores";
+            lblProveedores.Size = new Size(77, 27);
+            lblProveedores.TabIndex = 42;
+            lblProveedores.Text = "Proveedores";
+            // 
             // IngredienteDetalle
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(438, 335);
+            Controls.Add(lblProveedores);
+            Controls.Add(cboxProveedores);
             Controls.Add(lblLimiteBajoStock);
             Controls.Add(lblOrigen);
             Controls.Add(lblUnidadDeMedida);
@@ -270,6 +295,7 @@
             Controls.Add(btnCancelar);
             Name = "IngredienteDetalle";
             Text = "Ingrediente";
+            Load += onLoad;
             Controls.SetChildIndex(topBar, 0);
             Controls.SetChildIndex(btnCancelar, 0);
             Controls.SetChildIndex(btnAceptar, 0);
@@ -287,6 +313,8 @@
             Controls.SetChildIndex(lblUnidadDeMedida, 0);
             Controls.SetChildIndex(lblOrigen, 0);
             Controls.SetChildIndex(lblLimiteBajoStock, 0);
+            Controls.SetChildIndex(cboxProveedores, 0);
+            Controls.SetChildIndex(lblProveedores, 0);
             topBar.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)errorProvider).EndInit();
             ResumeLayout(false);
@@ -312,5 +340,7 @@
         private WinFormsControlLibrary1.BasicTxtBox tbxDescripcion;
         private WinFormsControlLibrary1.BasicTxtBox tbxNombre;
         private WinFormsControlLibrary1.BasicTxtBox tbxId;
+        private WinFormsControlLibrary1.BasicLabel lblProveedores;
+        private ComboBox cboxProveedores;
     }
 }

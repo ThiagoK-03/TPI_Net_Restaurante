@@ -20,6 +20,9 @@ namespace Data.Repositories
         public void Add(Pedido pedido)
         {
             using var context = CreateContext();
+            context.Attach(pedido.Cliente);
+            if(pedido.Empleado != null) context.Attach(pedido.Empleado);
+            foreach (Producto producto in pedido.Productos) context.Attach(producto);
             context.Pedidos.Add(pedido);
             context.SaveChanges();
         }
@@ -52,6 +55,7 @@ namespace Data.Repositories
             return context.Pedidos
                 .Include(p => p.Cliente)
                 .Include(p => p.Empleado)
+                .Include(p => p.Productos)
                 .ToList();
         }
 
@@ -65,8 +69,18 @@ namespace Data.Repositories
                 existingPedido.SetEstado(pedido.Estado);
                 existingPedido.SetFechaHoraFin(pedido.FechaHoraFin);
                 existingPedido.SetFechaHoraFinEstimada(pedido.FechaHoraFinEstimada);
-                existingPedido.SetCliente(pedido.Cliente);
-                existingPedido.SetEmpleado(pedido.Empleado);
+
+                if (pedido.Cliente != null)
+                {
+                    var cliente = context.Clientes.Find(pedido.Cliente.Id);
+                    existingPedido.SetCliente(cliente);
+                }
+                if (pedido.Empleado != null)
+                {
+                    var empleado = context.Empleados.Find(pedido.Empleado.Id);
+                    existingPedido.SetEmpleado(empleado);
+                }
+
 
                 context.SaveChanges();
                 return true;

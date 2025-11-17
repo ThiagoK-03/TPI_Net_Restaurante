@@ -67,8 +67,15 @@ namespace WindowsForms.emplead
                     this.Empleado.Cuil = int.Parse(txbCuit.Text);
                     this.Empleado.Turno = txbTurno.Text;
                     this.Empleado.HorasTrabajadas = int.Parse(txbHorasTrabajadas.Text);
-                    this.Empleado.PrecioPorHora = int.Parse(txbPrecioPorHora.Text);
-                    this.Empleado.Sueldo = int.Parse(txbSueldo.Text); 
+                    System.Diagnostics.Debug.WriteLine($"HORAS TRABAJADASS - {txbHorasTrabajadas.Text}");
+                    this.Empleado.PrecioPorHora = decimal.Parse(txbPrecioPorHora.Text);
+                    this.Empleado.Sueldo = decimal.Parse(txbSueldo.Text); 
+                    this.Empleado.Username = tbxUsername.Text;
+                    this.Empleado.Password = tbxContraseña.Text;
+                    this.Empleado.Email = tbxEmail.Text;
+                    this.Empleado.Telefono = tbxTelefono.Text;
+                    this.Empleado.Apellido = tbxApellido.Text;
+                    this.Empleado.Nombre = txbNombre.Text;
 
                     //El Detalle se esta llevando la responsabilidad de llamar al servicio
                     //pero tal vez deberia ser solo una vista y que esta responsabilidad quede
@@ -101,6 +108,11 @@ namespace WindowsForms.emplead
             this.txbHorasTrabajadas.Text = this.Empleado.HorasTrabajadas.ToString();
             this.txbPrecioPorHora.Text = this.Empleado.PrecioPorHora.ToString();
             this.txbSueldo.Text = this.Empleado.Sueldo.ToString();
+            this.tbxUsername.Text = this.Empleado.Username;
+            this.tbxContraseña.Text = this.Empleado.Password;
+            this.tbxEmail.Text = this.Empleado.Email;
+            this.tbxTelefono.Text = this.Empleado.Telefono;
+            this.tbxApellido.Text = this.Empleado.Apellido;
         }
 
         private void SetFormMode(FormMode value)
@@ -131,12 +143,17 @@ namespace WindowsForms.emplead
             errorProvider.SetError(txbTurno, string.Empty);
             errorProvider.SetError(txbHorasTrabajadas, string.Empty);
             errorProvider.SetError(txbPrecioPorHora, string.Empty);
+            errorProvider.SetError(tbxUsername, string.Empty);
+            errorProvider.SetError(tbxContraseña, string.Empty);
+            errorProvider.SetError(tbxEmail, string.Empty);
+            errorProvider.SetError(tbxTelefono, string.Empty);
+            errorProvider.SetError(tbxApellido, string.Empty);
 
             // Razon Social
             if (string.IsNullOrWhiteSpace(txbNombre.Text))
             {
                 isValid = false;
-                errorProvider.SetError(txbNombre, "La Razón Social es requerida");
+                errorProvider.SetError(txbNombre, "El nombre es requerido");
             }
 
             // CUIT
@@ -180,6 +197,36 @@ namespace WindowsForms.emplead
             {
                 isValid = false;
                 errorProvider.SetError(txbPrecioPorHora, "El Precio por Hora debe ser numérico");
+            }
+
+            if (string.IsNullOrWhiteSpace(tbxUsername.Text))
+            {
+                isValid = false;
+                errorProvider.SetError(tbxUsername, "El Nombre de Usuario es requerido");
+            }
+
+            if (string.IsNullOrWhiteSpace(tbxContraseña.Text) && (Mode == FormMode.Add))
+            {
+                isValid = false;
+                errorProvider.SetError(tbxContraseña, "La Contraseña es requerida");
+            }
+
+            if (string.IsNullOrWhiteSpace(tbxEmail.Text))
+            {
+                isValid = false;
+                errorProvider.SetError(tbxEmail, "El Email es requerido");
+            }
+
+            if (string.IsNullOrWhiteSpace(tbxTelefono.Text))
+            {
+                isValid = false;
+                errorProvider.SetError(tbxTelefono, "El Teléfono es requerido");
+            }
+
+            if (string.IsNullOrWhiteSpace(tbxApellido.Text))
+            {
+                isValid = false;
+                errorProvider.SetError(tbxApellido, "El Apellido es requerido");
             }
 
             return isValid;

@@ -10,14 +10,12 @@ using System.Windows.Forms;
 using DTOs;
 using WinFormsControlLibrary1;
 using API;
-using Domain.Model;
-using System.Text.Json;
 
 namespace WindowsForms.Pedido
 {
-    public partial class PedidoVista : MenuBase
+    public partial class PedidoVistaCliente : MenuBase
     {
-        public PedidoVista()
+        public PedidoVistaCliente()
         {
             InitializeComponent();
         }
@@ -45,15 +43,14 @@ namespace WindowsForms.Pedido
         {
             try
             {
-                PedidoDetalle pedidoDetalle = new PedidoDetalle();;
-                var id = (int)dgvPedidos.CurrentRow.Cells["Id"].Value;
+                PedidoDetalle pedidoDetalle = new PedidoDetalle();
 
-//                int id = this.SelectedItem().Id;
+                int id = this.SelectedItem().Id;
 
                 PedidoDTO pedido = await PedidoApi.GetAsync(id);
 
-                pedidoDetalle.Pedido = pedido;
                 pedidoDetalle.Mode = FormMode.Update;
+                pedidoDetalle.Pedido = pedido;
 
                 pedidoDetalle.ShowDialog();
 
@@ -69,8 +66,7 @@ namespace WindowsForms.Pedido
         {
             try
             {
-                //int id = this.SelectedItem().Id;
-                var id = (int)dgvPedidos.CurrentRow.Cells["Id"].Value;
+                int id = this.SelectedItem().Id;
 
                 var result = MessageBox.Show($"¿Está seguro que desea eliminar el pedido con Id {id}?", "Confirmar eliminación", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
@@ -86,45 +82,13 @@ namespace WindowsForms.Pedido
             }
         }
 
-        private async Task<string> GetProductosName(List<int> productosIds)
-        {
-            string nombres = "";
-            foreach (int prodId in productosIds){
-                var producto = await ProductoApi.GetAsync(prodId);
-                nombres += producto.Nombre + ", ";
-            }
-            return nombres;
-        }
-
-
         private async void GetAllAndLoad()
         {
             try
             {
                 this.dgvPedidos.DataSource = null;
+                this.dgvPedidos.DataSource = await PedidoApi.GetAllAsync();
 
-                var pedidos = await PedidoApi.GetAllAsync();
-
-                var pedidosTasks = pedidos.Select(async p => new
-                {
-                    p.Id,
-                    p.Descripcion,
-                    p.Estado,
-                    p.FechaHoraInicio,
-                    p.FechaHoraFin,
-                    p.FechaHoraFinEstimada,
-                    p.Subtotal,
-                    Productos = await GetProductosName(p.ProductosIds),
-                    p.ClienteId,
-                    p.ClienteNombre,
-                    p.EmpleadoId,
-                    p.EmpleadoNombre
-                });
-
-                // Espera todos los tasks y obtiene un array de objetos listos
-                var pedidosParaMostrar = await Task.WhenAll(pedidosTasks);
-
-                this.dgvPedidos.DataSource = pedidosParaMostrar.ToList();
 
                 if (this.dgvPedidos.Rows.Count > 0)
                 {
@@ -140,7 +104,7 @@ namespace WindowsForms.Pedido
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error: {ex.Message}");
+                MessageBox.Show($"Error al cargar la lista de pedidos: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 this.btnEliminar.Enabled = false;
                 this.btnModificar.Enabled = false;
             }

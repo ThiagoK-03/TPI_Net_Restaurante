@@ -34,14 +34,18 @@
             lblNombre = new WinFormsControlLibrary1.BasicLabel();
             lblApellido = new WinFormsControlLibrary1.BasicLabel();
             lblEmail = new WinFormsControlLibrary1.BasicLabel();
-            lblFechaAlta = new WinFormsControlLibrary1.BasicLabel();
             btnAceptar = new WinFormsControlLibrary1.RedButton();
             btnCancelar = new WinFormsControlLibrary1.RedButton();
-            tbxFechaAlta = new WinFormsControlLibrary1.BasicTxtBox();
             tbxEmail = new WinFormsControlLibrary1.BasicTxtBox();
             tbxApellido = new WinFormsControlLibrary1.BasicTxtBox();
             tbxNombre = new WinFormsControlLibrary1.BasicTxtBox();
             tbxId = new WinFormsControlLibrary1.BasicTxtBox();
+            tbxUsername = new WinFormsControlLibrary1.BasicTxtBox();
+            lblUsername = new WinFormsControlLibrary1.BasicLabel();
+            tbxTelefono = new WinFormsControlLibrary1.BasicTxtBox();
+            lblTelefono = new WinFormsControlLibrary1.BasicLabel();
+            tbxPassword = new WinFormsControlLibrary1.BasicTxtBox();
+            lblPassword = new WinFormsControlLibrary1.BasicLabel();
             topBar.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)errorProvider).BeginInit();
             SuspendLayout();
@@ -65,7 +69,7 @@
             lblId.BackColor = Color.Transparent;
             lblId.Font = new Font("Javanese Text", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             lblId.ForeColor = Color.MistyRose;
-            lblId.Location = new Point(326, 42);
+            lblId.Location = new Point(325, 61);
             lblId.Name = "lblId";
             lblId.Size = new Size(23, 27);
             lblId.TabIndex = 12;
@@ -77,7 +81,7 @@
             lblNombre.BackColor = Color.Transparent;
             lblNombre.Font = new Font("Javanese Text", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             lblNombre.ForeColor = Color.MistyRose;
-            lblNombre.Location = new Point(326, 69);
+            lblNombre.Location = new Point(325, 88);
             lblNombre.Name = "lblNombre";
             lblNombre.Size = new Size(55, 27);
             lblNombre.TabIndex = 13;
@@ -89,7 +93,7 @@
             lblApellido.BackColor = Color.Transparent;
             lblApellido.Font = new Font("Javanese Text", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             lblApellido.ForeColor = Color.MistyRose;
-            lblApellido.Location = new Point(327, 101);
+            lblApellido.Location = new Point(326, 120);
             lblApellido.Name = "lblApellido";
             lblApellido.Size = new Size(55, 27);
             lblApellido.TabIndex = 14;
@@ -101,23 +105,11 @@
             lblEmail.BackColor = Color.Transparent;
             lblEmail.Font = new Font("Javanese Text", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             lblEmail.ForeColor = Color.MistyRose;
-            lblEmail.Location = new Point(326, 128);
+            lblEmail.Location = new Point(325, 147);
             lblEmail.Name = "lblEmail";
             lblEmail.Size = new Size(42, 27);
             lblEmail.TabIndex = 15;
             lblEmail.Text = "Email";
-            // 
-            // lblFechaAlta
-            // 
-            lblFechaAlta.AutoSize = true;
-            lblFechaAlta.BackColor = Color.Transparent;
-            lblFechaAlta.Font = new Font("Javanese Text", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lblFechaAlta.ForeColor = Color.MistyRose;
-            lblFechaAlta.Location = new Point(326, 155);
-            lblFechaAlta.Name = "lblFechaAlta";
-            lblFechaAlta.Size = new Size(67, 27);
-            lblFechaAlta.TabIndex = 16;
-            lblFechaAlta.Text = "Fecha Alta";
             // 
             // btnAceptar
             // 
@@ -126,7 +118,7 @@
             btnAceptar.FlatStyle = FlatStyle.Flat;
             btnAceptar.Font = new Font("Microsoft Sans Serif", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             btnAceptar.ForeColor = Color.MistyRose;
-            btnAceptar.Location = new Point(326, 209);
+            btnAceptar.Location = new Point(336, 315);
             btnAceptar.Name = "btnAceptar";
             btnAceptar.Size = new Size(75, 23);
             btnAceptar.TabIndex = 17;
@@ -141,7 +133,7 @@
             btnCancelar.FlatStyle = FlatStyle.Flat;
             btnCancelar.Font = new Font("Microsoft Sans Serif", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             btnCancelar.ForeColor = Color.MistyRose;
-            btnCancelar.Location = new Point(235, 209);
+            btnCancelar.Location = new Point(245, 315);
             btnCancelar.Name = "btnCancelar";
             btnCancelar.Size = new Size(75, 23);
             btnCancelar.TabIndex = 18;
@@ -149,21 +141,11 @@
             btnCancelar.UseVisualStyleBackColor = false;
             btnCancelar.Click += btnCancelar_Click;
             // 
-            // tbxFechaAlta
-            // 
-            tbxFechaAlta.BackColor = Color.MistyRose;
-            tbxFechaAlta.BorderStyle = BorderStyle.None;
-            tbxFechaAlta.Location = new Point(141, 160);
-            tbxFechaAlta.Name = "tbxFechaAlta";
-            tbxFechaAlta.PlaceholderText = "Content";
-            tbxFechaAlta.Size = new Size(169, 16);
-            tbxFechaAlta.TabIndex = 19;
-            // 
             // tbxEmail
             // 
             tbxEmail.BackColor = Color.MistyRose;
             tbxEmail.BorderStyle = BorderStyle.None;
-            tbxEmail.Location = new Point(141, 131);
+            tbxEmail.Location = new Point(140, 150);
             tbxEmail.Name = "tbxEmail";
             tbxEmail.PlaceholderText = "Content";
             tbxEmail.Size = new Size(169, 16);
@@ -173,7 +155,7 @@
             // 
             tbxApellido.BackColor = Color.MistyRose;
             tbxApellido.BorderStyle = BorderStyle.None;
-            tbxApellido.Location = new Point(141, 104);
+            tbxApellido.Location = new Point(140, 123);
             tbxApellido.Name = "tbxApellido";
             tbxApellido.PlaceholderText = "Content";
             tbxApellido.Size = new Size(169, 16);
@@ -183,7 +165,7 @@
             // 
             tbxNombre.BackColor = Color.MistyRose;
             tbxNombre.BorderStyle = BorderStyle.None;
-            tbxNombre.Location = new Point(141, 72);
+            tbxNombre.Location = new Point(140, 91);
             tbxNombre.Name = "tbxNombre";
             tbxNombre.PlaceholderText = "Content";
             tbxNombre.Size = new Size(169, 16);
@@ -193,25 +175,95 @@
             // 
             tbxId.BackColor = Color.MistyRose;
             tbxId.BorderStyle = BorderStyle.None;
-            tbxId.Location = new Point(210, 45);
+            tbxId.Location = new Point(209, 64);
             tbxId.Name = "tbxId";
             tbxId.PlaceholderText = "Content";
             tbxId.Size = new Size(100, 16);
             tbxId.TabIndex = 23;
             // 
+            // tbxUsername
+            // 
+            tbxUsername.BackColor = Color.MistyRose;
+            tbxUsername.BorderStyle = BorderStyle.None;
+            tbxUsername.Location = new Point(140, 181);
+            tbxUsername.Name = "tbxUsername";
+            tbxUsername.PlaceholderText = "Content";
+            tbxUsername.Size = new Size(169, 16);
+            tbxUsername.TabIndex = 24;
+            // 
+            // lblUsername
+            // 
+            lblUsername.AutoSize = true;
+            lblUsername.BackColor = Color.Transparent;
+            lblUsername.Font = new Font("Javanese Text", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lblUsername.ForeColor = Color.MistyRose;
+            lblUsername.Location = new Point(325, 178);
+            lblUsername.Name = "lblUsername";
+            lblUsername.Size = new Size(66, 27);
+            lblUsername.TabIndex = 25;
+            lblUsername.Text = "Username";
+            // 
+            // tbxTelefono
+            // 
+            tbxTelefono.BackColor = Color.MistyRose;
+            tbxTelefono.BorderStyle = BorderStyle.None;
+            tbxTelefono.Location = new Point(140, 246);
+            tbxTelefono.Name = "tbxTelefono";
+            tbxTelefono.PlaceholderText = "Content";
+            tbxTelefono.Size = new Size(169, 16);
+            tbxTelefono.TabIndex = 26;
+            // 
+            // lblTelefono
+            // 
+            lblTelefono.AutoSize = true;
+            lblTelefono.BackColor = Color.Transparent;
+            lblTelefono.Font = new Font("Javanese Text", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lblTelefono.ForeColor = Color.MistyRose;
+            lblTelefono.Location = new Point(325, 246);
+            lblTelefono.Name = "lblTelefono";
+            lblTelefono.Size = new Size(57, 27);
+            lblTelefono.TabIndex = 27;
+            lblTelefono.Text = "Telefono";
+            // 
+            // tbxPassword
+            // 
+            tbxPassword.BackColor = Color.MistyRose;
+            tbxPassword.BorderStyle = BorderStyle.None;
+            tbxPassword.Location = new Point(140, 212);
+            tbxPassword.Name = "tbxPassword";
+            tbxPassword.PlaceholderText = "Content";
+            tbxPassword.Size = new Size(169, 16);
+            tbxPassword.TabIndex = 28;
+            // 
+            // lblPassword
+            // 
+            lblPassword.AutoSize = true;
+            lblPassword.BackColor = Color.Transparent;
+            lblPassword.Font = new Font("Javanese Text", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lblPassword.ForeColor = Color.MistyRose;
+            lblPassword.Location = new Point(325, 212);
+            lblPassword.Name = "lblPassword";
+            lblPassword.Size = new Size(62, 27);
+            lblPassword.TabIndex = 29;
+            lblPassword.Text = "Password";
+            // 
             // ClienteDetalle
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(436, 250);
+            ClientSize = new Size(436, 364);
+            Controls.Add(lblPassword);
+            Controls.Add(tbxPassword);
+            Controls.Add(lblTelefono);
+            Controls.Add(tbxTelefono);
+            Controls.Add(lblUsername);
+            Controls.Add(tbxUsername);
             Controls.Add(tbxId);
             Controls.Add(tbxNombre);
             Controls.Add(tbxApellido);
             Controls.Add(tbxEmail);
-            Controls.Add(tbxFechaAlta);
             Controls.Add(btnCancelar);
             Controls.Add(btnAceptar);
-            Controls.Add(lblFechaAlta);
             Controls.Add(lblEmail);
             Controls.Add(lblApellido);
             Controls.Add(lblNombre);
@@ -224,14 +276,18 @@
             Controls.SetChildIndex(lblNombre, 0);
             Controls.SetChildIndex(lblApellido, 0);
             Controls.SetChildIndex(lblEmail, 0);
-            Controls.SetChildIndex(lblFechaAlta, 0);
             Controls.SetChildIndex(btnAceptar, 0);
             Controls.SetChildIndex(btnCancelar, 0);
-            Controls.SetChildIndex(tbxFechaAlta, 0);
             Controls.SetChildIndex(tbxEmail, 0);
             Controls.SetChildIndex(tbxApellido, 0);
             Controls.SetChildIndex(tbxNombre, 0);
             Controls.SetChildIndex(tbxId, 0);
+            Controls.SetChildIndex(tbxUsername, 0);
+            Controls.SetChildIndex(lblUsername, 0);
+            Controls.SetChildIndex(tbxTelefono, 0);
+            Controls.SetChildIndex(lblTelefono, 0);
+            Controls.SetChildIndex(tbxPassword, 0);
+            Controls.SetChildIndex(lblPassword, 0);
             topBar.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)errorProvider).EndInit();
             ResumeLayout(false);
@@ -239,12 +295,11 @@
         }
 
         #endregion
-        
+
         private ErrorProvider errorProvider;
         private WinFormsControlLibrary1.RedButton btnCancelar;
         private WinFormsControlLibrary1.RedButton btnAceptar;
         private WinFormsControlLibrary1.BasicLabel lblEmail;
-        private WinFormsControlLibrary1.BasicLabel lblFechaAlta;
         private WinFormsControlLibrary1.BasicLabel lblApellido;
         private WinFormsControlLibrary1.BasicLabel lblNombre;
         private WinFormsControlLibrary1.BasicLabel lblId;
@@ -252,6 +307,11 @@
         private WinFormsControlLibrary1.BasicTxtBox tbxNombre;
         private WinFormsControlLibrary1.BasicTxtBox tbxApellido;
         private WinFormsControlLibrary1.BasicTxtBox tbxEmail;
-        private WinFormsControlLibrary1.BasicTxtBox tbxFechaAlta;
+        private WinFormsControlLibrary1.BasicLabel lblUsername;
+        private WinFormsControlLibrary1.BasicTxtBox tbxUsername;
+        private WinFormsControlLibrary1.BasicLabel lblTelefono;
+        private WinFormsControlLibrary1.BasicTxtBox tbxTelefono;
+        private WinFormsControlLibrary1.BasicTxtBox tbxPassword;
+        private WinFormsControlLibrary1.BasicLabel lblPassword;
     }
 }

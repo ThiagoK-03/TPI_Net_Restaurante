@@ -58,7 +58,7 @@ namespace WindowsForms.producto
                     this.Producto.Descripcion = tbxDescripcion.Text;
                     this.Producto.Imagen = tbxImagen.Text;
                     this.Producto.Calificacion = int.Parse(tbxCalificacion.Text);
-                    this.Producto.Precio = float.Parse(tbxPrecio.Text);
+                    this.Producto.Precio = decimal.Parse(tbxPrecio.Text);
 
                     if (this.Mode == FormMode.Update)
                     {
@@ -152,6 +152,14 @@ namespace WindowsForms.producto
             }
 
             return isValid;
+        }
+
+        private async void onLoad(object sender, EventArgs e)
+        {
+            var ingredientes = await IngredienteApi.GetAllAsync();
+            cboxIngredientes.DataSource = ingredientes;
+            cboxIngredientes.DisplayMember = "Nombre";
+            cboxIngredientes.ValueMember = "Id";
         }
 
         private void lblPrecio_Click(object sender, EventArgs e)

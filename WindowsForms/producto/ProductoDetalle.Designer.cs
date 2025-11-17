@@ -44,6 +44,8 @@
             tbxImagen = new WinFormsControlLibrary1.BasicTxtBox();
             tbxCalificacion = new WinFormsControlLibrary1.BasicTxtBox();
             tbxPrecio = new WinFormsControlLibrary1.BasicTxtBox();
+            cboxIngredientes = new ComboBox();
+            lblIngredientes = new WinFormsControlLibrary1.BasicLabel();
             topBar.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)errorProvider).BeginInit();
             SuspendLayout();
@@ -68,7 +70,7 @@
             btnAceptar.FlatStyle = FlatStyle.Flat;
             btnAceptar.Font = new Font("Microsoft Sans Serif", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             btnAceptar.ForeColor = Color.MistyRose;
-            btnAceptar.Location = new Point(358, 202);
+            btnAceptar.Location = new Point(368, 261);
             btnAceptar.Name = "btnAceptar";
             btnAceptar.Size = new Size(75, 23);
             btnAceptar.TabIndex = 24;
@@ -83,7 +85,7 @@
             btnCancelar.FlatStyle = FlatStyle.Flat;
             btnCancelar.Font = new Font("Microsoft Sans Serif", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             btnCancelar.ForeColor = Color.MistyRose;
-            btnCancelar.Location = new Point(277, 202);
+            btnCancelar.Location = new Point(287, 261);
             btnCancelar.Name = "btnCancelar";
             btnCancelar.Size = new Size(75, 23);
             btnCancelar.TabIndex = 25;
@@ -150,7 +152,6 @@
             lblCalificacion.Size = new Size(73, 27);
             lblCalificacion.TabIndex = 30;
             lblCalificacion.Text = "Calificacion";
-            lblCalificacion.Click += lblCalificacion_Click;
             // 
             // lblPrecio
             // 
@@ -163,7 +164,6 @@
             lblPrecio.Size = new Size(45, 27);
             lblPrecio.TabIndex = 31;
             lblPrecio.Text = "Precio";
-            lblPrecio.Click += lblPrecio_Click;
             // 
             // tbxId
             // 
@@ -225,11 +225,34 @@
             tbxPrecio.Size = new Size(100, 16);
             tbxPrecio.TabIndex = 37;
             // 
+            // cboxIngredientes
+            // 
+            cboxIngredientes.BackColor = Color.MistyRose;
+            cboxIngredientes.FormattingEnabled = true;
+            cboxIngredientes.Location = new Point(201, 188);
+            cboxIngredientes.Name = "cboxIngredientes";
+            cboxIngredientes.Size = new Size(121, 23);
+            cboxIngredientes.TabIndex = 38;
+            // 
+            // lblIngredientes
+            // 
+            lblIngredientes.AutoSize = true;
+            lblIngredientes.BackColor = Color.Transparent;
+            lblIngredientes.Font = new Font("Javanese Text", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lblIngredientes.ForeColor = Color.MistyRose;
+            lblIngredientes.Location = new Point(328, 188);
+            lblIngredientes.Name = "lblIngredientes";
+            lblIngredientes.Size = new Size(78, 27);
+            lblIngredientes.TabIndex = 39;
+            lblIngredientes.Text = "Ingredientes";
+            // 
             // ProductoDetalle
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(455, 237);
+            ClientSize = new Size(455, 284);
+            Controls.Add(lblIngredientes);
+            Controls.Add(cboxIngredientes);
             Controls.Add(tbxPrecio);
             Controls.Add(tbxCalificacion);
             Controls.Add(tbxImagen);
@@ -246,6 +269,7 @@
             Controls.Add(btnAceptar);
             Name = "ProductoDetalle";
             Text = "ProductoDetalle";
+            Load += onLoad;
             Controls.SetChildIndex(btnAceptar, 0);
             Controls.SetChildIndex(btnCancelar, 0);
             Controls.SetChildIndex(topBar, 0);
@@ -261,6 +285,8 @@
             Controls.SetChildIndex(tbxImagen, 0);
             Controls.SetChildIndex(tbxCalificacion, 0);
             Controls.SetChildIndex(tbxPrecio, 0);
+            Controls.SetChildIndex(cboxIngredientes, 0);
+            Controls.SetChildIndex(lblIngredientes, 0);
             topBar.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)errorProvider).EndInit();
             ResumeLayout(false);
@@ -283,5 +309,7 @@
         private WinFormsControlLibrary1.BasicTxtBox tbxDescripcion;
         private WinFormsControlLibrary1.BasicTxtBox tbxNombre;
         private WinFormsControlLibrary1.BasicTxtBox tbxId;
+        private ComboBox cboxIngredientes;
+        private WinFormsControlLibrary1.BasicLabel lblIngredientes;
     }
 }

@@ -12,6 +12,19 @@ namespace Data
             this.context = context ?? new AppDbContext();
         }
 
+        private AppDbContext CreateContext()
+        {
+            return new AppDbContext();
+        }
+
+        public Usuario? Get(int id)
+        {
+            return context.Usuarios
+                .Include(u => u.Cliente)
+                .Include(u => u.Empleado)
+                .FirstOrDefault(u => u.Id == id);
+        }
+
         public Usuario? GetByUsername(string username)
         {
             return context.Usuarios
@@ -24,7 +37,15 @@ namespace Data
 
         public void Save() => context.SaveChanges();
 
-        public void Update(Usuario usuario) => context.Usuarios.Update(usuario);
+        public bool Update(Usuario usuario)
+        {
+            using var context = CreateContext();
+            context.Usuarios.Update(usuario);
+            context.SaveChanges();
+            return context.Entry(usuario).State == EntityState.Modified;
+            
+        }
+
 
         public bool Delete(int id)
         {

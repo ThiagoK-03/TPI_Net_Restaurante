@@ -118,21 +118,24 @@ namespace Domain.Model
         {
             if (productos == null || productos.Count == 0)
                 throw new ArgumentException("El pedido debe contener al menos un producto.", nameof(productos));
+
+            if (Productos == null) Productos = new List<Producto>();
             AgregarProductos(productos);
         }
 
         private void AgregarProductos(List<Producto> productos)
         {
-            if (productos != null) Productos.Clear();
+            if (productos != null) this.Productos.Clear();
             foreach (var producto in productos)
             {
-                Productos.Add(producto);
+                this.Productos.Add(producto);
             }
         }
 
         public decimal CalculateTotal()
         {
             decimal total = 0;
+            if (Productos == null) return total;
             foreach (var producto in Productos)
             {
                 total += (decimal)producto.Precio;

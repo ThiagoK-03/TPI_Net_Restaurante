@@ -18,6 +18,7 @@ namespace Data.Repositories
         public void Add(Empleado empleado)
         {
             using var context = CreateContext();
+            context.Attach(empleado.Usuario);
             context.Empleados.Add(empleado);
             context.SaveChanges();
         }
@@ -55,6 +56,7 @@ namespace Data.Repositories
         public bool Update(Empleado empleado)
         {
             using var context = CreateContext();
+            context.Attach(empleado.Usuario);
             context.Empleados.Update(empleado); // Usa EF Update para attach y persistir cambios
             context.SaveChanges();
             return context.Entry(empleado).State == Microsoft.EntityFrameworkCore.EntityState.Modified;
