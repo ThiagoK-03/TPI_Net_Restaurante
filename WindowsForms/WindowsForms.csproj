@@ -9,6 +9,24 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Pedido\ReportCliente.rdlc" />
+    <None Remove="Report1.rdlc" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Pedido\ReportCliente.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Report1.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="ReportViewerCore.WinForms" Version="15.1.26" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\API.Clients\API.Clients.csproj" />
     <ProjectReference Include="..\API\API.csproj" />
     <ProjectReference Include="..\Application.Services\Application.Services.csproj" />
@@ -27,7 +45,13 @@
     <Compile Update="MenuCliente.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Update="Pedido\PedidoDetalleCliente.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Update="Pedido\PedidoDetalleEmpleado.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Pedido\PedidoVistaCliente.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Update="Pedido\PedidoVistaEmpleado.cs">
@@ -47,6 +71,21 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Update="TPIRestauranteDataSet.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>TPIRestauranteDataSet.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="TPIRestauranteDataSet1.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>TPIRestauranteDataSet1.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="TPIRestauranteDataSetCompleto.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>TPIRestauranteDataSetCompleto.xsd</DependentUpon>
+    </Compile>
   </ItemGroup>
 
   <ItemGroup>
@@ -54,6 +93,21 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="TPIRestauranteDataSet.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>TPIRestauranteDataSet.Designer.cs</LastGenOutput>
+    </None>
+    <None Update="TPIRestauranteDataSet1.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>TPIRestauranteDataSet1.Designer.cs</LastGenOutput>
+    </None>
+    <None Update="TPIRestauranteDataSetCompleto.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>TPIRestauranteDataSetCompleto.Designer.cs</LastGenOutput>
+    </None>
   </ItemGroup>
 
 </Project>

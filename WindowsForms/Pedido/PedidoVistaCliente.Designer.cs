@@ -28,11 +28,16 @@
         /// </summary>
         private void InitializeComponent()
         {
+            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle4 = new DataGridViewCellStyle();
             dgvPedidos = new WinFormsControlLibrary1.BasicDataGridView();
             btnMenu = new WinFormsControlLibrary1.RedButton();
             btnEliminar = new WinFormsControlLibrary1.RedButton();
             btnModificar = new WinFormsControlLibrary1.RedButton();
             btnAgregar = new WinFormsControlLibrary1.RedButton();
+            btnReporte = new WinFormsControlLibrary1.RedButton();
             topBar.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvPedidos).BeginInit();
             SuspendLayout();
@@ -43,10 +48,41 @@
             // 
             // dgvPedidos
             // 
+            dgvPedidos.AllowUserToResizeRows = false;
+            dataGridViewCellStyle1.BackColor = Color.FromArgb(255, 245, 245);
+            dgvPedidos.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
             dgvPedidos.BackgroundColor = Color.MistyRose;
+            dgvPedidos.BorderStyle = BorderStyle.None;
+            dgvPedidos.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
+            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle2.BackColor = Color.FromArgb(180, 40, 40);
+            dataGridViewCellStyle2.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            dataGridViewCellStyle2.ForeColor = Color.White;
+            dataGridViewCellStyle2.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.True;
+            dgvPedidos.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             dgvPedidos.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = Color.FromArgb(255, 235, 235);
+            dataGridViewCellStyle3.Font = new Font("Segoe UI", 9F);
+            dataGridViewCellStyle3.ForeColor = Color.FromArgb(60, 0, 0);
+            dataGridViewCellStyle3.SelectionBackColor = Color.FromArgb(200, 60, 60);
+            dataGridViewCellStyle3.SelectionForeColor = Color.White;
+            dataGridViewCellStyle3.WrapMode = DataGridViewTriState.False;
+            dgvPedidos.DefaultCellStyle = dataGridViewCellStyle3;
+            dgvPedidos.EnableHeadersVisualStyles = false;
+            dgvPedidos.GridColor = Color.FromArgb(220, 120, 120);
             dgvPedidos.Location = new Point(85, 72);
             dgvPedidos.Name = "dgvPedidos";
+            dataGridViewCellStyle4.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle4.BackColor = Color.FromArgb(160, 50, 50);
+            dataGridViewCellStyle4.Font = new Font("Segoe UI", 9F);
+            dataGridViewCellStyle4.ForeColor = Color.White;
+            dataGridViewCellStyle4.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle4.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle4.WrapMode = DataGridViewTriState.True;
+            dgvPedidos.RowHeadersDefaultCellStyle = dataGridViewCellStyle4;
             dgvPedidos.Size = new Size(608, 275);
             dgvPedidos.TabIndex = 5;
             // 
@@ -110,17 +146,33 @@
             btnAgregar.UseVisualStyleBackColor = false;
             btnAgregar.Click += btnAgregar_Click;
             // 
-            // PedidoVista
+            // btnReporte
+            // 
+            btnReporte.BackColor = Color.FromArgb(192, 0, 0);
+            btnReporte.FlatAppearance.BorderSize = 0;
+            btnReporte.FlatStyle = FlatStyle.Flat;
+            btnReporte.Font = new Font("Microsoft Sans Serif", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            btnReporte.ForeColor = Color.MistyRose;
+            btnReporte.Location = new Point(294, 382);
+            btnReporte.Name = "btnReporte";
+            btnReporte.Size = new Size(75, 23);
+            btnReporte.TabIndex = 10;
+            btnReporte.Text = "Ver recibo";
+            btnReporte.UseVisualStyleBackColor = false;
+            btnReporte.Click += btnReporte_Click;
+            // 
+            // PedidoVistaCliente
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(btnReporte);
             Controls.Add(btnAgregar);
             Controls.Add(btnModificar);
             Controls.Add(btnEliminar);
             Controls.Add(btnMenu);
             Controls.Add(dgvPedidos);
-            Name = "PedidoVista";
+            Name = "PedidoVistaCliente";
             Text = "PedidosVista";
             Load += PedidoVista_Load;
             Controls.SetChildIndex(topBar, 0);
@@ -129,6 +181,7 @@
             Controls.SetChildIndex(btnEliminar, 0);
             Controls.SetChildIndex(btnModificar, 0);
             Controls.SetChildIndex(btnAgregar, 0);
+            Controls.SetChildIndex(btnReporte, 0);
             topBar.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)dgvPedidos).EndInit();
             ResumeLayout(false);
@@ -141,5 +194,6 @@
         private WinFormsControlLibrary1.RedButton btnEliminar;
         private WinFormsControlLibrary1.RedButton btnModificar;
         private WinFormsControlLibrary1.RedButton btnAgregar;
+        private WinFormsControlLibrary1.RedButton btnReporte;
     }
 }

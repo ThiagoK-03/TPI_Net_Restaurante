@@ -27,7 +27,7 @@ namespace WindowsForms.Pedido
 
         private void btnAgregar_Click(object sender, EventArgs e)
         {
-            PedidoDetalle pedidoDetalle = new PedidoDetalle();
+            PedidoDetalleCliente pedidoDetalle = new PedidoDetalleCliente();
 
             PedidoDTO pedidoNuevo = new PedidoDTO();
 
@@ -43,7 +43,7 @@ namespace WindowsForms.Pedido
         {
             try
             {
-                PedidoDetalle pedidoDetalle = new PedidoDetalle();
+                PedidoDetalleCliente pedidoDetalle = new PedidoDetalleCliente();
 
                 int id = this.SelectedItem().Id;
 
@@ -122,6 +122,14 @@ namespace WindowsForms.Pedido
         private void btnMenu_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void btnReporte_Click(object sender, EventArgs e)
+        {
+            Reporte reporteCliente = new Reporte();
+            reporteCliente.CrearReporte(this.SelectedItem());
+            reporteCliente.ShowDialog();
+
         }
     }
 

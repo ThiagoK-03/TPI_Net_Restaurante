@@ -11,13 +11,15 @@ using DTOs;
 using WinFormsControlLibrary1;
 using API;
 using Domain.Model;
+using Microsoft.Reporting.WinForms;
 
 namespace WindowsForms.Pedido
 {
-    public partial class PedidoDetalleEmpleado : MenuBase
+    public partial class PedidoDetalleCliente : MenuBase
     {
         private PedidoDTO pedido;
         private FormMode mode;
+
 
         public PedidoDTO Pedido
         {
@@ -25,7 +27,6 @@ namespace WindowsForms.Pedido
             set
             {
                 pedido = value;
-                this.SetPedido();
             }
         }
 
@@ -35,11 +36,12 @@ namespace WindowsForms.Pedido
             set { SetFormMode(value); }
         }
 
-        public PedidoDetalleEmpleado()
+        public PedidoDetalleCliente()
         {
             InitializeComponent();
 
             Mode = FormMode.Add;
+
         }
 
         private async void BtnAceptar_Click(object sender, EventArgs e)
@@ -48,20 +50,40 @@ namespace WindowsForms.Pedido
             {
                 try
                 {
-                    this.Pedido.ClienteId = int.Parse(TxtBoxClienteId.Text);
-                    this.Pedido.EmpleadoId = int.Parse(TxtBoxEmpleadoId.Text);
-                    this.Pedido.Estado = Enum.Parse<PedidoDTO.EstadoPedido>(TxtBoxEstado.Text);
-                    this.Pedido.FechaHoraInicio = DateTime.Parse(TxtBoxFechaHoraInicio.Text);
-
+                    this.Pedido.Descripcion = TxtBoxDescripcion.Text;
+                    this.Pedido.Estado = (PedidoDTO.EstadoPedido.Pendiente);
+                    this.Pedido.FechaHoraInicio = DateTime.Now;
+                    //this.Pedido.FechaHoraFinEstimada = dtPickerFinEstimado.Value;
+                    this.Pedido.ProductosIds = clistboxProductos.CheckedItems
+                        .Cast<ProductoDTO>()
+                        .Select(p => p.Id)
+                        .ToList();
+                    //this.Pedido.EmpleadoId = cboxEmpleado.SelectedValue != null ? (int)cboxEmpleado.SelectedValue : default;
+                    this.Pedido.ClienteId = (int)cboxCliente.SelectedValue!;
+                    this.Pedido.FechaHoraFinEstimada = DateTime.Today.AddDays(1); // Por defecto 1 día para el cliente
 
                     if (this.Mode == FormMode.Update)
                     {
+                        MessageBox.Show("Updateando");
                         await PedidoApi.UpdateAsync(this.Pedido);
                     }
                     else
                     {
                         await PedidoApi.AddAsync(this.Pedido);
                     }
+
+                    MessageBox.Show("A PUNTO DE CREAR INFORME");
+                    //ClienteDTO cli = await ClienteApi.GetAsync(this.Pedido.ClienteId);
+                    //GenerateReportFacturaCli generateReportFacturaCli = new GenerateReportFacturaCli();
+
+
+                    //generateReportFacturaCli.GenerarReciboDesdePedido(
+                    //    this.Pedido,
+                    //    cli
+                    //);
+                    LoadReport();
+
+
 
                     this.Close();
                 }
@@ -72,6 +94,13 @@ namespace WindowsForms.Pedido
             }
         }
 
+        private void LoadReport()
+        {
+            Reporte reporteForm = new Reporte();
+            reporteForm.CrearReporte(this.Pedido);
+            reporteForm.ShowDialog();
+        }
+
         private void BtnCancelar_Click(object sender, EventArgs e)
         {
             this.Close();
@@ -79,12 +108,38 @@ namespace WindowsForms.Pedido
 
         private void SetPedido()
         {
+
             TxtBoxId.Text = this.Pedido.Id.ToString();
-            TxtBoxClienteId.Text = this.Pedido.ClienteId.ToString();
-            TxtBoxEmpleadoId.Text = this.Pedido.EmpleadoId.ToString();
-            TxtBoxEstado.Text = this.Pedido.Estado.ToString();
-            TxtBoxFechaHoraInicio.Text = this.Pedido.FechaHoraInicio.ToString("yyyy-MM-dd");
+            TxtBoxDescripcion.Text = this.Pedido.Descripcion;
+            cboxCliente.SelectedValue = this.Pedido.ClienteId;
+
+            foreach (var item in this.Pedido.ProductosIds) clistboxProductos.SetItemChecked(item, true);
+
+            //dtPickerFinEstimado.Value = this.Pedido.FechaHoraFinEstimada ?? DateTime.Now;
+
         }
+
+        private async void OnLoad(object sender, EventArgs e)
+        {
+            var productos = await ProductoApi.GetAllAsync();
+
+            //ListBox
+            clistboxProductos.DataSource = productos;
+            clistboxProductos.DisplayMember = "Nombre";
+            clistboxProductos.ValueMember = "Id";
+
+            //Cliente picker
+            var clientes = await ClienteApi.GetAllAsync();
+            cboxCliente.DataSource = clientes;
+            cboxCliente.DisplayMember = "Nombre";
+            cboxCliente.ValueMember = "Id";
+
+            if (Mode == FormMode.Update)
+            {
+                this.SetPedido();
+            }
+        }
+
 
         private void SetFormMode(FormMode value)
         {
@@ -92,12 +147,13 @@ namespace WindowsForms.Pedido
 
             if (mode == FormMode.Add)
             {
-                LblId.Visible = false;
+                lblId.Visible = false;
                 TxtBoxId.Visible = false;
+
             }
             if (Mode == FormMode.Update)
             {
-                LblId.Visible = true;
+                lblId.Visible = true;
                 TxtBoxId.Visible = true;
                 TxtBoxId.Enabled = false;
             }

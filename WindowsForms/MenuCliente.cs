@@ -29,7 +29,7 @@ namespace WindowsForms
 
         private void btnPedidos_Click(object sender, EventArgs e)
         {
-            PedidoVistaEmpleado pedidoVista = new PedidoVistaEmpleado();
+            PedidoVistaCliente pedidoVista = new PedidoVistaCliente();
             pedidoVista.ShowDialog();
         }
 
