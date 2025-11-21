@@ -31,25 +31,75 @@ namespace WindowsForms.Pedido
             InitializeComponent();
         }
 
-        public void CrearReporte(PedidoDTO pedido)
+        // ...
+
+        async public void CrearReporte(PedidoDTO pedido)
         {
+            //Cargar el RDLC
             using var fs = new FileStream("Pedido/ReportCliente.rdlc", FileMode.Open);
             reportViewer.LocalReport.LoadReportDefinition(fs);
-            //reportViewer.LocalReport.SetParameters(new ReportParameter("PedidoId", this.Pedido.Id.ToString()));
 
-            var dataSource = new ReportDataSource("TPIRestauranteDataSetCompleto", new List<PedidoDTO> { pedido });
-            reportViewer.LocalReport.DataSources.Add(dataSource);
+            ClienteDTO cliente = (await ClienteApi.GetAsync(pedido.ClienteId));
 
-            System.Diagnostics.Debug.WriteLine("Pedido ID: " + pedido.Id);
+            // Mostrar el objeto cliente como JSON en una sola línea por consola
+            Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(cliente));
+            System.Diagnostics.Debug.WriteLine(System.Text.Json.JsonSerializer.Serialize(cliente));
 
-            //var TPIRestauranteDataSetCompleto = new ReportDataSource("TPIRestauranteDataSetCompleto", pedido);
+            // Usuario
+            var usuarioLista = new List<UsuarioReporte>
+            {
+                new UsuarioReporte
+                {
+                    Id = cliente.Id,
+                    Username = cliente.Username,
+                    Email = cliente.Email
+                }
+            };
 
+            // Productos
 
-            //reportViewer.LocalReport.DataSources.Add(TPIRestauranteDataSetCompleto);
+            List<ProductoDTO> productos = (await Task.WhenAll(
+                pedido.ProductosIds.Select(
+                    async p => await ProductoApi.GetAsync(p))
+                )).ToList();
 
+            var productosLista = productos.Select(p => new ProductoReporte
+            {
+                Id = p.Id,
+                Nombre = p.Nombre,
+                Precio = p.Precio
+            }).ToList();
+
+            // 3 - Agregar datasources EXACTAMENTE con los nombres del RDLC
+            reportViewer.LocalReport.DataSources.Clear();
+
+            reportViewer.LocalReport.DataSources.Add(
+                new ReportDataSource("UsuarioDataSet", usuarioLista)
+            );
+
+            reportViewer.LocalReport.DataSources.Add(
+                new ReportDataSource("ProductoDataSet", productosLista)
+            );
+
+            // 4 - Render
             reportViewer.RefreshReport();
-
-            System.Diagnostics.Debug.WriteLine("Mostrando reporte");
         }
+
+
+        private class UsuarioReporte
+        {
+            public int Id { get; set; }
+            public string Username { get; set; }
+            public string Email { get; set; }
+        }
+
+        public class ProductoReporte
+        {
+            public int Id { get; set; }
+            public string Nombre { get; set; }
+            public decimal Precio { get; set; }
+        }
+
+
     }
 }
