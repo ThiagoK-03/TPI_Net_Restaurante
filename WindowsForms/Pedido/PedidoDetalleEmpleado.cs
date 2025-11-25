@@ -50,7 +50,7 @@ namespace WindowsForms.Pedido
                 {
                     this.Pedido.ClienteId = int.Parse(TxtBoxClienteId.Text);
                     this.Pedido.EmpleadoId = int.Parse(TxtBoxEmpleadoId.Text);
-                    this.Pedido.Estado = Enum.Parse<PedidoDTO.EstadoPedido>(TxtBoxEstado.Text);
+                    this.pedido.Estado = Enum.Parse<PedidoDTO.EstadoPedido>(TxtBoxEstado.Text);
                     this.Pedido.FechaHoraInicio = DateTime.Parse(TxtBoxFechaHoraInicio.Text);
 
 
@@ -82,7 +82,7 @@ namespace WindowsForms.Pedido
             TxtBoxId.Text = this.Pedido.Id.ToString();
             TxtBoxClienteId.Text = this.Pedido.ClienteId.ToString();
             TxtBoxEmpleadoId.Text = this.Pedido.EmpleadoId.ToString();
-            TxtBoxEstado.Text = this.Pedido.Estado.ToString();
+            TxtBoxEstado.Text = this.pedido.Estado.ToString().ToString();
             TxtBoxFechaHoraInicio.Text = this.Pedido.FechaHoraInicio.ToString("yyyy-MM-dd");
         }
 

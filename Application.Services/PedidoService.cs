@@ -66,7 +66,7 @@ namespace Application.Services
                 FechaHoraInicio = pedido.FechaHoraInicio,
                 FechaHoraFinEstimada = pedido.FechaHoraFinEstimada,
                 FechaHoraFin = pedido.FechaHoraFin,
-                Estado = (PedidoDTO.EstadoPedido)Enum.Parse<EstadoPedido>(pedido.Estado.ToString()),
+                Estado = (PedidoDTO.EstadoPedido)Enum.Parse<EstadoPedido>(pedido.Estado.ToString().ToString()),
                 ClienteId = pedido.ClienteId,
                 EmpleadoId = pedido.EmpleadoId,
                 ProductosIds = pedido.Productos?.Select(prod => prod.Id).ToList() ?? new List<int>(),
@@ -92,7 +92,7 @@ namespace Application.Services
                 FechaHoraInicio = pedido.FechaHoraInicio,
                 FechaHoraFinEstimada = pedido.FechaHoraFinEstimada,
                 FechaHoraFin = pedido.FechaHoraFin,
-                Estado = (PedidoDTO.EstadoPedido)Enum.Parse<EstadoPedido>(pedido.Estado.ToString()),
+                Estado = (PedidoDTO.EstadoPedido)Enum.Parse<EstadoPedido>(pedido.Estado.ToString().ToString()),
                 ClienteId = pedido.ClienteId,
                 EmpleadoId = pedido.EmpleadoId,
                 ProductosIds = pedido.Productos?.Select(prod => prod.Id).ToList() ?? new List<int>(),
@@ -137,7 +137,7 @@ namespace Application.Services
                     ?? throw new Exception($"Empleado con ID {pedido.EmpleadoId} no existe.");
                 pedidoUpdated.SetEmpleado(empleado);
             }
-            if(Enum.TryParse<EstadoPedido>(pedido.Estado.ToString(), out var estado))
+            if(Enum.TryParse<EstadoPedido>(pedido.Estado.ToString().ToString(), out var estado))
             {
                 pedidoUpdated.SetEstado(estado);
             }

@@ -38,8 +38,7 @@
                       <rd:DefaultName>Textbox14</rd:DefaultName>
                       <Style>
                         <Border>
-                          <Color>LightGrey</Color>
-                          <Style>Solid</Style>
+                          <Style>None</Style>
                         </Border>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
@@ -226,8 +225,8 @@
           </TablixMembers>
         </TablixRowHierarchy>
         <DataSetName>UsuarioDataSet</DataSetName>
-        <Top>0.73766cm</Top>
-        <Left>0.79058cm</Left>
+        <Top>2.90724cm</Top>
+        <Left>0.44662cm</Left>
         <Height>1.2cm</Height>
         <Width>7.5cm</Width>
         <Style>
@@ -477,6 +476,7 @@
       <Border>
         <Style>None</Style>
       </Border>
+      <BackgroundColor>LightSalmon</BackgroundColor>
     </Style>
   </Body>
   <Width>7.68067in</Width>
@@ -494,17 +494,25 @@
               <TextRuns>
                 <TextRun>
                   <Value>Restaurante</Value>
-                  <Style />
+                  <Style>
+                    <FontFamily>Vladimir Script</FontFamily>
+                    <FontSize>22pt</FontSize>
+                    <FontWeight>Bold</FontWeight>
+                    <TextDecoration>None</TextDecoration>
+                    <Color>Maroon</Color>
+                  </Style>
                 </TextRun>
               </TextRuns>
-              <Style />
+              <Style>
+                <TextAlign>Center</TextAlign>
+              </Style>
             </Paragraph>
           </Paragraphs>
           <rd:DefaultName>Textbox1</rd:DefaultName>
-          <Top>1.13453cm</Top>
-          <Left>8.22537cm</Left>
-          <Height>0.6cm</Height>
-          <Width>2.5cm</Width>
+          <Top>0.57891cm</Top>
+          <Left>6.87599cm</Left>
+          <Height>1.15562cm</Height>
+          <Width>6.46875cm</Width>
           <Style>
             <Border>
               <Style>None</Style>
@@ -520,18 +528,9 @@
         <Border>
           <Style>None</Style>
         </Border>
+        <BackgroundColor>LightSalmon</BackgroundColor>
       </Style>
     </PageHeader>
-    <PageFooter>
-      <Height>2.54cm</Height>
-      <PrintOnFirstPage>true</PrintOnFirstPage>
-      <PrintOnLastPage>true</PrintOnLastPage>
-      <Style>
-        <Border>
-          <Style>None</Style>
-        </Border>
-      </Style>
-    </PageFooter>
     <PageHeight>29.7cm</PageHeight>
     <PageWidth>21cm</PageWidth>
     <LeftMargin>2cm</LeftMargin>

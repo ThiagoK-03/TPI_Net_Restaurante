@@ -51,7 +51,7 @@ namespace WindowsForms.Pedido
                 try
                 {
                     this.Pedido.Descripcion = TxtBoxDescripcion.Text;
-                    this.Pedido.Estado = (PedidoDTO.EstadoPedido.Pendiente);
+                    this.pedido.Estado = (PedidoDTO.EstadoPedido.Pendiente);
                     this.Pedido.FechaHoraInicio = DateTime.Now;
                     //this.Pedido.FechaHoraFinEstimada = dtPickerFinEstimado.Value;
                     this.Pedido.ProductosIds = clistboxProductos.CheckedItems

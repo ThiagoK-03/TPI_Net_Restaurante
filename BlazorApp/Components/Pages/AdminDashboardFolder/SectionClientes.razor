@@ -115,6 +115,20 @@
                                 <input type="email" class="form-control" @bind="clienteActual.Email" required />
                             </div>
 
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold">Username *</label>
+                                <input type="text" class="form-control" @bind="clienteActual.Username" required />
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-semibold">Contraseña *</label>
+                                <input type="text" class="form-control" @bind="clienteActual.Password" required />
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-semibold">Telefono *</label>
+                                <input type="text" class="form-control" @bind="clienteActual.Telefono" required />
+                            </div>
                             @if (isEditMode)
                             {
                                 <div class="mb-3">
@@ -250,7 +264,10 @@
                 Nombre = cliente.Nombre,
                 Apellido = cliente.Apellido,
                 Email = cliente.Email,
-                FechaAlta = cliente.FechaAlta
+                FechaAlta = cliente.FechaAlta,
+                Username = cliente.Username,
+                Password = cliente.Password,
+                Telefono = cliente.Telefono,
             };
         showModal = true;
     }

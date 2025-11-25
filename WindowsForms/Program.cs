@@ -30,7 +30,7 @@ namespace WindowsForms
             var authService = new WindowsFormsAuthService();
             AuthServiceProvider.Register(authService);
 
-            // Loop principal de autenticación
+            // Loop principal de autenticaciï¿½n
             while (true)
             {
 
@@ -39,7 +39,7 @@ namespace WindowsForms
                     var loginForm = new LoginForm();
                     if (loginForm.ShowDialog() != DialogResult.OK)
                     {
-                        // Usuario canceló login, cerrar aplicación
+                        // Usuario cancelï¿½ login, cerrar aplicaciï¿½n
                         return;
                     }
                 }
@@ -62,14 +62,14 @@ namespace WindowsForms
                         System.Windows.Forms.Application.Run(new MenuCliente());
                     }
 
-                    break; // La aplicación se cerró normalmente
+                    break; // La aplicaciï¿½n se cerrï¿½ normalmente
                 }
                 catch (UnauthorizedAccessException ex)
                 {
-                    // Sesión expirada, mostrar mensaje y volver al login
-                    MessageBox.Show(ex.Message, "Sesión Expirada",
+                    // Sesiï¿½n expirada, mostrar mensaje y volver al login
+                    MessageBox.Show(ex.Message, "Sesiï¿½n Expirada",
                         MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    // El loop continuará y volverá a mostrar login
+                    // El loop continuarï¿½ y volverï¿½ a mostrar login
                 }
             }
         }

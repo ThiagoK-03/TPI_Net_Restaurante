@@ -70,7 +70,9 @@
         try
         {
 
-            // userRole = await AuthService.GetRoleAsync();
+            userRole = await AuthService.GetRoleAsync();
+            userRole = userRole.ToLower();
+            Console.WriteLine(userRole);
         }
         catch
         {

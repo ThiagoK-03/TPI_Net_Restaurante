@@ -48,7 +48,7 @@ namespace WindowsForms.Pedido
                 try
                 {
                     this.Pedido.Descripcion = TxtBoxDescripcion.Text;
-                    this.Pedido.Estado = (PedidoDTO.EstadoPedido)cboxEstado.SelectedItem!;
+                    this.pedido.Estado = (PedidoDTO.EstadoPedido)cboxEstado.SelectedItem!;
                     this.Pedido.FechaHoraInicio = DateTime.Now;
                     this.Pedido.FechaHoraFinEstimada = dtPickerFinEstimado.Value;
                     this.Pedido.ProductosIds = clistboxProductos.CheckedItems
@@ -93,7 +93,7 @@ namespace WindowsForms.Pedido
             foreach (var item in this.Pedido.ProductosIds) clistboxProductos.SetItemChecked(item, true);
             
 
-            cboxEstado.Text = this.Pedido.Estado.ToString();
+            cboxEstado.Text = this.pedido.Estado.ToString().ToString();
             dtPickerFinEstimado.Value = this.Pedido.FechaHoraFinEstimada ?? DateTime.Now;
             if (mode == FormMode.Update)
                 dtPickerFechaHoraFin.Value = this.Pedido.FechaHoraFin ?? DateTime.Now;

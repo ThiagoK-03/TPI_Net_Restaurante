@@ -82,7 +82,7 @@ namespace Domain.Model
         public void SetDescripcion(string descripcion)
         {
             if (string.IsNullOrWhiteSpace(descripcion))
-                throw new ArgumentException("La descripcion no puede ser nula o vacía.", nameof(descripcion));
+                descripcion = "";
             Descripcion = descripcion;
         }
 

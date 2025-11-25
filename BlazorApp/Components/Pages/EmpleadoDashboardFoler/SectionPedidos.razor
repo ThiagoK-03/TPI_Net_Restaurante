@@ -17,7 +17,7 @@
             <button type="button"
                     class="btn @(estadoFiltro == estado ? "btn-danger" : "btn-outline-danger")"
                     @onclick="@(() => FiltrarPorEstado(estado))">
-                @ObtenerTextoEstado(estado) (@pedidos.Count(p => p.Estado == estado.ToString()))
+                @estado.ToString() (@pedidos.Count(p => p.Estado.ToString() == estado.ToString())
             </button>
         }
     </div>
@@ -57,7 +57,7 @@
             @foreach (var pedido in pedidosFiltrados)
             {
                 <div class="col-12 col-lg-6">
-                    <div class="card h-100 shadow-sm border-0" style="border-left: 5px solid @ObtenerColorEstado(pedido.Estado) !important;">
+                    <div class="card h-100 shadow-sm border-0" style="border-left: 5px solid @ObtenerColorEstado(pedido.Estado.ToString()) !important;">
                         <div class="card-header d-flex justify-content-between align-items-center" style="background-color: var(--rojo-muy-claro);">
                             <div class="d-flex align-items-center gap-2">
                                 <span class="fs-3">📋</span>
@@ -66,8 +66,8 @@
                                     <small class="text-muted">@pedido.FechaHoraInicio.ToString("dd/MM/yyyy HH:mm")</small>
                                 </div>
                             </div>
-                            <span class="badge @ObtenerClaseEstado(pedido.Estado) fs-6">
-                                @ObtenerTextoEstado(Enum.Parse<EstadoPedido>(pedido.Estado))
+                            <span class="badge @ObtenerClaseEstado(pedido.Estado.ToString()) fs-6">
+                                @pedido.Estado.ToString();
                             </span>
                         </div>
 
@@ -109,15 +109,16 @@
                                 </div>
                             }
 
-                            @if (pedido.Productos != null && pedido.Productos.Any())
+                            @if (pedido.ProductosIds != null && pedido.ProductosIds.Any())
                             {
                                 <div class="mb-3">
                                     <small class="text-muted d-block mb-2 fw-semibold">📝 Items del pedido:</small>
                                     <ul class="list-unstyled ms-2">
-                                        @foreach (var prod in pedido.Productos)
+                                        @foreach (var prod in pedido.ProductosIds)
                                         {
                                             <li class="mb-1">
-                                                <span class="badge bg-secondary">ID: @prod.Id</span>
+                                                <span class="badge bg-secondary">ID: @prod</span>
+                                                <span class="badge bg-secondary">Nombre: @(ObtenerProducto(prod).Result).Nombre </span>
                                             </li>
                                         }
                                     </ul>
@@ -132,19 +133,19 @@
                             </div>
 
                             <div class="d-flex gap-2 flex-wrap">
-                                @if (pedido.EmpleadoId == null && pedido.Estado == "Pendiente")
+                                @if (pedido.EmpleadoId == null && pedido.Estado.ToString() == "Pendiente")
                                 {
                                     <button class="btn btn-primary flex-fill" @onclick="@(() => AsignarmeAlPedido(pedido))">
                                         <i class="bi bi-person-plus"></i> Asignarme Este Pedido
                                     </button>
                                 }
-                                else if (pedido.EmpleadoId == empleadoIdActual && pedido.Estado == "Pendiente")
+                                else if (pedido.EmpleadoId == empleadoIdActual && pedido.Estado.ToString() == "Pendiente")
                                 {
                                     <button class="btn btn-success flex-fill" @onclick="@(() => IniciarPreparacion(pedido))">
                                         <i class="bi bi-play-fill"></i> Iniciar Preparación
                                     </button>
                                 }
-                                else if (pedido.EmpleadoId == empleadoIdActual && pedido.Estado == "EnPreparacion")
+                                else if (pedido.EmpleadoId == empleadoIdActual && pedido.Estado.ToString() == "EnPreparacion")
                                 {
                                     <button class="btn btn-success flex-fill" @onclick="@(() => CompletarPedido(pedido))">
                                         <i class="bi bi-check-circle"></i> Marcar Completado
@@ -174,7 +175,7 @@
                     <div class="modal-body">
                         <div class="mb-4">
                             <h6 class="text-danger fw-bold mb-3">Información del Pedido</h6>
-                            <p class="mb-2"><strong>Estado:</strong> <span class="badge @ObtenerClaseEstado(pedidoSeleccionado.Estado)">@ObtenerTextoEstado(Enum.Parse<EstadoPedido>(pedidoSeleccionado.Estado))</span></p>
+                            <p class="mb-2"><strong>Estado:</strong> <span class="badge @ObtenerClaseEstado(pedidoSeleccionado.Estado.ToString())">@pedidoSeleccionado.Estado.ToString()</span></p>
                             <p class="mb-2"><strong>Cliente ID:</strong> @pedidoSeleccionado.ClienteId</p>
                             @if (pedidoSeleccionado.EmpleadoId != null)
                             {
@@ -201,15 +202,16 @@
                             </div>
                         }
 
-                        @if (pedidoSeleccionado.Productos != null && pedidoSeleccionado.Productos.Any())
+                        @if (pedidoSeleccionado.ProductosIds != null && pedidoSeleccionado.ProductosIds.Any())
                         {
                             <div class="mb-4">
                                 <h6 class="text-danger fw-bold mb-3">Productos</h6>
                                 <div class="list-group">
-                                    @foreach (var prod in pedidoSeleccionado.Productos)
+                                    @foreach (var prod in pedidoSeleccionado.ProductosIds)
                                     {
                                         <div class="list-group-item">
-                                            <span>Producto ID: @prod.Id</span>
+                                            <span>Producto ID: @prod</span>
+                                            <span>Producto Nombre:  </span>
                                         </div>
                                     }
                                 </div>
@@ -254,6 +256,7 @@
     private EstadoPedido? estadoFiltro = null;
     private int empleadoIdActual = 1; // TODO: Obtener del empleado logueado
 
+
     public enum EstadoPedido
     {
         Pendiente,
@@ -274,6 +277,7 @@
 
         try
         {
+            Console.WriteLine("Cargando . . .");
             pedidos = (await PedidoApi.GetAllAsync()).ToList();
             pedidosFiltrados = pedidos;
         }
@@ -286,6 +290,7 @@
         finally
         {
             isLoading = false;
+            Console.WriteLine("Terminado de cargar");
             StateHasChanged();
         }
     }
@@ -293,7 +298,7 @@
     private void FiltrarPorEstado(EstadoPedido estado)
     {
         estadoFiltro = estado;
-        pedidosFiltrados = pedidos.Where(p => p.Estado == estado.ToString()).ToList();
+        pedidosFiltrados = pedidos.Where(p => p.Estado.ToString() == estado.ToString()).ToList();
     }
 
     private void MostrarTodos()
@@ -333,7 +338,7 @@
     {
         try
         {
-            pedido.Estado = EstadoPedido.EnPreparacion.ToString();
+            pedido.Estado = PedidoDTO.EstadoPedido.EnProceso;
             await PedidoApi.UpdateAsync(pedido);
             MostrarToast("Pedido en preparación", true);
             await CargarPedidos();
@@ -348,7 +353,7 @@
     {
         try
         {
-            pedido.Estado = EstadoPedido.Completado.ToString();
+            pedido.Estado = Enum.Parse<PedidoDTO.EstadoPedido>(EstadoPedido.Completado.ToString());
             pedido.FechaHoraFin = DateTime.Now;
             await PedidoApi.UpdateAsync(pedido);
             MostrarToast("¡Pedido completado!", true);
@@ -374,17 +379,6 @@
         });
     }
 
-    private string ObtenerTextoEstado(EstadoPedido estado)
-    {
-        return estado switch
-        {
-            EstadoPedido.Pendiente => "Pendiente",
-            EstadoPedido.EnPreparacion => "En Preparación",
-            EstadoPedido.Completado => "Completado",
-            EstadoPedido.Cancelado => "Cancelado",
-            _ => "Desconocido"
-        };
-    }
 
     private string ObtenerClaseEstado(string estado)
     {
@@ -409,4 +403,29 @@
             _ => "#9e9e9e"
         };
     }
+
+    private string ObtenerNombreProducto(int productoId)
+    {
+        var producto = ObtenerProducto(productoId).Result;
+        return producto != null ? producto.Nombre : "Desconocido";
+    }   
+
+    private async Task<ProductoDTO> ObtenerProducto(int productoId)
+    {
+        ProductoDTO productoDTO = await ProductoApi.GetAsync(productoId);
+
+        return productoDTO;
+    }
+
+    private async Task<List<ProductoDTO>> ObtenerProductos(List<int> productosIds)
+    {
+        List<ProductoDTO> productosDTO = new List<ProductoDTO>();
+        foreach (var prodId in productosIds)
+        {
+            ProductoDTO productoDTO = await ObtenerProducto(prodId);
+            productosDTO.Add(productoDTO);
+        }
+        return productosDTO;
+    }   
+
 }

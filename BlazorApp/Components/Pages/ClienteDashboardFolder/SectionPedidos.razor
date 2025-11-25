@@ -22,7 +22,7 @@
             <button type="button"
             class="btn @(estadoFiltro == estado ? "btn-danger" : "btn-outline-danger")"
             @onclick="@(() => FiltrarPorEstado(estado))">
-                @ObtenerTextoEstado(estado) (@pedidos.Count(p => p.Estado == estado.ToString()))
+                @ObtenerTextoEstado(estado) (@pedidos.Count(p => p.Estado.ToString() == estado.ToString()))
             </button>
         }
     </div>
@@ -65,7 +65,7 @@
             @foreach (var pedido in pedidosFiltrados)
             {
                 <div class="col-12 col-lg-6">
-                    <div class="card h-100 shadow-sm border-0" style="border-left: 5px solid @ObtenerColorEstado(pedido.Estado) !important;">
+                    <div class="card h-100 shadow-sm border-0" style="border-left: 5px solid @ObtenerColorEstado(pedido.Estado.ToString()) !important;">
                         <div class="card-header d-flex justify-content-between align-items-center" style="background-color: var(--rojo-muy-claro);">
                             <div class="d-flex align-items-center gap-2">
                                 <span class="fs-3">📋</span>
@@ -74,8 +74,8 @@
                                     <small class="text-muted">@pedido.FechaHoraInicio.ToString("dd/MM/yyyy HH:mm")</small>
                                 </div>
                             </div>
-                            <span class="badge @ObtenerClaseEstado(pedido.Estado) fs-6">
-                                @ObtenerTextoEstado(Enum.Parse<EstadoPedido>(pedido.Estado))
+                            <span class="badge @ObtenerClaseEstado(pedido.Estado.ToString()) fs-6">
+                                @pedido.Estado.ToString()
                             </span>
                         </div>
 
@@ -105,20 +105,20 @@
 
                             @if (pedido.FechaHoraFinEstimada != null)
                             {
-                                <div class="alert @(pedido.Estado == "Pendiente" || pedido.Estado == "EnPreparacion" ? "alert-warning" : "alert-info") mb-0">
+                                <div class="alert @(pedido.Estado.ToString() == "Pendiente" || pedido.Estado.ToString() == "EnPreparacion" ? "alert-warning" : "alert-info") mb-0">
                                     <i class="bi bi-clock"></i>
                                     <small><strong>Estimado:</strong> @pedido.FechaHoraFinEstimada?.ToString("dd/MM/yyyy HH:mm")</small>
                                 </div>
                             }
 
-                            @if (pedido.Estado == "EnPreparacion")
+                            @if (pedido.Estado.ToString() == "EnPreparacion")
                             {
                                 <div class="alert alert-primary mb-0 mt-2">
                                     <i class="bi bi-hourglass-split"></i>
                                     <small>Tu pedido está siendo preparado...</small>
                                 </div>
                             }
-                            else if (pedido.Estado == "Completado")
+                            else if (pedido.Estado.ToString() == "Completado")
                             {
                                 <div class="alert alert-success mb-0 mt-2">
                                     <i class="bi bi-check-circle-fill"></i>
@@ -137,7 +137,7 @@
                                 <button class="btn btn-outline-primary flex-fill" @onclick="@(() => VerDetalles(pedido))">
                                     <i class="bi bi-eye"></i> Ver Detalles
                                 </button>
-                                @if (pedido.Estado == "Pendiente")
+                                @if (pedido.Estado.ToString() == "Pendiente")
                                 {
                                     <button class="btn btn-outline-secondary flex-fill" @onclick="@(() => AbrirModalEditar(pedido))">
                                         <i class="bi bi-pencil"></i> Editar
@@ -165,7 +165,7 @@
                         <div class="row mb-4">
                             <div class="col-md-6">
                                 <h6 class="text-danger fw-bold mb-3">Información del Pedido</h6>
-                                <p class="mb-2"><strong>Estado:</strong> <span class="badge @ObtenerClaseEstado(pedidoSeleccionado.Estado)">@ObtenerTextoEstado(Enum.Parse<EstadoPedido>(pedidoSeleccionado.Estado))</span></p>
+                                <p class="mb-2"><strong>Estado:</strong> <span class="badge @ObtenerClaseEstado(pedidoSeleccionado.Estado.ToString())">@pedidoSeleccionado.Estado.ToString()</span></p>
                                 <p class="mb-2"><strong>Fecha de Pedido:</strong> @pedidoSeleccionado.FechaHoraInicio.ToString("dd/MM/yyyy HH:mm")</p>
                                 @if (pedidoSeleccionado.FechaHoraFinEstimada != null)
                                 {
@@ -458,7 +458,7 @@
     private void FiltrarPorEstado(EstadoPedido estado)
     {
         estadoFiltro = estado;
-        pedidosFiltrados = pedidos.Where(p => p.Estado == estado.ToString()).ToList();
+        pedidosFiltrados = pedidos.Where(p => p.Estado.ToString() == estado.ToString()).ToList();
     }
 
     private void MostrarTodos()
@@ -485,10 +485,10 @@
         pedidoActual = new PedidoDTO
             {
                 FechaHoraInicio = DateTime.Now,
-                Estado = EstadoPedido.Pendiente.ToString(),
+                Estado = PedidoDTO.EstadoPedido.Pendiente,
                 ClienteId = clienteIdActual,
                 Descripcion = "",
-                ProductosIds = new List<int>()
+                ProductosIds = new List<int>(),
             };
         productosEnPedido = new List<ProductoPedidoItem>();
         searchProducto = string.Empty;
@@ -510,10 +510,12 @@
                 Subtotal = pedido.Subtotal,
                 ClienteId = pedido.ClienteId,
                 EmpleadoId = pedido.EmpleadoId,
-                Productos = pedido.Productos ?? new List<ProductoDTO>()
+                ProductosIds = pedido.ProductosIds ?? new List<int>()
             };
 
-        productosEnPedido = pedido.Productos?.Select(p => new ProductoPedidoItem { Producto = p }).ToList() ?? new List<ProductoPedidoItem>();
+        productosEnPedido = ObtenerProductos(pedido.ProductosIds ?? new List<int>()).Result
+            .Select(p => new ProductoPedidoItem { Producto = p }).ToList();
+        //productosEnPedido = pedido.Productos?.Select(p => new ProductoPedidoItem { Producto = p }).ToList() ?? new List<ProductoPedidoItem>();
         searchProducto = string.Empty;
         productosFiltrados = productosDisponibles;
         showPedidoModal = true;
@@ -537,7 +539,7 @@
         productosEnPedido.Remove(item);
     }
 
-    private float CalcularSubtotal()
+    private decimal CalcularSubtotal()
     {
         return productosEnPedido.Sum(p => p.Producto.Precio);
     }
@@ -549,8 +551,9 @@
         try
         {
             pedidoActual.Subtotal = CalcularSubtotal();
-            pedidoActual.Productos = productosEnPedido.Select(p => p.Producto).ToList();
+            pedidoActual.ProductosIds = productosEnPedido.Select(p => p.Producto.Id).ToList();
             pedidoActual.ClienteId = clienteIdActual;
+            pedidoActual.FechaHoraFinEstimada = pedidoActual.FechaHoraInicio.AddMinutes(60);
 
             if (isEditMode)
             {
@@ -560,7 +563,7 @@
             else
             {
                 pedidoActual.FechaHoraInicio = DateTime.Now;
-                pedidoActual.Estado = EstadoPedido.Pendiente.ToString();
+                pedidoActual.Estado = PedidoDTO.EstadoPedido.Pendiente;
 
                 try{
                     await PedidoApi.AddAsync(pedidoActual);
@@ -634,5 +637,23 @@
             "Cancelado" => "#f44336",
             _ => "#9e9e9e"
         };
+    }
+
+    private async Task<ProductoDTO> ObtenerProducto(int productoId)
+    {
+        ProductoDTO productoDTO = await ProductoApi.GetAsync(productoId);
+
+        return productoDTO;
+    }
+
+    private async Task<List<ProductoDTO>> ObtenerProductos(List<int> productosIds)
+    {
+        List<ProductoDTO> productosDTO = new List<ProductoDTO>();
+        foreach (var prodId in productosIds)
+        {
+            ProductoDTO productoDTO = await ObtenerProducto(prodId);
+            productosDTO.Add(productoDTO);
+        }
+        return productosDTO;
     }
 }

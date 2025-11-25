@@ -13,7 +13,7 @@ builder.Services.AddRazorComponents()
 //builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://localhost:7111/") });
 
 
-//// Configurar autenticación
+//// Configurar autenticaciï¿½n
 ////builder.Services.AddSingleton<IAuthService, BlazorWasmAuthService>();
 //builder.Services.AddScoped<IAuthService, BlazorWasmAuthService>();
 

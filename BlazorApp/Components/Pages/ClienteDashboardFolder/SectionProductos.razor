@@ -360,7 +360,7 @@
         MostrarToast("Carrito vaciado", true);
     }
 
-    private float CalcularSubtotal()
+    private decimal CalcularSubtotal()
     {
         return productosEnCarrito.Sum(c => c.Cantidad * c.Producto.Precio);
     }
@@ -384,11 +384,13 @@
             var nuevoPedido = new PedidoDTO
                 {
                     Descripcion = observaciones,
-                    Estado = "Pendiente",
+                    Estado = PedidoDTO.EstadoPedido.Pendiente,
                     FechaHoraInicio = DateTime.Now,
                     Subtotal = CalcularSubtotal(),
                     ClienteId = clienteIdActual,
-                    Productos = productosEnCarrito.Select(c => c.Producto).ToList()
+                    ProductosIds = productosEnCarrito.Select(c => c.Producto.Id).ToList(),
+                    FechaHoraFinEstimada = DateTime.Now.AddHours(1),
+
                 };
 
             await PedidoApi.AddAsync(nuevoPedido);

@@ -82,6 +82,12 @@
                                 <small class="text-muted">Sueldo:</small>
                                 <span class="ms-2">@empleado.Sueldo</span>
                             </div>
+                            <div class="mb-3">
+                                <small class="text-muted">Email:</small>
+                                <span class="ms-2">@empleado.Email</span>
+                            </div>
+
+
 
                             <div class="d-flex gap-2">
                                 <button class="btn btn-sm btn-outline-primary flex-fill" @onclick="@(() => AbrirModalEditar(empleado))">
@@ -117,6 +123,10 @@
                                     <label class="form-label fw-semibold">Nombre *</label>
                                     <input type="text" class="form-control" @bind="empleadoActual.RazonSocial" required />
                                 </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label fw-semibold">Apellido *</label>
+                                    <input type="text" class="form-control" @bind="empleadoActual.Apellido" required />
+                                </div>
                             </div>
 
                             <div class="row">
@@ -143,6 +153,26 @@
                             <div class="mb-3">
                                 <label class="form-label fw-semibold">Sueldo</label>
                                 <input type="text" class="form-control" rows="2" @bind="empleadoActual.Sueldo"></input>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold">Email</label>
+                                <input type="text" class="form-control" rows="2" @bind="empleadoActual.Email"></input>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold">Telefono</label>
+                                <input type="text" class="form-control" rows="2" @bind="empleadoActual.Telefono"></input>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold">Username</label>
+                                <input type="text" class="form-control" rows="2" @bind="empleadoActual.Username"></input>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold">Contraseña</label>
+                                <input type="text" class="form-control" rows="2" @bind="empleadoActual.Password"></input>
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -272,6 +302,11 @@
                 HorasTrabajadas = empleado.HorasTrabajadas,
                 PrecioPorHora = empleado.PrecioPorHora,
                 Sueldo = empleado.Sueldo,
+                Nombre = empleado.Nombre,
+                Apellido = empleado.Apellido,
+                Email = empleado.Email,
+                Telefono = empleado.Telefono,
+                Username = empleado.Username,
             };
         showModal = true;
     }
@@ -288,6 +323,7 @@
 
         try
         {
+            empleadoActual.Nombre = empleadoActual.RazonSocial;
             if (isEditMode)
             {
                 await EmpleadoApi.UpdateAsync(empleadoActual);

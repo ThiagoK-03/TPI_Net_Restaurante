@@ -51,6 +51,7 @@
                             <th class="py-3">Ingrediente</th>
                             <th class="py-3">Descripcion</th>
                             <th class="py-3">Origen</th>
+                            <th class="py-3">Proveedor</th>
                             <th class="py-3 text-end">Stock</th>
                             <th class="py-3 text-center">Acciones</th>
                         </tr>
@@ -64,7 +65,8 @@
                                     <strong>@ingrediente.Nombre</strong>
                                 </td>
                                 <td class="text-black">@ingrediente.Descripcion</td>
-                                <td class="fw-bold text-black-50 fs-5">@ingrediente.Origen</td>
+                                <td class="text-black">@ingrediente.Origen</td>
+                                <td class="text-black">@ingrediente.ProveedorNombre</td>
                                 <td class="text-end fw-bold text-danger fs-5">@ingrediente.Stock</td>
                                 <td class="text-center">
                                     <button class="btn btn-sm btn-outline-primary me-1" @onclick="@(() => AbrirModalEditar(ingrediente))">
@@ -120,6 +122,18 @@
                                 <label class="form-label fw-semibold">Origen *</label>
                                 <input type="text" class="form-control" @bind="ingredienteActual.Origen" required />
                             </div>
+
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold">Proveedor *</label>
+                                <select class="form-select" @bind="ingredienteActual.ProveedorId" required>
+                                    <option value="0">-- Seleccionar Proveedor --</option>
+                                    @foreach (var proveedor in listaProveedores)
+                                    {
+                                        <option value="@proveedor.Id">@proveedor.RazonSocial</option>
+                                    }
+                                </select>
+                            </div>
+
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" @onclick="CerrarModal" disabled="@isSaving">
@@ -202,17 +216,48 @@
     private string mensajeToast = string.Empty;
     private bool toastExito = true;
     private string? errorMessage = null;
+    private List<ProveedorDTO> listaProveedores = new List<ProveedorDTO>();
 
     protected override async Task OnInitializedAsync()
-    {
-        await CargarIngredientes();
-    }
-
-    private async Task CargarIngredientes()
     {
         isLoading = true;
         errorMessage = null;
 
+        try
+        {
+            await CargarIngredientes();
+            await CargarProveedores();
+        }
+        catch
+        {
+
+            ingredientes = new List<IngredienteDTO>();
+            listaProveedores = new List<ProveedorDTO>();
+        }
+        finally
+        {
+            isLoading = false;
+            StateHasChanged();
+        }
+
+
+
+    }
+
+    private async Task CargarProveedores()
+    {
+        try
+        {
+            listaProveedores = (await ProveedorApi.GetAllAsync()).ToList();
+        }
+        catch (Exception ex)
+        {
+            errorMessage = ex.Message;
+        }
+    }
+
+    private async Task CargarIngredientes()
+    {
         try
         {
             ingredientes = (await IngredienteApi.GetAllAsync()).ToList();
@@ -220,12 +265,6 @@
         catch (Exception ex)
         {
             errorMessage = ex.Message;
-            ingredientes = new List<IngredienteDTO>();
-        }
-        finally
-        {
-            isLoading = false;
-            StateHasChanged();
         }
     }
 
