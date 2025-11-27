@@ -132,7 +132,7 @@
                                             <div class="form-check mb-2">
                                                 <input class="form-check-input" 
                                                        type="checkbox" 
-                                                       id="ingrediente_@ingrediente.Id"
+                                                       id="@ingrediente.Id"
                                                        checked="@productoActual.IngredientesIds.Contains(ingrediente.Id)"
                                                        @onchange="@((e) => ToggleIngrediente(ingrediente.Id, (bool)e.Value!))" />
                                                 <label class="form-check-label" for="ingrediente_@ingrediente.Id">

@@ -126,10 +126,10 @@
                             <div class="mb-3">
                                 <label class="form-label fw-semibold">Proveedor *</label>
                                 <select class="form-select" @bind="ingredienteActual.ProveedorId" required>
-                                    <option value="0">-- Seleccionar Proveedor --</option>
+                                    <option value="@(isEditMode ? ingredienteActual.ProveedorId : 0 )" selected="@(ingredienteActual.ProveedorId)" >@(isEditMode ? ingredienteActual.ProveedorNombre : "Seleccionar Proveedor")</option>
                                     @foreach (var proveedor in listaProveedores)
                                     {
-                                        <option value="@proveedor.Id">@proveedor.RazonSocial</option>
+                                        <option value="@proveedor.Id" selected="@(ingredienteActual.ProveedorId == proveedor.Id)">@proveedor.RazonSocial</option>
                                     }
                                 </select>
                             </div>
@@ -282,7 +282,12 @@
             {
                 Id = ingrediente.Id,
                 Nombre = ingrediente.Nombre,
-                Stock = ingrediente.Stock
+                Stock = ingrediente.Stock,
+                Descripcion = ingrediente.Descripcion,
+                UnidadMedida = ingrediente.UnidadMedida,
+                Origen = ingrediente.Origen,
+                ProveedorNombre = ingrediente.ProveedorNombre,
+                ProveedorId = ingrediente.ProveedorId,
             };
         showModal = true;
     }
@@ -301,6 +306,7 @@
         {
             if (isEditMode)
             {
+                Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(ingredienteActual));
                 await IngredienteApi.UpdateAsync(ingredienteActual);
                 MostrarToast("Ingrediente actualizado exitosamente", true);
             }

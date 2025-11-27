@@ -80,13 +80,41 @@
                             <div class="mb-3">
                                 <label class="form-label fw-semibold">Nombre del Producto *</label>
                                 <input type="text" class="form-control" @bind="productoNuevo.Nombre"
-                                       placeholder="Ej: Pizza Margarita" required />
+                                placeholder="Ej: Pizza Margarita" required />
                             </div>
 
                             <div class="mb-3">
                                 <label class="form-label fw-semibold">Descripción *</label>
                                 <textarea class="form-control" rows="3" @bind="productoNuevo.Descripcion"
-                                          placeholder="Describe el producto..." required></textarea>
+                                placeholder="Describe el producto..." required></textarea>
+                            </div>
+
+                            @* AGREGAR INGREDIENTES *@
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold">Ingredientes</label>
+                                <div class="border rounded p-3" style="max-height: 250px; overflow-y: auto;">
+                                    @if (ingredientesDisponibles == null || ingredientesDisponibles.Count == 0)
+                                    {
+                                        <p class="text-muted small mb-0">No hay ingredientes disponibles</p>
+                                    }
+                                    else
+                                    {
+                                        @foreach (var ingrediente in ingredientesDisponibles)
+                                        {
+                                            <div class="form-check mb-2">
+                                                <input class="form-check-input"
+                                                type="checkbox"
+                                                id="ingrediente_@ingrediente.Id"
+                                                checked="@productoNuevo.IngredientesIds.Contains(ingrediente.Id)"
+                                                @onchange="@((e) => ToggleIngrediente(ingrediente.Id, (bool)e.Value!))" />
+                                                <label class="form-check-label" for="ingrediente_@ingrediente.Id">
+                                                    <strong>@ingrediente.Nombre</strong>
+                                                    <span class="text-muted small d-block">@ingrediente.Descripcion</span>
+                                                </label>
+                                            </div>
+                                        }
+                                    }
+                                </div>
                             </div>
 
                             <div class="mb-3">
@@ -94,7 +122,7 @@
                                 <div class="input-group">
                                     <span class="input-group-text">$</span>
                                     <input type="number" step="0.01" class="form-control" @bind="productoNuevo.Precio"
-                                           placeholder="0.00" required />
+                                    placeholder="0.00" required />
                                 </div>
                             </div>
                         </div>
@@ -133,6 +161,7 @@
 </div>
 
 @code {
+
     private ProductoApi ProductoApi { get; set; } = default!;
 
     private List<ProductoDTO> productos = new();
@@ -144,6 +173,7 @@
     private string mensajeToast = string.Empty;
     private bool toastExito = true;
     private string? errorMessage = null;
+    private List<IngredienteDTO> ingredientesDisponibles = new();
 
     protected override async Task OnInitializedAsync()
     {
@@ -158,11 +188,14 @@
         try
         {
             productos = (await ProductoApi.GetAllAsync()).ToList();
+            ingredientesDisponibles = (await IngredienteApi.GetAllAsync()).ToList();
         }
         catch (Exception ex)
         {
             errorMessage = ex.Message;
             productos = new List<ProductoDTO>();
+
+            ingredientesDisponibles = new List<IngredienteDTO>();
         }
         finally
         {
@@ -217,5 +250,20 @@
             mostrarToast = false;
             InvokeAsync(StateHasChanged);
         });
+    }
+
+    private void ToggleIngrediente(int ingredienteId, bool isChecked)
+    {
+        if (isChecked)
+        {
+            if (!productoNuevo.IngredientesIds.Contains(ingredienteId))
+            {
+                productoNuevo.IngredientesIds.Add(ingredienteId);
+            }
+        }
+        else
+        {
+            productoNuevo.IngredientesIds.Remove(ingredienteId);
+        }
     }
 }

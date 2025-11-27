@@ -18,6 +18,7 @@ namespace Data.Repositories
         public void Add(Producto producto)
         {
             using var context = CreateContext();
+            foreach (Ingrediente ingrediente in producto.Ingredientes) context.Attach(ingrediente);
             context.Productos.Add(producto);
             context.SaveChanges();
         }

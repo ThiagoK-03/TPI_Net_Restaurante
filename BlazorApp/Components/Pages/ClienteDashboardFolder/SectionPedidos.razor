@@ -154,64 +154,7 @@
     @* Modal Ver Detalles *@
     @if (showDetailsModal && pedidoSeleccionado != null)
     {
-        <div class="modal show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.5);" @onclick="CerrarDetalles">
-            <div class="modal-dialog modal-dialog-centered modal-lg" @onclick:stopPropagation="true">
-                <div class="modal-content">
-                    <div class="modal-header" style="background-color: var(--rojo-muy-claro);">
-                        <h5 class="modal-title text-danger fw-bold">Detalles del Pedido #@pedidoSeleccionado.Id</h5>
-                        <button type="button" class="btn-close" @onclick="CerrarDetalles"></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="row mb-4">
-                            <div class="col-md-6">
-                                <h6 class="text-danger fw-bold mb-3">Información del Pedido</h6>
-                                <p class="mb-2"><strong>Estado:</strong> <span class="badge @ObtenerClaseEstado(pedidoSeleccionado.Estado.ToString())">@pedidoSeleccionado.Estado.ToString()</span></p>
-                                <p class="mb-2"><strong>Fecha de Pedido:</strong> @pedidoSeleccionado.FechaHoraInicio.ToString("dd/MM/yyyy HH:mm")</p>
-                                @if (pedidoSeleccionado.FechaHoraFinEstimada != null)
-                                {
-                                    <p class="mb-2"><strong>Entrega Estimada:</strong> @pedidoSeleccionado.FechaHoraFinEstimada?.ToString("dd/MM/yyyy HH:mm")</p>
-                                }
-                                @if (pedidoSeleccionado.FechaHoraFin != null)
-                                {
-                                    <p class="mb-2"><strong>Completado:</strong> @pedidoSeleccionado.FechaHoraFin?.ToString("dd/MM/yyyy HH:mm")</p>
-                                }
-                            </div>
-                        </div>
-
-                        @if (!string.IsNullOrEmpty(pedidoSeleccionado.Descripcion))
-                        {
-                            <div class="mb-4">
-                                <h6 class="text-danger fw-bold mb-3">Observaciones</h6>
-                                <div class="alert alert-light border">
-                                    <p class="mb-0">@pedidoSeleccionado.Descripcion</p>
-                                </div>
-                            </div>
-                        }
-
-                        @if (pedidoSeleccionado.ProductosIds != null && pedidoSeleccionado.ProductosIds.Any())
-                        {
-                            <div class="mb-4">
-                                <h6 class="text-danger fw-bold mb-3">Productos del Pedido</h6>
-                                <div class="list-group">
-                                    @foreach (var prodId in pedidoSeleccionado.ProductosIds)
-                                    {
-                                        <div class="list-group-item">
-                                            <div class="d-flex justify-content-between align-items-center">
-                                                <span>Producto ID: @prodId</span>
-                                            </div>
-                                        </div>
-                                    }
-                                </div>
-                            </div>
-                        }
-
-                        <div class="text-end pt-3 border-top">
-                            <h3 class="text-danger mb-0">Total: $@pedidoSeleccionado.Subtotal.ToString("F2")</h3>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+		<BlazorApp.Components.Shared.ModalDetallesPedidos PedidoSeleccionado="pedidoSeleccionado" OnCerrar="CerrarDetalles" />
     }
 
     @* Modal Nuevo Pedido / Editar *@

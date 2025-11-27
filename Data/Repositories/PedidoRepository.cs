@@ -62,14 +62,22 @@ namespace Data.Repositories
         public bool Update(Pedido pedido)
         {
             using var context = CreateContext();
-            var existingPedido = context.Pedidos.Find(pedido.Id);
+            var existingPedido = context.Pedidos
+                .Include(p => p.Productos)
+                .FirstOrDefault(p => p.Id == pedido.Id);
+
+
             if (existingPedido != null)
             {
+
+
                 existingPedido.SetDescripcion(pedido.Descripcion);
                 existingPedido.SetEstado(pedido.Estado);
                 existingPedido.SetFechaHoraFin(pedido.FechaHoraFin);
                 existingPedido.SetFechaHoraFinEstimada(pedido.FechaHoraFinEstimada);
 
+
+                
                 if (pedido.Cliente != null)
                 {
                     var cliente = context.Clientes.Find(pedido.Cliente.Id);
@@ -81,6 +89,12 @@ namespace Data.Repositories
                     existingPedido.SetEmpleado(empleado);
                 }
 
+                existingPedido.SetProductos(
+                    pedido.Productos
+                          .Select(p => context.Productos.Find(p.Id))
+                          .Where(p => p != null)
+                          .ToList()
+                );
 
                 context.SaveChanges();
                 return true;

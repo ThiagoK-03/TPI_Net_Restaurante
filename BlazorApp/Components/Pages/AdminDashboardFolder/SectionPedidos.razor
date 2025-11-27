@@ -6,22 +6,19 @@
 <div class="container-fluid py-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2 class="text-danger fw-bold">Gestión de Pedidos</h2>
-        <button class="btn btn-primary" @onclick="AbrirModalAgregar">
-            <i class="bi bi-plus-circle"></i> Crear Pedido
-        </button>
     </div>
 
     <div class="btn-group mb-4 d-flex flex-wrap" role="group">
         <button type="button"
-                class="btn @(estadoFiltro == null ? "btn-danger" : "btn-outline-danger")"
-                @onclick="MostrarTodos">
+        class="btn @(estadoFiltro == null ? "btn-danger" : "btn-outline-danger")"
+        @onclick="MostrarTodos">
             Todos (@pedidos.Count)
         </button>
         @foreach (var estado in Enum.GetValues<EstadoPedido>())
         {
             <button type="button"
-                    class="btn @(estadoFiltro == estado ? "btn-danger" : "btn-outline-danger")"
-                    @onclick="@(() => FiltrarPorEstado(estado))">
+            class="btn @(estadoFiltro == estado ? "btn-danger" : "btn-outline-danger")"
+            @onclick="@(() => FiltrarPorEstado(estado))">
                 @estado (@pedidos.Count(p => p.Estado.ToString() == estado.ToString())
             </button>
         }
@@ -33,7 +30,7 @@
             <div class="spinner-border text-danger" role="status" style="width: 3rem; height: 3rem;">
                 <span class="visually-hidden">Cargando...</span>
             </div>
-            <p class="mt-3 text-muted">Cargando pedidos...</p>
+            <p class="mt-3 text-muted">Cargando pedidosssssss...</p>
         </div>
     }
     else if (errorMessage != null)
@@ -90,6 +87,22 @@
                                 <span class="ms-2 fw-semibold">@pedido.ClienteId</span>
                             </div>
 
+                            @if (pedido.ProductosIds != null && pedido.ProductosIds.Any())
+                            {
+                                <div class="mb-3">
+                                    <small class="text-muted d-block mb-2 fw-semibold">📝 Items del pedido:</small>
+                                    <ul class="list-unstyled ms-2">
+                                        @foreach (var prod in pedido.ProductosIds)
+                                        {
+                                            <li class="mb-1">
+                                                <span class="badge bg-secondary">ID: @prod</span>
+                                                <span class="badge bg-secondary">Nombre: @ObtenerNombreProducto(prod) </span> 
+                                            </li>
+                                        }
+                                    </ul>
+                                </div>
+                            }
+
                             @if (pedido.EmpleadoId != null)
                             {
                                 <div class="mb-2">
@@ -124,7 +137,7 @@
                                 <button class="btn btn-sm btn-outline-primary flex-fill" @onclick="@(() => VerDetalles(pedido))">
                                     <i class="bi bi-eye"></i> Ver
                                 </button>
-                                <button class="btn btn-sm btn-outline-secondary flex-fill" @onclick="@(() => AbrirModalEditar(pedido))">
+                                <button class="btn btn-sm btn-outline-secondary flex-fill" @onclick="@(async() => await AbrirModalEditar(pedido))">
                                     <i class="bi bi-pencil"></i> Editar
                                 </button>
                                 <button class="btn btn-sm btn-outline-danger" @onclick="@(() => ConfirmarEliminacion(pedido))">
@@ -141,62 +154,10 @@
     @* Modal Ver Detalles *@
     @if (showDetailsModal && pedidoSeleccionado != null)
     {
-        <div class="modal show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.5);" @onclick="CerrarDetalles">
-            <div class="modal-dialog modal-dialog-centered modal-lg" @onclick:stopPropagation="true">
-                <div class="modal-content">
-                    <div class="modal-header" style="background-color: var(--rojo-muy-claro);">
-                        <h5 class="modal-title text-danger fw-bold">Detalles del Pedido #@pedidoSeleccionado.Id</h5>
-                        <button type="button" class="btn-close" @onclick="CerrarDetalles"></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="mb-3">
-                            <h6 class="text-danger fw-bold">Información General</h6>
-                            <p class="mb-1"><strong>Estado:</strong> <span class="badge @ObtenerClaseEstado(pedidoSeleccionado.Estado.ToString())">@pedidoSeleccionado.Estado.ToString()</span></p>
-                            <p class="mb-1"><strong>Cliente ID:</strong> @pedidoSeleccionado.ClienteId</p>
-                            @if (pedidoSeleccionado.EmpleadoId != null)
-                            {
-                                <p class="mb-1"><strong>Empleado ID:</strong> @pedidoSeleccionado.EmpleadoId</p>
-                            }
-                            <p class="mb-1"><strong>Inicio:</strong> @pedidoSeleccionado.FechaHoraInicio.ToString("dd/MM/yyyy HH:mm")</p>
-                            @if (pedidoSeleccionado.FechaHoraFin != null)
-                            {
-                                <p class="mb-1"><strong>Fin:</strong> @pedidoSeleccionado.FechaHoraFin?.ToString("dd/MM/yyyy HH:mm")</p>
-                            }
-                        </div>
-
-                        @if (!string.IsNullOrEmpty(pedidoSeleccionado.Descripcion))
-                        {
-                            <div class="mb-3">
-                                <h6 class="text-danger fw-bold">Descripción</h6>
-                                <p class="mb-0">@pedidoSeleccionado.Descripcion</p>
-                            </div>
-                        }
-
-                        @if (pedidoSeleccionado.ProductosIds != null && pedidoSeleccionado.ProductosIds.Any())
-                        {
-                            <div class="mb-3">
-                                <h6 class="text-danger fw-bold">Productos</h6>
-                                <ul class="list-group">
-                                    @foreach (var prodId in pedidoSeleccionado.ProductosIds)
-                                    {
-                                        <li class="list-group-item d-flex justify-content-between">
-                                            <span>Producto ID: @prodId</span>
-                                        </li>
-                                    }
-                                </ul>
-                            </div>
-                        }
-
-                        <div class="text-end pt-3 border-top">
-                            <h4 class="text-danger mb-0">Subtotal: $@pedidoSeleccionado.Subtotal.ToString("F2")</h4>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <BlazorApp.Components.Shared.ModalDetallesPedidos PedidoSeleccionado="pedidoSeleccionado" OnCerrar="CerrarDetalles" />
     }
 
-    @* Modal Agregar/Editar *@
+    @* Modal Editar *@
     @if (showModal)
     {
         <div class="modal show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.5);" @onclick="CerrarModal">
@@ -263,6 +224,50 @@
                                     <input type="datetime-local" class="form-control" @bind="pedidoActual.FechaHoraFin" />
                                 </div>
                             }
+
+
+                            @* Lista Productos *@
+
+                            <label class="form-label">Lista productos *</label>
+                            <div>
+                                @foreach (var prod in listaProductosPedidoActual)
+                                {
+                                    <span class="badge bg-secondary me-2 d-inline-flex align-items-center">
+                                        @prod.Nombre
+                                        <button type="button" class="btn btn-sm btn-link text-danger ms-2 p-0" title="Quitar"
+                                        @onclick="@(() => QuitarProductoDePedido(prod.Id))">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </span>
+                                }
+                            </div>
+
+                            @if (agregandoProducto)
+                            {
+                                <div class="mt-2">
+                                    <select class="form-select w-auto d-inline-block" @bind="productoSeleccionadoId">
+                                        <option value="">-- Selecciona un producto --</option>
+                                        @foreach (var prod in todosProductos.Where(p => !listaProductosPedidoActual.Any(lp => lp.Id == p.Id)))
+                                        {
+                                            <option value="@prod.Id">@prod.Nombre</option>
+                                        }
+                                    </select>
+                                    <button type="button" class="btn btn-success ms-2" @onclick="AgregarProductoSeleccionado" disabled="@(!PuedeAgregarProducto)">
+                                        <i class="bi bi-plus-circle"></i> Agregar
+                                    </button>
+                                    <button type="button" class="btn btn-outline-secondary ms-2" @onclick="CancelarAgregarProducto">
+                                        Cancelar
+                                    </button>
+                                </div>
+                            }
+                            else
+                            {
+                                <button type="button" class="btn btn-outline-primary mt-2" @onclick="MostrarAgregarProducto">
+                                    <i class="bi bi-plus"></i> Agregar producto
+                                </button>
+                            }
+
+
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" @onclick="CerrarModal" disabled="@isSaving">
@@ -350,6 +355,10 @@
     private string? errorMessage = null;
     private EstadoPedido? estadoFiltro = null;
     private EstadoPedido estadoSeleccionado = EstadoPedido.Pendiente;
+    private List<ProductoDTO> listaProductosPedidoActual = new() ;
+    private List<ProductoDTO> todosProductos = new();
+    private bool agregandoProducto = false;
+    private int? productoSeleccionadoId = null;
 
     public enum EstadoPedido
     {
@@ -357,6 +366,12 @@
         EnPreparacion,
         Completado,
         Cancelado
+    }
+
+    private string ObtenerNombreProducto(int productoId)
+    {
+        var producto = todosProductos.FirstOrDefault(p => p.Id == productoId);
+        return producto != null ? producto.Nombre : "Desconocido";
     }
 
     protected override async Task OnInitializedAsync()
@@ -372,6 +387,7 @@
         try
         {
             pedidos = (await PedidoApi.GetAllAsync()).ToList();
+            todosProductos = (await ProductoApi.GetAllAsync()).ToList();
             pedidosFiltrados = pedidos;
         }
         catch (Exception ex)
@@ -379,6 +395,7 @@
             errorMessage = ex.Message;
             pedidos = new List<PedidoDTO>();
             pedidosFiltrados = new List<PedidoDTO>();
+            todosProductos = new List<ProductoDTO>();
         }
         finally
         {
@@ -411,23 +428,13 @@
         pedidoSeleccionado = null;
     }
 
-    private void AbrirModalAgregar()
-    {
-        isEditMode = false;
-        estadoSeleccionado = EstadoPedido.Pendiente;
-        pedidoActual = new PedidoDTO
-            {
-                FechaHoraInicio = DateTime.Now,
-                Estado = PedidoDTO.EstadoPedido.Pendiente
-            };
-        showModal = true;
-    }
 
-    private void AbrirModalEditar(PedidoDTO pedido)
+    private async Task AbrirModalEditar(PedidoDTO pedido)
     {
         isEditMode = true;
         Enum.TryParse(pedido.Estado.ToString(), out EstadoPedido estadoEnum);
         estadoSeleccionado = estadoEnum;
+        listaProductosPedidoActual = new List<ProductoDTO>();
 
         pedidoActual = new PedidoDTO
             {
@@ -442,6 +449,17 @@
                 EmpleadoId = pedido.EmpleadoId,
                 ProductosIds = pedido.ProductosIds
             };
+
+        foreach (int prodId in pedidoActual.ProductosIds)
+        {
+            Console.WriteLine("Appending prod");
+            ProductoDTO productoDTO = await ObtenerProducto(prodId);
+            listaProductosPedidoActual.Add(productoDTO);
+
+        }
+
+        Console.WriteLine("cant prods : " + listaProductosPedidoActual.Count);
+
         showModal = true;
     }
 
@@ -460,6 +478,7 @@
         {
             if (isEditMode)
             {
+                Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(pedidoActual));
                 await PedidoApi.UpdateAsync(pedidoActual);
                 MostrarToast("Pedido actualizado exitosamente", true);
             }
@@ -556,5 +575,55 @@
             "Cancelado" => "#f44336",
             _ => "#9e9e9e"
         };
+    }
+
+    private async Task<ProductoDTO> ObtenerProducto(int productoId)
+    {
+        ProductoDTO productoDTO = await ProductoApi.GetAsync(productoId);
+
+        return productoDTO;
+    }
+
+    private void QuitarProductoDePedido(int productoId)
+    {
+        var prod = listaProductosPedidoActual.FirstOrDefault(p => p.Id == productoId);
+        if (prod != null)
+        {
+            listaProductosPedidoActual.Remove(prod);
+            pedidoActual.ProductosIds.Remove(productoId);
+        }
+    }
+
+    private void MostrarAgregarProducto()
+    {
+        agregandoProducto = true;
+        productoSeleccionadoId = null;
+    }
+
+    private void CancelarAgregarProducto()
+    {
+        agregandoProducto = false;
+        productoSeleccionadoId = null;
+    }
+
+    private bool PuedeAgregarProducto => productoSeleccionadoId.HasValue && productoSeleccionadoId.Value > 0;
+
+    private async Task AgregarProductoSeleccionado()
+    {
+        if (PuedeAgregarProducto)
+        {
+            var prod = todosProductos.FirstOrDefault(p => p.Id == productoSeleccionadoId.Value);
+            if (prod != null && !listaProductosPedidoActual.Any(p => p.Id == prod.Id))
+            {
+                listaProductosPedidoActual.Add(prod);
+                if (!pedidoActual.ProductosIds.Contains(prod.Id))
+                {
+                    pedidoActual.ProductosIds.Add(prod.Id);
+                }
+            }
+            agregandoProducto = false;
+            productoSeleccionadoId = null;
+            await InvokeAsync(StateHasChanged);
+        }
     }
 }

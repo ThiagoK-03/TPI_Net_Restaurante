@@ -59,6 +59,10 @@ namespace WindowsForms.producto
                     this.Producto.Imagen = tbxImagen.Text;
                     this.Producto.Calificacion = int.Parse(tbxCalificacion.Text);
                     this.Producto.Precio = decimal.Parse(tbxPrecio.Text);
+                    this.Producto.IngredientesIds = cboxIngredientes.CheckedItems
+                        .Cast<IngredienteDTO>()
+                        .Select(i => i.Id)
+                        .ToList();
 
                     if (this.Mode == FormMode.Update)
                     {

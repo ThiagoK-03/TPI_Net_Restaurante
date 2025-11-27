@@ -1,0 +1,80 @@
+﻿@using DTOs;
+
+<div class="modal show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.5);" @onclick="OnCerrar">
+    <div class="modal-dialog modal-dialog-centered modal-lg" @onclick:stopPropagation="true">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: var(--rojo-muy-claro);">
+                <h5 class="modal-title text-danger fw-bold">Detalles del Pedido #@pedidoSeleccionado.Id</h5>
+                <button type="button" class="btn-close" @onclick="OnCerrar"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-4">
+                    <h6 class="text-danger fw-bold mb-3">Información del Pedido</h6>
+                    <p class="mb-2"><strong>Estado:</strong> <span class="badge @ObtenerClaseEstado(pedidoSeleccionado.Estado.ToString())">@pedidoSeleccionado.Estado.ToString()</span></p>
+                    <p class="mb-2"><strong>Cliente ID:</strong> @pedidoSeleccionado.ClienteId</p>
+                    @if (pedidoSeleccionado.EmpleadoId != null)
+                    {
+                        <p class="mb-2"><strong>Empleado ID:</strong> @pedidoSeleccionado.EmpleadoId</p>
+                    }
+                    <p class="mb-2"><strong>Fecha Inicio:</strong> @pedidoSeleccionado.FechaHoraInicio.ToString("dd/MM/yyyy HH:mm")</p>
+                    @if (pedidoSeleccionado.FechaHoraFinEstimada != null)
+                    {
+                        <p class="mb-2"><strong>Fin Estimado:</strong> @pedidoSeleccionado.FechaHoraFinEstimada?.ToString("dd/MM/yyyy HH:mm")</p>
+                    }
+                    @if (pedidoSeleccionado.FechaHoraFin != null)
+                    {
+                        <p class="mb-2"><strong>Completado:</strong> @pedidoSeleccionado.FechaHoraFin?.ToString("dd/MM/yyyy HH:mm")</p>
+                    }
+                </div>
+
+                @if (!string.IsNullOrEmpty(pedidoSeleccionado.Descripcion))
+                {
+                    <div class="mb-4">
+                        <h6 class="text-danger fw-bold mb-3">Observaciones del Cliente</h6>
+                        <div class="alert alert-light border">
+                            <p class="mb-0">@pedidoSeleccionado.Descripcion</p>
+                        </div>
+                    </div>
+                }
+
+                @if (pedidoSeleccionado.ProductosIds != null && pedidoSeleccionado.ProductosIds.Any())
+                {
+                    <div class="mb-4">
+                        <h6 class="text-danger fw-bold mb-3">Productos</h6>
+                        <div class="list-group">
+                            @foreach (var prod in pedidoSeleccionado.ProductosIds)
+                            {
+                                <div class="list-group-item">
+                                    <span>Producto ID: @prod</span>
+                                    <span>Producto Nombre:  </span>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                }
+
+                <div class="text-end pt-3 border-top">
+                    <h4 class="text-danger mb-0">Total: $@pedidoSeleccionado.Subtotal.ToString("F2")</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+	[Parameter] public PedidoDTO pedidoSeleccionado { get; set; }
+	[Parameter] public EventCallback OnCerrar { get; set; }
+
+    private string ObtenerClaseEstado(string estado)
+    {
+        return estado switch
+        {
+            "Pendiente" => "bg-warning text-dark",
+            "EnPreparacion" => "bg-primary",
+            "Completado" => "bg-success",
+            "Cancelado" => "bg-danger",
+            _ => "bg-secondary"
+        };
+    }
+}
+}
