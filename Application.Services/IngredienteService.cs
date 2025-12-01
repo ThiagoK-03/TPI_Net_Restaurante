@@ -53,7 +53,8 @@ namespace Application.Services
             {
                 Id = ingrediente.Id,
                 Nombre = ingrediente.Nombre,
-                ProveedorId = ingrediente.ProveedorId,  
+                ProveedorId = ingrediente.Proveedor.Id,  
+                ProveedorNombre = ingrediente.Proveedor.RazonSocial,
                 Descripcion = ingrediente.Descripcion,
                 Stock = ingrediente.Stock,
                 UnidadMedida = ingrediente.UnidadMedida,
@@ -80,6 +81,7 @@ namespace Application.Services
                     Id = ingrediente.Id,
                     Nombre = ingrediente.Nombre,
                     ProveedorNombre = proveedor != null ? proveedor.RazonSocial : "Desconocido",
+                    ProveedorId = ingrediente.ProveedorId,
                     Descripcion = ingrediente.Descripcion,
                     Stock = ingrediente.Stock,
                     UnidadMedida = ingrediente.UnidadMedida,

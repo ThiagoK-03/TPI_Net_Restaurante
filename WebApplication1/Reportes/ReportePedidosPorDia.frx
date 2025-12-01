@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Report ScriptLanguage="CSharp" ReportInfo.Created="11/29/2025 17:26:20" ReportInfo.Modified="11/29/2025 18:19:14" ReportInfo.CreatorVersion="2026.1.0.0">
+<Report ScriptLanguage="CSharp" ReportInfo.Created="11/29/2025 17:26:20" ReportInfo.Modified="11/30/2025 23:46:03" ReportInfo.CreatorVersion="2026.1.0.0">
   <Dictionary>
     <TableDataSource Name="PedidosPorDia" ReferenceName="Root.PedidosPorDia" DataType="System.Int32" Enabled="true">
       <Column Name="Fecha" DataType="System.DateTime"/>
@@ -8,17 +8,24 @@
     </TableDataSource>
   </Dictionary>
   <ReportPage Name="Page1" Watermark.Font="Arial, 60pt">
-    <ReportTitleBand Name="ReportTitle1" Width="718.2" Height="40" Border.Color="Brown" Fill.Color="Brown">
-      <TextObject Name="Titulo" Width="718.9" Height="40" Fill.Color="RosyBrown" Text="Reporte de Pedidos por Día" HorzAlign="Center" VertAlign="Center" Font="Arial, 16pt, style=Bold"/>
+    <ReportTitleBand Name="ReportTitle1" Width="718.2" Height="77.8" Border.Color="Brown" Fill.Color="White">
+      <TextObject Name="Titulo" Top="37.8" Width="718.9" Height="40" Text="Reporte de Pedidos por Día" HorzAlign="Center" VertAlign="Center" Font="Arial, 16pt, style=Bold"/>
+      <TextObject Name="Text4" Left="9.45" Top="9.45" Width="94.5" Height="18.9" Text="Entity Flavor" Font="Arial, 10pt"/>
+      <TextObject Name="Text5" Left="604.8" Top="9.45" Width="94.5" Height="18.9" Text="[Date]" Font="Arial, 10pt"/>
     </ReportTitleBand>
-    <DataBand Name="Data1" Top="43.2" Width="718.2" Height="75.6" Fill.Color="MistyRose" DataSource="PedidosPorDia">
-      <TextObject Name="FechaTxt" Left="94.5" Top="47.25" Width="200" Height="25" Text="[PedidosPorDia.Fecha]" Format="Date" Format.Format="dd/MM/yyyy" Font="Arial, 10pt"/>
-      <TextObject Name="CantidadTxt" Left="304.5" Top="47.25" Width="150" Height="25" Text="[PedidosPorDia.CantidadPedidos]" Font="Arial, 10pt"/>
-      <TextObject Name="TotalTxt" Left="464.5" Top="47.25" Width="150" Height="25" Text="[PedidosPorDia.TotalDelDia]" Format="Number" Format.UseLocale="true" Format.DecimalDigits="2" Font="Arial, 10pt"/>
-      <TextObject Name="Text1" Left="103.95" Top="9.45" Width="94.5" Height="18.9" Text="Fecha" HorzAlign="Center" Font="Arial, 10pt"/>
+    <ColumnHeaderBand Name="ColumnHeader1" Top="80.47" Width="718.2" Height="37.8">
       <TextObject Name="Text2" Left="302.4" Top="9.45" Width="122.85" Height="18.9" Text="Cantidad Pedidos&#13;&#10;" HorzAlign="Center" Font="Arial, 10pt"/>
+      <TextObject Name="Text1" Left="103.95" Top="9.45" Width="94.5" Height="18.9" Text="Fecha" HorzAlign="Center" Font="Arial, 10pt"/>
       <TextObject Name="Text3" Left="491.4" Top="9.45" Width="94.5" Height="18.9" Text="Total" HorzAlign="Center" Font="Arial, 10pt"/>
-      <LineObject Name="Line1" Width="718.2" Border.Width="3"/>
+      <LineObject Name="Line1" Left="18.9" Top="37.8" Width="689.85" Border.Width="2"/>
+    </ColumnHeaderBand>
+    <DataBand Name="Data1" Top="120.93" Width="718.2" Height="37.8" DataSource="PedidosPorDia">
+      <TextObject Name="FechaTxt" Left="56.7" Top="9.45" Width="190.55" Height="25" Text="[PedidosPorDia.Fecha]" Format="Date" Format.Format="dd/MM/yyyy" HorzAlign="Center" Font="Arial, 10pt"/>
+      <TextObject Name="CantidadTxt" Left="285.6" Top="9.45" Width="159.45" Height="25" Text="[PedidosPorDia.CantidadPedidos]" HorzAlign="Center" Font="Arial, 10pt"/>
+      <TextObject Name="TotalTxt" Left="464.5" Top="9.45" Width="150" Height="25" Text="[PedidosPorDia.TotalDelDia]" Format="Number" Format.UseLocale="true" Format.DecimalDigits="2" HorzAlign="Center" Font="Arial, 10pt"/>
     </DataBand>
+    <PageFooterBand Name="PageFooter1" Top="161.4" Width="718.2" Height="18.9">
+      <LineObject Name="Line2" Left="18.9" Top="18.9" Width="689.85" Border.Width="2"/>
+    </PageFooterBand>
   </ReportPage>
 </Report>
