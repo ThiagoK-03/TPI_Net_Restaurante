@@ -5,7 +5,7 @@ using DTOs;
 
 namespace Application.Services
 {
-    public class ClienteService : CrudService<ClienteDTO>
+    public class ClienteService : IClienteService
     {
         public ClienteDTO Add(ClienteDTO dto)
         {
@@ -123,6 +123,18 @@ namespace Application.Services
                 Rol = cliente.Usuario.Rol,
                 Estado = cliente.Usuario.Estado
             };
+        }
+
+        public ClienteDTO GetByUserId(int userId)
+        {
+            var cliente = new ClienteRepository().GetByUsuarioId(userId);
+            if (cliente == null)
+                throw new Exception($"Cliente con ID {userId} no existe.");
+
+            if (cliente == null)
+                return null;
+
+            return ToDto(cliente);
         }
     }
 }

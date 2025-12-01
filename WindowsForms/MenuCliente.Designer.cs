@@ -29,25 +29,25 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MenuCliente));
-            topBar1 = new WinFormsControlLibrary1.TopBar();
+            topBar = new WinFormsControlLibrary1.TopBar();
             label_tittle = new WinFormsControlLibrary1.BasicLabel();
             btn_salir = new WinFormsControlLibrary1.RedButton();
             btnSalir = new Button();
             btnProductos = new WinFormsControlLibrary1.RedButton();
             btnPedidos = new WinFormsControlLibrary1.RedButton();
             basicLabel1 = new WinFormsControlLibrary1.BasicLabel();
-            topBar1.SuspendLayout();
+            topBar.SuspendLayout();
             SuspendLayout();
             // 
-            // topBar1
+            // topBar
             // 
-            topBar1.BackColor = Color.FromArgb(192, 0, 0);
-            topBar1.Controls.Add(label_tittle);
-            topBar1.Dock = DockStyle.Top;
-            topBar1.Location = new Point(0, 0);
-            topBar1.Name = "topBar1";
-            topBar1.Size = new Size(406, 32);
-            topBar1.TabIndex = 0;
+            topBar.BackColor = Color.FromArgb(192, 0, 0);
+            topBar.Controls.Add(label_tittle);
+            topBar.Dock = DockStyle.Top;
+            topBar.Location = new Point(0, 0);
+            topBar.Name = "topBar";
+            topBar.Size = new Size(406, 32);
+            topBar.TabIndex = 0;
             // 
             // label_tittle
             // 
@@ -67,7 +67,7 @@
             btn_salir.BackColor = Color.FromArgb(192, 0, 0);
             btn_salir.FlatAppearance.BorderSize = 0;
             btn_salir.FlatStyle = FlatStyle.Flat;
-            btn_salir.Font = new Font("Leelawadee", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            btn_salir.Font = new Font("Microsoft Sans Serif", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             btn_salir.ForeColor = Color.MistyRose;
             btn_salir.Location = new Point(375, 0);
             btn_salir.Name = "btn_salir";
@@ -148,17 +148,17 @@
             Controls.Add(btnProductos);
             Controls.Add(btnSalir);
             Controls.Add(btn_salir);
-            Controls.Add(topBar1);
+            Controls.Add(topBar);
             FormBorderStyle = FormBorderStyle.None;
             Name = "MenuCliente";
             Text = "Restaurant";
-            topBar1.ResumeLayout(false);
+            topBar.ResumeLayout(false);
             ResumeLayout(false);
         }
 
         #endregion
 
-        private WinFormsControlLibrary1.TopBar topBar1;
+        private WinFormsControlLibrary1.TopBar topBar;
         public WinFormsControlLibrary1.BasicLabel label_tittle;
         public WinFormsControlLibrary1.RedButton btn_salir;
         private Button btnSalir;

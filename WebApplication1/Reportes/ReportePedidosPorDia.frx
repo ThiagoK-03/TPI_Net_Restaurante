@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="11/29/2025 17:26:20" ReportInfo.Modified="11/29/2025 18:19:14" ReportInfo.CreatorVersion="2026.1.0.0">
+  <Dictionary>
+    <TableDataSource Name="PedidosPorDia" ReferenceName="Root.PedidosPorDia" DataType="System.Int32" Enabled="true">
+      <Column Name="Fecha" DataType="System.DateTime"/>
+      <Column Name="CantidadPedidos" DataType="System.Int32"/>
+      <Column Name="TotalDelDia" DataType="System.Decimal"/>
+    </TableDataSource>
+  </Dictionary>
+  <ReportPage Name="Page1" Watermark.Font="Arial, 60pt">
+    <ReportTitleBand Name="ReportTitle1" Width="718.2" Height="40" Border.Color="Brown" Fill.Color="Brown">
+      <TextObject Name="Titulo" Width="718.9" Height="40" Fill.Color="RosyBrown" Text="Reporte de Pedidos por Día" HorzAlign="Center" VertAlign="Center" Font="Arial, 16pt, style=Bold"/>
+    </ReportTitleBand>
+    <DataBand Name="Data1" Top="43.2" Width="718.2" Height="75.6" Fill.Color="MistyRose" DataSource="PedidosPorDia">
+      <TextObject Name="FechaTxt" Left="94.5" Top="47.25" Width="200" Height="25" Text="[PedidosPorDia.Fecha]" Format="Date" Format.Format="dd/MM/yyyy" Font="Arial, 10pt"/>
+      <TextObject Name="CantidadTxt" Left="304.5" Top="47.25" Width="150" Height="25" Text="[PedidosPorDia.CantidadPedidos]" Font="Arial, 10pt"/>
+      <TextObject Name="TotalTxt" Left="464.5" Top="47.25" Width="150" Height="25" Text="[PedidosPorDia.TotalDelDia]" Format="Number" Format.UseLocale="true" Format.DecimalDigits="2" Font="Arial, 10pt"/>
+      <TextObject Name="Text1" Left="103.95" Top="9.45" Width="94.5" Height="18.9" Text="Fecha" HorzAlign="Center" Font="Arial, 10pt"/>
+      <TextObject Name="Text2" Left="302.4" Top="9.45" Width="122.85" Height="18.9" Text="Cantidad Pedidos&#13;&#10;" HorzAlign="Center" Font="Arial, 10pt"/>
+      <TextObject Name="Text3" Left="491.4" Top="9.45" Width="94.5" Height="18.9" Text="Total" HorzAlign="Center" Font="Arial, 10pt"/>
+      <LineObject Name="Line1" Width="718.2" Border.Width="3"/>
+    </DataBand>
+  </ReportPage>
+</Report>

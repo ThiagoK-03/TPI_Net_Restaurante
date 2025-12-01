@@ -9,7 +9,7 @@ namespace WindowsForms
         Add,
         Update
     }
-    internal static class Program
+    public static class Program
     {
         /// <summary>
         ///  The main entry point for the application.
@@ -24,7 +24,7 @@ namespace WindowsForms
             Task.Run(async () => await MainAsync()).GetAwaiter().GetResult();
         }
 
-        static async Task MainAsync()
+        public static async Task MainAsync()
         {
             // Registrar AuthService en singleton
             var authService = new WindowsFormsAuthService();

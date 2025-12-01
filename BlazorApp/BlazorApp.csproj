@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Include="Components\Shared\%28WIP%29ModalEditarPedido.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\API.Clients\API.Clients.csproj" />
     <ProjectReference Include="..\API\API.csproj" />
     <ProjectReference Include="..\Auth.Blazor\Auth.Blazor.csproj" />

@@ -97,7 +97,7 @@ namespace WindowsForms.Pedido
         private void LoadReport()
         {
             Reporte reporteForm = new Reporte();
-            reporteForm.CrearReporte(this.Pedido);
+            reporteForm.CrearReporteFactura(this.Pedido);
             reporteForm.ShowDialog();
         }
 

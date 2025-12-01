@@ -48,23 +48,11 @@ namespace WindowsForms
                 MessageBox.Show($"Error al iniciar sesión: {ex.Message}", "Error",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
 
-            //// Credenciales hardcodeadas
-            ////if (_authService.Login(usuario, password))
-            //if (true)
-            //    {
-            //    this.Hide();
-            //    Menu menu = new Menu();
-            //    menu.FormClosed += (s, args) => this.Close();
-            //    menu.Show();
-            //}
-            //else
-            //{
-            //    MessageBox.Show("Usuario o contraseña incorrectos",
-            //                    "Error de login",
-            //                    MessageBoxButtons.OK,
-            //                    MessageBoxIcon.Error);
-            //}
+        private void btnSalir_Click(object sender, EventArgs e)
+        {
+            System.Windows.Forms.Application.Exit();
         }
     }
 }

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using DTOs;
+using System.Data;
 
 namespace API
 {
@@ -32,6 +33,18 @@ namespace API
                 pedido = await response.Content.ReadFromJsonAsync<PedidoDTO>();
             }
             return pedido;
+        }
+
+
+        public static async Task<IEnumerable<PedidoDTO>> GetAllByClientIdAsync(int clientId)
+        {
+            IEnumerable<PedidoDTO> pedidos = null;
+            HttpResponseMessage response = await client.GetAsync("pedidos/cliente/" + clientId);
+            if (response.IsSuccessStatusCode)
+            {
+                pedidos = await response.Content.ReadFromJsonAsync<IEnumerable<PedidoDTO>>();
+            }
+            return pedidos;
         }
 
         public static async Task<IEnumerable<PedidoDTO>> GetAllAsync()
@@ -63,6 +76,28 @@ namespace API
             HttpResponseMessage response = await client.PutAsJsonAsync($"pedidos/{pedido.Id}", pedido);
             response.EnsureSuccessStatusCode();
         }
+
+        public static async Task<DataTable> ObtenerPedidosMensualesAsync()
+        {
+            IEnumerable<PedidosPorDiaDTO> pedidos = null;
+            var response = await client.GetAsync("report/pedidos-mensuales");
+
+            if (response.IsSuccessStatusCode)
+            {
+                pedidos = await response.Content.ReadFromJsonAsync<IEnumerable<PedidosPorDiaDTO>>();
+            }
+
+            var dt = new DataTable("PedidosPorDia");
+            dt.Columns.Add("Fecha", typeof(DateTime));
+            dt.Columns.Add("CantidadPedidos", typeof(int));
+            dt.Columns.Add("TotalDelDia", typeof(decimal));
+
+            foreach (var x in pedidos)
+                dt.Rows.Add(x.Fecha, x.CantidadPedidos, x.TotalDelDia);
+
+            return dt;
+        }
+
     }
 
 }

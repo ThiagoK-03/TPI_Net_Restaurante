@@ -61,5 +61,16 @@ namespace API
             HttpResponseMessage response = await client.PutAsJsonAsync($"clientes/{cliente.Id}", cliente);
             response.EnsureSuccessStatusCode();
         }
+
+        public static async Task<ClienteDTO> GetByUserIdAsync(int userId)
+        {
+            ClienteDTO cliente = null;
+            HttpResponseMessage response = await client.GetAsync(("clientes/user/" + userId).ToString());
+            if (response.IsSuccessStatusCode)
+            {
+                cliente = await response.Content.ReadFromJsonAsync<ClienteDTO>();
+            }
+            return cliente;
+        }
     }
 }

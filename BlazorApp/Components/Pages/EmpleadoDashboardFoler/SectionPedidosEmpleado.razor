@@ -209,7 +209,7 @@
     public enum EstadoPedido
     {
         Pendiente,
-        EnPreparacion,
+        EnProceso,
         Completado,
         Cancelado
     }
@@ -348,7 +348,7 @@
         return estado switch
         {
             "Pendiente" => "bg-warning text-dark",
-            "EnPreparacion" => "bg-primary",
+            "EnProceso" => "bg-primary",
             "Completado" => "bg-success",
             "Cancelado" => "bg-danger",
             _ => "bg-secondary"
@@ -360,7 +360,7 @@
         return estado switch
         {
             "Pendiente" => "#ff9800",
-            "EnPreparacion" => "#2196f3",
+            "EnProceso" => "#2196f3",
             "Completado" => "#4caf50",
             "Cancelado" => "#f44336",
             _ => "#9e9e9e"

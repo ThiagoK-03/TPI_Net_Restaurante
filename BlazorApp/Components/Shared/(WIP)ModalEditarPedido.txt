@@ -1,0 +1,183 @@
+﻿@using DTOs;
+
+<div class="modal show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.5);" @onclick="CerrarModal">
+    <div class="modal-dialog modal-dialog-centered modal-lg" @onclick:stopPropagation="true">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: var(--rojo-muy-claro);">
+                <h5 class="modal-title text-danger fw-bold">
+                    @(isEditMode ? "Editar Pedido" : "Nuevo Pedido")
+                </h5>
+                <button type="button" class="btn-close" @onclick="CerrarModal"></button>
+            </div>
+            <form @onsubmit="GuardarPedido">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Descripción</label>
+                        <textarea class="form-control" rows="2" @bind="pedidoActual.Descripcion"></textarea>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-semibold">Estado *</label>
+                            <select class="form-select" @bind="estadoSeleccionado" required>
+                                @foreach (var estado in Enum.GetValues<EstadoPedido>())
+                                {
+                                    <option value="@estado">@estado</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-semibold">Cliente ID *</label>
+                            <input type="number" class="form-control" @bind="pedidoActual.ClienteId" required />
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-semibold">Empleado ID</label>
+                            <input type="number" class="form-control" @bind="pedidoActual.EmpleadoId" />
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-semibold">Subtotal *</label>
+                            <div class="input-group">
+                                <span class="input-group-text">$</span>
+                                <input type="number" step="0.01" class="form-control" @bind="pedidoActual.Subtotal" required />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-semibold">Fecha Hora Inicio *</label>
+                            <input type="datetime-local" class="form-control" @bind="pedidoActual.FechaHoraInicio" required />
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-semibold">Fecha Hora Fin Estimada</label>
+                            <input type="datetime-local" class="form-control" @bind="pedidoActual.FechaHoraFinEstimada" />
+                        </div>
+                    </div>
+
+                    @if (isEditMode)
+                    {
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Fecha Hora Fin</label>
+                            <input type="datetime-local" class="form-control" @bind="pedidoActual.FechaHoraFin" />
+                        </div>
+                    }
+
+
+                    @* Lista Productos *@
+
+                    <label class="form-label">Lista productos *</label>
+                    <div>
+                        @foreach (var prod in listaProductosPedidoActual)
+                        {
+                            <span class="badge bg-secondary me-2 d-inline-flex align-items-center">
+                                @prod.Nombre
+                                <button type="button" class="btn btn-sm btn-link text-danger ms-2 p-0" title="Quitar"
+                                        @onclick="@(() => QuitarProductoDePedido(prod.Id))">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </span>
+                        }
+                    </div>
+
+                    @if (agregandoProducto)
+                    {
+                        <div class="mt-2">
+                            <select class="form-select w-auto d-inline-block" @bind="productoSeleccionadoId">
+                                <option value="">-- Selecciona un producto --</option>
+                                @foreach (var prod in todosProductos.Where(p => !listaProductosPedidoActual.Any(lp => lp.Id == p.Id)))
+                                {
+                                    <option value="@prod.Id">@prod.Nombre</option>
+                                }
+                            </select>
+                            <button type="button" class="btn btn-success ms-2" @onclick="AgregarProductoSeleccionado" disabled="@(!PuedeAgregarProducto)">
+                                <i class="bi bi-plus-circle"></i> Agregar
+                            </button>
+                            <button type="button" class="btn btn-outline-secondary ms-2" @onclick="CancelarAgregarProducto">
+                                Cancelar
+                            </button>
+                        </div>
+                    }
+                    else
+                    {
+                        <button type="button" class="btn btn-outline-primary mt-2" @onclick="MostrarAgregarProducto">
+                            <i class="bi bi-plus"></i> Agregar producto
+                        </button>
+                    }
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" @onclick="CerrarModal" disabled="@isSaving">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="btn btn-primary" disabled="@isSaving">
+                        @if (isSaving)
+                        {
+                            <span class="spinner-border spinner-border-sm me-2"></span>
+                        }
+                        <i class="bi bi-save"></i> @(isEditMode ? "Guardar Cambios" : "Crear Pedido")
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@code {
+	[Parameter] public bool isEditMode { get; set; }
+	[Parameter] public PedidoDTO pedidoActual { get; set; } = new PedidoDTO();
+	[Parameter] public EventCallback CerrarModal { get; set; }
+	[Parameter] public EventCallback GuardarPedido { get; set; }
+	[Parameter] public List<ProductoDTO> listaProductosPedidoActual { get; set; } = new();
+
+
+    private bool agregandoProducto = false;
+    private int? productoSeleccionadoId = null;
+
+
+    private void QuitarProductoDePedido(int productoId)
+    {
+        var prod = listaProductosPedidoActual.FirstOrDefault(p => p.Id == productoId);
+        if (prod != null)
+        {
+            listaProductosPedidoActual.Remove(prod);
+            pedidoActual.ProductosIds.Remove(productoId);
+        }
+    }
+
+    private void MostrarAgregarProducto()
+    {
+        agregandoProducto = true;
+        productoSeleccionadoId = null;
+    }
+
+    private void CancelarAgregarProducto()
+    {
+        agregandoProducto = false;
+        productoSeleccionadoId = null;
+    }
+
+    private bool PuedeAgregarProducto => productoSeleccionadoId.HasValue && productoSeleccionadoId.Value > 0;
+
+    private async Task AgregarProductoSeleccionado()
+    {
+        if (PuedeAgregarProducto)
+        {
+            var prod = todosProductos.FirstOrDefault(p => p.Id == productoSeleccionadoId.Value);
+            if (prod != null && !listaProductosPedidoActual.Any(p => p.Id == prod.Id))
+            {
+                listaProductosPedidoActual.Add(prod);
+                if (!pedidoActual.ProductosIds.Contains(prod.Id))
+                {
+                    pedidoActual.ProductosIds.Add(prod.Id);
+                }
+            }
+            agregandoProducto = false;
+            productoSeleccionadoId = null;
+            await InvokeAsync(StateHasChanged);
+        }
+    }
+}

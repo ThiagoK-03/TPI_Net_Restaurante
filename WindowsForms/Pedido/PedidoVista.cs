@@ -12,6 +12,7 @@ using WinFormsControlLibrary1;
 using API;
 using Domain.Model;
 using System.Text.Json;
+using Microsoft.Reporting.WinForms;
 
 namespace WindowsForms.Pedido
 {
@@ -45,10 +46,10 @@ namespace WindowsForms.Pedido
         {
             try
             {
-                PedidoDetalle pedidoDetalle = new PedidoDetalle();;
+                PedidoDetalle pedidoDetalle = new PedidoDetalle(); ;
                 var id = (int)dgvPedidos.CurrentRow.Cells["Id"].Value;
 
-//                int id = this.SelectedItem().Id;
+                //                int id = this.SelectedItem().Id;
 
                 PedidoDTO pedido = await PedidoApi.GetAsync(id);
 
@@ -89,7 +90,8 @@ namespace WindowsForms.Pedido
         private async Task<string> GetProductosName(List<int> productosIds)
         {
             string nombres = "";
-            foreach (int prodId in productosIds){
+            foreach (int prodId in productosIds)
+            {
                 var producto = await ProductoApi.GetAsync(prodId);
                 nombres += producto.Nombre + ", ";
             }
@@ -158,6 +160,16 @@ namespace WindowsForms.Pedido
         private void btnMenu_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private async void btnInforme_Click(object sender, EventArgs e)
+        {
+            var dt = await PedidoApi.ObtenerPedidosMensualesAsync();
+
+            var reporteMensual = new Reporte();
+            reporteMensual.CrearReporteMensual(dt);
+
+            reporteMensual.ShowDialog();
         }
     }
 

@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="11/29/2025 11:28:07" ReportInfo.Modified="11/29/2025 12:37:23" ReportInfo.CreatorVersion="2026.1.0.0">
+  <Styles Name="Sand">
+    <Style Name="Title" Font="Arial, 12pt, style=Bold"/>
+    <Style Name="Header" Fill.Color="Moccasin" Font="Arial, 10pt, style=Bold"/>
+    <Style Name="Group" Font="Arial, 10pt, style=Bold"/>
+    <Style Name="Data" Font="Arial, 10pt"/>
+    <Style Name="Footer" Fill.Color="Moccasin" Font="Arial, 10pt"/>
+    <Style Name="EvenRows" Fill.Color="FloralWhite" Font="Arial, 10pt"/>
+  </Styles>
+  <Dictionary>
+    <JsonDataSourceConnection Name="JSON PedidosPorDia" ConnectionString="rijcmlqTXt1/J3GQbzbKu/gyMKF4FMTgofm2Is93S3E5+UKeOXmGeLjxpFxJ68F9tXvI8bnCKtCMDJs3BJENSMEOZvsoY/bqevlKqeYbv20TRWVQizRD4Lc19H0+d6VTNfKFam/vG7ezBfFOgHt7Q+hBqRPm7SrOS4bmMi/SHeDeHLIVNgwREZPM6ZsUlQLDcSLbo8TuV1ryHgWWb6cPivvwKbBDo+mBFvT5eBE5jxMW+hVgay3j/uZbQoqKdZVAJys4QSG7v8LaSmG/t44ynPEPWtQ8GYEqYjExOQGK1germTcfMTyEMklbVbOh4U3QsB07DpMDk5dLIQZ7gNdA+5EWSH6uy1JDnUW0gu7whc/LxJxJJSYrD2zWKaN2fByl4u3cx9U1c23QEiqWvYk1JNv+E7QUeBAOSwmFzuH6Jp6eZI97Xk+x9CJSaZmCT92YPgQbQaJyexQuMMt9WlrRUIY34dZIcJBjedLBYyriczq1a0XS0B5TCp+cMC8jbp1DtRGn503nImx8vWTvgMyKkbNSSG6vIJYteoWf/3mMpr1D7gFBEhkBGXlyyMdcF6KOVgHlQOPRvvfghQlZ0N4IK04pKiq2GiCh3B1YJY4B0vTFgh5BX3KUAQ1rir4P4eBLknmlNeed6MUKOphnovKh+O8EPdLG+UI60E9PqSAFsq4qXQoTn5CM6FEseQDUXbvvqDu8r1H">
+      <JsonTableDataSource Name="JSON" DataType="FastReport.Utils.Json.JsonArray" Enabled="true" TableName="JSON">
+        <Column Name="index" DataType="System.Int32"/>
+        <Column Name="item" DataType="FastReport.JsonBase">
+          <JsonTableDataSource Name="PedidosPorDia" DataType="FastReport.JsonBase" Enabled="true">
+            <Column Name="index" DataType="System.Int32"/>
+            <Column Name="item" DataType="FastReport.JsonBase">
+              <Column Name="Fecha" DataType="System.String"/>
+              <Column Name="CantidadPedidos" DataType="System.Double"/>
+              <Column Name="TotalDelDia" DataType="System.Double"/>
+            </Column>
+            <Column Name="array" DataType="FastReport.JsonBase"/>
+          </JsonTableDataSource>
+        </Column>
+        <Column Name="array" DataType="FastReport.JsonBase"/>
+      </JsonTableDataSource>
+    </JsonDataSourceConnection>
+  </Dictionary>
+  <ReportPage Name="Page1" Watermark.Font="Arial, 60pt">
+    <ReportTitleBand Name="ReportTitle1" Width="718.2" Height="94.5">
+      <TextObject Name="Text1" Width="718.2" Height="94.5" Dock="Fill" Text="Pedidos por dia" HorzAlign="Center" VertAlign="Center" Font="Arial, 12pt, style=Bold" Style="Title"/>
+    </ReportTitleBand>
+    <DataBand Name="Data1" Top="98.5" Width="718.2" Height="406.35" Style="Data" DataSource="PedidosPorDia">
+      <MatrixObject Name="Matrix1" Left="207.9" Top="75.6" Width="211.56" Height="74.45" FixedRows="1" FixedColumns="1" DataSource="PedidosPorDia">
+        <MatrixColumns>
+          <Header Expression="[JSON.item.PedidosPorDia.item.CantidadPedidos]"/>
+        </MatrixColumns>
+        <MatrixRows>
+          <Header Expression="[JSON.item.PedidosPorDia.index]"/>
+        </MatrixRows>
+        <MatrixCells/>
+        <TableColumn Name="Column1" Width="49.91" AutoSize="true"/>
+        <TableColumn Name="Column2" Width="121.67" AutoSize="true"/>
+        <TableColumn Name="Column3" Width="39.98" AutoSize="true"/>
+        <TableRow Name="Row1" Height="19.56" AutoSize="true">
+          <TableCell Name="Cell1" Text="index" HorzAlign="Center" VertAlign="Center" Font="Arial, 10pt"/>
+          <TableCell Name="Cell2" Text="[CantidadPedidos]" HorzAlign="Center" VertAlign="Center" Font="Arial, 10pt"/>
+          <TableCell Name="Cell7" Text="Total" HorzAlign="Center" VertAlign="Center" Font="Arial, 10pt"/>
+        </TableRow>
+        <TableRow Name="Row2" Height="35.33" AutoSize="true">
+          <TableCell Name="Cell3" Text="[index]" HorzAlign="Center" VertAlign="Center" Font="Arial, 10pt"/>
+          <TableCell Name="Cell4" Text="Drag data here to&#13;&#10;create a new cell" HorzAlign="Center" VertAlign="Center" Font="Arial, 10pt" TextFill.Color="Gray"/>
+          <TableCell Name="Cell8" HorzAlign="Right" VertAlign="Center" Font="Arial, 10pt"/>
+        </TableRow>
+        <TableRow Name="Row3" Height="19.56" AutoSize="true">
+          <TableCell Name="Cell5" Text="Total" HorzAlign="Center" VertAlign="Center" Font="Arial, 10pt"/>
+          <TableCell Name="Cell6" HorzAlign="Right" VertAlign="Center" Font="Arial, 10pt"/>
+          <TableCell Name="Cell9" HorzAlign="Right" VertAlign="Center" Font="Arial, 10pt"/>
+        </TableRow>
+      </MatrixObject>
+    </DataBand>
+    <PageFooterBand Name="PageFooter1" Top="508.85" Width="718.2" Height="18.9">
+      <TextObject Name="Text8" Width="718.2" Height="18.9" Dock="Fill" Fill.Color="Moccasin" Text="[PageN]" HorzAlign="Right" Font="Arial, 10pt" Style="Footer"/>
+    </PageFooterBand>
+  </ReportPage>
+</Report>

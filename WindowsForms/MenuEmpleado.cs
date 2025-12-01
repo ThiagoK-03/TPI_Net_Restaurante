@@ -11,6 +11,7 @@ using WindowsForms.emplead;
 using WindowsForms.Pedido;
 using WindowsForms.producto;
 using WindowsForms.ingrediente;
+using WinFormsControlLibrary1;
 
 namespace WindowsForms
 {
@@ -19,6 +20,7 @@ namespace WindowsForms
         public MenuEmpleado()
         {
             InitializeComponent();
+            FormHelper.EnableDrag(this, topBar);
         }
 
         private void btnIngredientes_Click(object sender, EventArgs e)
@@ -41,7 +43,7 @@ namespace WindowsForms
 
         private void btnSalir_Click(object sender, EventArgs e)
         {
-            System.Windows.Forms.Application.Exit();
+            this.Close();
         }
     }
 }

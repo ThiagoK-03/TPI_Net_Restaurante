@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp">
+  <Dictionary>
+    <TableDataSource Name="PedidosPorDia" ReferenceName="Root.PedidosPorDia" DataType="System.Collections.Generic.List`1[[PedidosPorDiaDTO]]" Enabled="true">
+      <Column Name="Fecha" DataType="System.DateTime"/>
+      <Column Name="CantidadPedidos" DataType="System.Int32"/>
+      <Column Name="TotalDelDia" DataType="System.Decimal"/>
+    </TableDataSource>
+  </Dictionary>
+
+  <ReportPage Name="Page1">
+    <ReportTitleBand Name="ReportTitle1" Height="40">
+      <TextObject Name="Titulo" Width="700" Height="40" Text="Reporte de Pedidos por D�a" 
+                  HorzAlign="Center" VertAlign="Center"
+                  Font="Arial, 16pt, style=Bold"/>
+    </ReportTitleBand>
+
+    <!-- TABLA -->
+    <DataBand Name="Data1" Height="25" DataSource="PedidosPorDia">
+      <TextObject Name="FechaTxt" Left="0" Width="200" Height="25"
+                  Text="[PedidosPorDia.Fecha]" Format="Date" Format.Format="dd/MM/yyyy"/>
+      <TextObject Name="CantidadTxt" Left="210" Width="150" Height="25"
+                  Text="[PedidosPorDia.CantidadPedidos]"/>
+      <TextObject Name="TotalTxt" Left="370" Width="150" Height="25"
+                  Text="[PedidosPorDia.TotalDelDia]" Format="Number" Format.DecimalDigits="2"/>
+    </DataBand>
+
+    <!-- GR�FICO -->
+    <ReportSummaryBand Name="Summary1" Height="400">
+      <ChartObject Name="Chart1" Left="0" Top="20" Width="700" Height="350">
+        <Chart>
+          <Series>
+            <Series Name="Series1" SeriesType="Bar" ArgumentData="[PedidosPorDia.Fecha]" ValueData="[PedidosPorDia.CantidadPedidos]"/>
+          </Series>
+          <Diagram>
+            <DiagramType>XYDiagram</DiagramType>
+          </Diagram>
+        </Chart>
+      </ChartObject>
+    </ReportSummaryBand>
+
+  </ReportPage>
+</Report>

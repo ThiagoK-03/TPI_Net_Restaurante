@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,7 +10,7 @@ using DTOs;
 
 namespace Application.Services
 {
-    public class PedidoService : CrudService<PedidoDTO>
+    public class PedidoService : IPedidoService
     {
         //CREATE
         public PedidoDTO Add(PedidoDTO dto) 
@@ -58,8 +59,35 @@ namespace Application.Services
         public IEnumerable<PedidoDTO> GetAll()
         {
             PedidoRepository repository = new PedidoRepository();
-            
+
             return repository.GetAll().Select(pedido => new PedidoDTO
+            {
+                Id = pedido.Id,
+                Descripcion = pedido.Descripcion,
+                FechaHoraInicio = pedido.FechaHoraInicio,
+                FechaHoraFinEstimada = pedido.FechaHoraFinEstimada,
+                FechaHoraFin = pedido.FechaHoraFin,
+                Estado = (PedidoDTO.EstadoPedido)Enum.Parse<EstadoPedido>(pedido.Estado.ToString().ToString()),
+                ClienteId = pedido.ClienteId,
+                EmpleadoId = pedido.EmpleadoId,
+                ProductosIds = pedido.Productos?.Select(prod => prod.Id).ToList() ?? new List<int>(),
+
+                Subtotal = pedido.CalculateTotal()
+
+            }).ToList();
+        }
+
+        //GET ALL
+        public IEnumerable<PedidoDTO> GetAllByClientId(int clienteId)
+        {
+            PedidoRepository repository = new PedidoRepository();
+
+            var cliente = new ClienteRepository().Get(clienteId);
+            if (cliente == null)
+                throw new Exception($"Cliente con ID {clienteId} no existe.");
+
+            var  pedidos = repository.GetAll().Where(p => p.ClienteId == cliente.Id).ToList();
+            return pedidos.Select(pedido => new PedidoDTO
             {
                 Id = pedido.Id,
                 Descripcion = pedido.Descripcion,
@@ -154,6 +182,24 @@ namespace Application.Services
             PedidoRepository repository = new PedidoRepository();
             return repository.Delete(id);
         }
+
+        public List<PedidosPorDiaDTO> GetPedidosAgrupados()
+        {
+            var repo = new PedidoRepository();
+            var datos = repo.GetPedidosAgrupadosAdo();
+
+            return datos.Select(d => new PedidosPorDiaDTO
+            {
+                Fecha = d.Fecha,
+                CantidadPedidos = d.Cantidad,
+                TotalDelDia = d.Total
+            }).ToList();
+        }
+
+
+
+
+
 
     }
 }

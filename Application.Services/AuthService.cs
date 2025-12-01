@@ -36,7 +36,7 @@ namespace Application.Services
             {
                 Token = token,
                 ExpiresAt = expiresAt,
-                Username = usuario.Username
+                Username = usuario.Username,
             };
         }
         private string GenerateJwtToken(Usuario usuario)

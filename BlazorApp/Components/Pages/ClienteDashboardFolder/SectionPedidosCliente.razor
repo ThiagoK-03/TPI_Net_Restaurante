@@ -2,8 +2,11 @@
 @layout ClienteDashboardLayout
 @using API
 @using DTOs
+@inject IAuthService AuthService
 
 <div class="container-fluid py-4">
+
+    @* Crear pedido *@
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2 class="text-danger fw-bold">Mis Pedidos</h2>
         <button class="btn btn-primary btn-lg" @onclick="AbrirModalNuevoPedido">
@@ -61,6 +64,8 @@
     }
     else
     {
+        @* Muestra todos los pedidos *@
+
         <div class="row g-4">
             @foreach (var pedido in pedidosFiltrados)
             {
@@ -133,12 +138,16 @@
                                 <strong class="h4 mb-0 text-danger">$@pedido.Subtotal.ToString("F2")</strong>
                             </div>
 
+
+                            @* Botones *@
+
                             <div class="d-flex gap-2">
                                 <button class="btn btn-outline-primary flex-fill" @onclick="@(() => VerDetalles(pedido))">
                                     <i class="bi bi-eye"></i> Ver Detalles
                                 </button>
                                 @if (pedido.Estado.ToString() == "Pendiente")
                                 {
+                                    Console.WriteLine("Abriendo Modal Editar . . . \n" + System.Text.Json.JsonSerializer.Serialize(pedido));
                                     <button class="btn btn-outline-secondary flex-fill" @onclick="@(() => AbrirModalEditar(pedido))">
                                         <i class="bi bi-pencil"></i> Editar
                                     </button>
@@ -154,7 +163,7 @@
     @* Modal Ver Detalles *@
     @if (showDetailsModal && pedidoSeleccionado != null)
     {
-		<BlazorApp.Components.Shared.ModalDetallesPedidos PedidoSeleccionado="pedidoSeleccionado" OnCerrar="CerrarDetalles" />
+        <BlazorApp.Components.Shared.ModalDetallesPedidos PedidoSeleccionado="pedidoSeleccionado" OnCerrar="CerrarDetalles" />
     }
 
     @* Modal Nuevo Pedido / Editar *@
@@ -302,7 +311,7 @@
     private List<PedidoDTO> pedidosFiltrados = new();
     private List<ProductoDTO> productosDisponibles = new();
     private List<ProductoDTO> productosFiltrados = new();
-    private List<ProductoPedidoItem> productosEnPedido = new();
+    private List<ProductoPedidoItem> productosEnPedido = new List<ProductoPedidoItem>();
 
     private bool isLoading = false;
     private bool loadingProductos = false;
@@ -318,7 +327,7 @@
     private string? errorMessage = null;
     private EstadoPedido? estadoFiltro = null;
     private string searchProducto = string.Empty;
-    private int clienteIdActual = 1; // TODO: Obtener del usuario logueado
+    private int clienteIdActual;
 
     public enum EstadoPedido
     {
@@ -335,8 +344,18 @@
 
     protected override async Task OnInitializedAsync()
     {
+        await CargarClienteActual();
         await CargarPedidos();
         await CargarProductos();
+    }
+
+    private async Task CargarClienteActual()
+    {
+        var userId = (int)await AuthService.GetUserIdFromTokenAsync();
+        var cliente = await ClienteApi.GetByUserIdAsync(userId);
+
+        clienteIdActual = cliente.Id;
+
     }
 
     private async Task CargarPedidos()
@@ -346,10 +365,9 @@
 
         try
         {
-            var todosPedidos = await PedidoApi.GetAllAsync();
-            // Filtrar solo los pedidos del cliente actual
-            pedidos = todosPedidos.Where(p => p.ClienteId == clienteIdActual).ToList();
-            pedidosFiltrados = pedidos;
+            var todosPedidos = await PedidoApi.GetAllByClientIdAsync(clienteIdActual);
+            pedidosFiltrados = todosPedidos.ToList();
+            pedidos = pedidosFiltrados;
         }
         catch (Exception ex)
         {
@@ -439,8 +457,10 @@
         showPedidoModal = true;
     }
 
-    private void AbrirModalEditar(PedidoDTO pedido)
+    private async void AbrirModalEditar(PedidoDTO pedido)
     {
+        Console.WriteLine("Abriendo modal editar pedido ID: " + pedido.Id);
+
         isEditMode = true;
         pedidoActual = new PedidoDTO
             {
@@ -456,12 +476,15 @@
                 ProductosIds = pedido.ProductosIds ?? new List<int>()
             };
 
-        productosEnPedido = ObtenerProductos(pedido.ProductosIds ?? new List<int>()).Result
-            .Select(p => new ProductoPedidoItem { Producto = p }).ToList();
+        List<ProductoDTO> productosDto = await ObtenerProductos(pedido.ProductosIds ?? new List<int>());
+
+		productosEnPedido = productosDto.Select(p => new ProductoPedidoItem { Producto = p }).ToList();
         //productosEnPedido = pedido.Productos?.Select(p => new ProductoPedidoItem { Producto = p }).ToList() ?? new List<ProductoPedidoItem>();
         searchProducto = string.Empty;
         productosFiltrados = productosDisponibles;
         showPedidoModal = true;
+
+        Console.WriteLine("\n\nCargo el modal . . .\n");
     }
 
     private void CerrarModalPedido()

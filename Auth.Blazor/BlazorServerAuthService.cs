@@ -160,5 +160,30 @@ namespace Auth.Blazor
                 return null;
             }
         }
+
+        public async Task<int?> GetUserIdFromTokenAsync()
+        {
+            try
+            {
+                var token = _currentSession?.Token;
+                if (string.IsNullOrEmpty(token))
+                    return null;
+
+                var handler = new JwtSecurityTokenHandler();
+                var jsonToken = handler.ReadJwtToken(token);
+
+                var userIdClaim = jsonToken.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier);
+                if (userIdClaim != null && int.TryParse(userIdClaim.Value, out int userId))
+                {
+                    return userId;
+                }
+                return null;
+
+            }
+            catch
+            {
+                return null;
+            }
+        }
     }
 }

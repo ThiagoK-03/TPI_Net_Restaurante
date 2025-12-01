@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Domain.Model;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 
 namespace Data.Repositories
@@ -141,6 +143,68 @@ namespace Data.Repositories
                 .Where(p => p.FechaHoraInicio.Date == fecha.Date)
                 .ToList();
         }
+
+        public List<PedidosPorDiaResult> GetPedidosAgrupados()
+        {
+            using var context = CreateContext();
+
+            var result = context.Pedidos
+                .Include(p => p.Productos)
+                .GroupBy(p => p.FechaHoraInicio.Date)
+                .Select(g => new PedidosPorDiaResult
+                {
+                    Fecha = g.Key,
+                    Cantidad = g.Count(),
+                    Total = g.Sum(p => p.Productos.Sum(x => x.Precio))
+                })
+                .OrderByDescending(x => x.Fecha)
+                .Take(20)
+                .ToList();
+
+            return result;
+        }
+
+        public List<PedidosPorDiaResult> GetPedidosAgrupadosAdo()
+        {
+            var lista = new List<PedidosPorDiaResult>();
+
+            using var conn = new SqlConnection("Server=(localdb)\\MSSQLLocalDB;Database=TPIRestaurante;Trusted_Connection=True;");
+            conn.Open();
+
+            var cmd = new SqlCommand(@"SELECT TOP 20
+                CAST(p.FechaHoraInicio AS DATE) AS Fecha,
+                COUNT(DISTINCT p.Id) AS CantidadPedidos,
+                SUM(prod.Precio) AS TotalDelDia
+            FROM Pedidos p
+            JOIN PedidoProducto pp ON pp.PedidoId = p.Id
+            JOIN Productos prod ON prod.Id = pp.ProductoId
+            GROUP BY CAST(p.FechaHoraInicio AS DATE)
+            ORDER BY Fecha DESC"
+            , conn);
+
+            using var reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                lista.Add(new PedidosPorDiaResult
+                {
+                    Fecha = reader.GetDateTime(0),
+                    Cantidad = reader.GetInt32(1),
+                    Total = reader.GetDecimal(2)
+                });
+            }
+
+            Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(lista));
+            return lista;
+        }
+
+
+        public class PedidosPorDiaResult
+        {
+            public DateTime Fecha { get; set; }
+            public int Cantidad { get; set; }
+            public decimal Total { get; set; }
+        }
+
 
     }
 }

@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <None Remove="Pedido\ReportCliente.rdlc" />
+    <None Remove="Pedido\ReportPedidos.rdlc" />
     <None Remove="Report1.rdlc" />
   </ItemGroup>
 
@@ -17,9 +18,14 @@
     <Content Include="Pedido\ReportCliente.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Pedido\ReportPedidos.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="FastReport.OpenSource" Version="2026.1.2" />
+    <PackageReference Include="FastReport.OpenSource.Export.PdfSimple" Version="2026.1.2" />
     <PackageReference Include="ReportViewerCore.WinForms" Version="15.1.26" />
   </ItemGroup>
 
@@ -33,6 +39,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="DataSetReportPedidos.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>DataSetReportPedidos.xsd</DependentUpon>
+    </Compile>
     <Compile Update="ingrediente\IngredienteVistaCliente.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -93,6 +104,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="DataSetReportPedidos.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DataSetReportPedidos.Designer.cs</LastGenOutput>
+    </None>
     <None Update="TPIRestauranteDataSet.xsd">
       <Generator>MSDataSetGenerator</Generator>
       <LastGenOutput>TPIRestauranteDataSet.Designer.cs</LastGenOutput>

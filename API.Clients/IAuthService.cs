@@ -12,5 +12,6 @@
         Task CheckTokenExpirationAsync();
         Task<bool> HasPermissionAsync(string permission);
         Task<string?> GetRoleAsync();
+        Task <int?> GetUserIdFromTokenAsync();
     }
 }

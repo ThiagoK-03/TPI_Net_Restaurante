@@ -33,6 +33,7 @@
             labelUsuario = new WinFormsControlLibrary1.BasicLabel();
             labelContraseña = new WinFormsControlLibrary1.BasicLabel();
             btnLogin = new WinFormsControlLibrary1.RedButton();
+            btnSalir = new WinFormsControlLibrary1.RedButton();
             topBar.SuspendLayout();
             SuspendLayout();
             // 
@@ -94,7 +95,7 @@
             btnLogin.BackColor = Color.FromArgb(192, 0, 0);
             btnLogin.FlatAppearance.BorderSize = 0;
             btnLogin.FlatStyle = FlatStyle.Flat;
-            btnLogin.Font = new Font("Leelawadee", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            btnLogin.Font = new Font("Microsoft Sans Serif", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             btnLogin.ForeColor = Color.MistyRose;
             btnLogin.Location = new Point(116, 147);
             btnLogin.Name = "btnLogin";
@@ -104,11 +105,27 @@
             btnLogin.UseVisualStyleBackColor = true;
             btnLogin.Click += btnLogin_Click;
             // 
+            // btnSalir
+            // 
+            btnSalir.BackColor = Color.FromArgb(64, 0, 0);
+            btnSalir.FlatAppearance.BorderSize = 0;
+            btnSalir.FlatStyle = FlatStyle.Flat;
+            btnSalir.Font = new Font("Microsoft Sans Serif", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            btnSalir.ForeColor = Color.MistyRose;
+            btnSalir.Location = new Point(315, 197);
+            btnSalir.Name = "btnSalir";
+            btnSalir.Size = new Size(75, 23);
+            btnSalir.TabIndex = 8;
+            btnSalir.Text = "Salir";
+            btnSalir.UseVisualStyleBackColor = false;
+            btnSalir.Click += btnSalir_Click;
+            // 
             // LoginForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(402, 232);
+            Controls.Add(btnSalir);
             Controls.Add(btnLogin);
             Controls.Add(labelContraseña);
             Controls.Add(labelUsuario);
@@ -122,6 +139,7 @@
             Controls.SetChildIndex(labelUsuario, 0);
             Controls.SetChildIndex(labelContraseña, 0);
             Controls.SetChildIndex(btnLogin, 0);
+            Controls.SetChildIndex(btnSalir, 0);
             topBar.ResumeLayout(false);
             ResumeLayout(false);
             PerformLayout();
@@ -134,5 +152,6 @@
         private WinFormsControlLibrary1.BasicLabel labelUsuario;
         private WinFormsControlLibrary1.BasicLabel labelContraseña;
         private WinFormsControlLibrary1.RedButton btnLogin;
+        private WinFormsControlLibrary1.RedButton btnSalir;
     }
 }

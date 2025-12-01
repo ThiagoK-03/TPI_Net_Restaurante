@@ -10,6 +10,8 @@ using System.Windows.Forms;
 using DTOs;
 using WinFormsControlLibrary1;
 using API;
+using Application.Services;
+using API.Clients;
 
 namespace WindowsForms.Pedido
 {
@@ -87,7 +89,14 @@ namespace WindowsForms.Pedido
             try
             {
                 this.dgvPedidos.DataSource = null;
-                this.dgvPedidos.DataSource = await PedidoApi.GetAllAsync();
+
+                var authService = AuthServiceProvider.Instance;
+                var userId = (int)await authService.GetUserIdFromTokenAsync();
+                var cliente = await ClienteApi.GetByUserIdAsync(userId);
+
+                this.dgvPedidos.DataSource = await PedidoApi.GetAllByClientIdAsync(cliente.Id);
+
+
 
 
                 if (this.dgvPedidos.Rows.Count > 0)
@@ -127,7 +136,7 @@ namespace WindowsForms.Pedido
         private void btnReporte_Click(object sender, EventArgs e)
         {
             Reporte reporteCliente = new Reporte();
-            reporteCliente.CrearReporte(this.SelectedItem());
+            reporteCliente.CrearReporteFactura(this.SelectedItem());
             reporteCliente.ShowDialog();
 
         }

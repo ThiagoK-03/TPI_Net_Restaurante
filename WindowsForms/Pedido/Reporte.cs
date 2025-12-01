@@ -33,17 +33,37 @@ namespace WindowsForms.Pedido
 
         // ...
 
-        async public void CrearReporte(PedidoDTO pedido)
+
+        public void CrearReporteMensual(DataTable dt)
         {
+            // Limpia todo para evitar conflictos con el otro reporte
+            reportViewer.Reset();
+
+            // Establecer el archivo RDLC de reporte mensual
+            //reportViewer.LocalReport.ReportPath = "Pedido/ReportPedidos.rdlc";
+
+            using var fs = new FileStream("Pedido/ReportPedidos.rdlc", FileMode.Open);
+            reportViewer.LocalReport.LoadReportDefinition(fs);
+
+            // Configurar el DataSource del reporte
+            reportViewer.LocalReport.DataSources.Clear();
+            reportViewer.LocalReport.DataSources.Add(
+                new ReportDataSource("DataSetPedidosMensual", dt)
+            );
+
+            // Refrescar y renderizar
+            reportViewer.RefreshReport();
+        }
+
+
+        async public void CrearReporteFactura(PedidoDTO pedido)
+        {
+            reportViewer.Reset();
             //Cargar el RDLC
             using var fs = new FileStream("Pedido/ReportCliente.rdlc", FileMode.Open);
             reportViewer.LocalReport.LoadReportDefinition(fs);
 
             ClienteDTO cliente = (await ClienteApi.GetAsync(pedido.ClienteId));
-
-            // Mostrar el objeto cliente como JSON en una sola línea por consola
-            Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(cliente));
-            System.Diagnostics.Debug.WriteLine(System.Text.Json.JsonSerializer.Serialize(cliente));
 
             // Usuario
             var usuarioLista = new List<UsuarioReporte>

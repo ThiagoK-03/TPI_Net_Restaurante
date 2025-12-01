@@ -37,7 +37,7 @@ namespace WindowsForms
 
         private void btnSalir_Click(object sender, EventArgs e)
         {
-            System.Windows.Forms.Application.Exit();
+            this.Close();
         }
 
         private void panel1_DragEnter(object sender, DragEventArgs e)
