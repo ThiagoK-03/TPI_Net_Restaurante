@@ -1,4 +1,12 @@
-﻿namespace WindowsForms
+﻿namespace UI.WForm
+{
+}
+
+namespace WForm.UI
+{
+}
+
+namespace WindowsForms
 {
 }
 

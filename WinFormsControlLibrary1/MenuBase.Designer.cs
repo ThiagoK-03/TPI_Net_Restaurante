@@ -78,7 +78,7 @@
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(64, 0, 0);
-            BackgroundImage = Properties.Resources.restaurantBG1;
+            BackgroundImage = WForm.Controls.Properties.Resources.restaurantBG1;
             BackgroundImageLayout = ImageLayout.Stretch;
             ClientSize = new Size(800, 450);
             Controls.Add(topBar);

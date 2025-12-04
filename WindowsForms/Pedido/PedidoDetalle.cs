@@ -47,6 +47,8 @@ namespace WindowsForms.Pedido
             {
                 try
                 {
+
+
                     this.Pedido.Descripcion = TxtBoxDescripcion.Text;
                     this.pedido.Estado = (PedidoDTO.EstadoPedido)cboxEstado.SelectedItem!;
                     this.Pedido.FechaHoraInicio = DateTime.Now;
@@ -94,7 +96,7 @@ namespace WindowsForms.Pedido
             
 
             cboxEstado.Text = this.pedido.Estado.ToString().ToString();
-            dtPickerFinEstimado.Value = this.Pedido.FechaHoraFinEstimada ?? DateTime.Now;
+            dtPickerFinEstimado.Value = this.Pedido.FechaHoraFinEstimada ?? DateTime.Now.AddHours(1);
             if (mode == FormMode.Update)
                 dtPickerFechaHoraFin.Value = this.Pedido.FechaHoraFin ?? DateTime.Now;
 
@@ -145,6 +147,7 @@ namespace WindowsForms.Pedido
                 dtPickerFechaHoraFin.Enabled = false;
                 dtPickerFechaHoraFin.Visible = false;
                 lblFechaHoraFin.Visible = false;
+                dtPickerFinEstimado.Value = DateTime.Now.AddHours(1);
             }
             if (Mode == FormMode.Update)
             {
@@ -154,6 +157,7 @@ namespace WindowsForms.Pedido
                 dtPickerFechaHoraFin.Enabled = true;
                 dtPickerFechaHoraFin.Visible = true;
                 lblFechaHoraFin.Visible = true;
+                dtPickerFinEstimado.Value = DateTime.Now.AddHours(1);
             }
         }
 

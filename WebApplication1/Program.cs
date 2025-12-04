@@ -9,7 +9,6 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using System.Text.Json;
 using WebApplication1;
-using WebApplication1.Endpoints;
 using FastReport.Data;
 using System.Data;
 

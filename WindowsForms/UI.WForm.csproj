@@ -31,11 +31,11 @@
 
   <ItemGroup>
     <ProjectReference Include="..\API.Clients\API.Clients.csproj" />
-    <ProjectReference Include="..\API\API.csproj" />
+    <ProjectReference Include="..\API\API.Controllers.csproj" />
     <ProjectReference Include="..\Application.Services\Application.Services.csproj" />
     <ProjectReference Include="..\Auth.WindowsForms\Auth.WindowsForms.csproj" />
     <ProjectReference Include="..\DTOs\DTOs.csproj" />
-    <ProjectReference Include="..\WinFormsControlLibrary1\WinFormsControlLibrary1.csproj" />
+    <ProjectReference Include="..\WinFormsControlLibrary1\WForm.Controls.csproj" />
   </ItemGroup>
 
   <ItemGroup>

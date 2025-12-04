@@ -12,7 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\API.Clients\API.Clients.csproj" />
-    <ProjectReference Include="..\API\API.csproj" />
+    <ProjectReference Include="..\API\API.Controllers.csproj" />
     <ProjectReference Include="..\Auth.Blazor\Auth.Blazor.csproj" />
     <ProjectReference Include="..\DTOs\DTOs.csproj" />
   </ItemGroup>

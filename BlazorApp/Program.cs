@@ -1,5 +1,5 @@
 using API.Clients;
-using BlazorApp.Components;
+using UI.Blazor.Components;
 using Auth.Blazor;
 
 var builder = WebApplication.CreateBuilder(args);

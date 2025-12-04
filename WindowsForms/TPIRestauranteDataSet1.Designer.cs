@@ -10,7 +10,7 @@
 
 #pragma warning disable 1591
 
-namespace WindowsForms {
+namespace UI.WForm {
     
     
     /// <summary>
@@ -677,7 +677,7 @@ namespace WindowsForms {
         }
     }
 }
-namespace WindowsForms.TPIRestauranteDataSet1TableAdapters {
+namespace UI.WForm.TPIRestauranteDataSet1TableAdapters {
     
     
     /// <summary>
