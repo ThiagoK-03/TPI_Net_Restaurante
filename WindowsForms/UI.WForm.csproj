@@ -30,8 +30,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\API.Clients\API.Clients.csproj" />
-    <ProjectReference Include="..\API\API.Controllers.csproj" />
+    <ProjectReference Include="..\API.Clients\API.Auth.csproj" />
+    <ProjectReference Include="..\API\API.Client.csproj" />
     <ProjectReference Include="..\Application.Services\Application.Services.csproj" />
     <ProjectReference Include="..\Auth.WindowsForms\Auth.WindowsForms.csproj" />
     <ProjectReference Include="..\DTOs\DTOs.csproj" />
