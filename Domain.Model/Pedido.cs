@@ -110,7 +110,7 @@ namespace Domain.Model
         public void SetFechaHoraFinEstimada(DateTime? fechaHoraFinEstimada)
         {
             if (fechaHoraFinEstimada < FechaHoraInicio)
-                throw new ArgumentException("La fecha de fin estimada no puede ser anterior a la de inicio.", nameof(fechaHoraFinEstimada));
+                FechaHoraFinEstimada = fechaHoraFinEstimada.Value.AddHours(1);
             FechaHoraFinEstimada = fechaHoraFinEstimada;
         }
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -51,7 +52,11 @@ namespace Data.Repositories
         public bool Update(Producto producto)
         {
             using var context = CreateContext();
-            var existingProducto = context.Productos.Find(producto.Id);
+
+            var existingProducto = context.Productos.
+                Include(p => p.Ingredientes).
+                FirstOrDefault(p => p.Id == producto.Id);
+
             if (existingProducto != null)
             {
                 existingProducto.SetNombre(producto.Nombre);
@@ -59,7 +64,13 @@ namespace Data.Repositories
                 existingProducto.SetImagen(producto.Imagen);
                 existingProducto.SetCalificacion(producto.Calificacion);
                 existingProducto.SetPrecio(producto.Precio);
-                existingProducto.SetIngredientes(producto.Ingredientes.ToList());
+
+                existingProducto.SetIngredientes(
+                    producto.Ingredientes.
+                        Select(p => context.Ingredientes.Find(p.Id))
+                        .Where(p => p != null)
+                        .ToList()
+                        );
 
                 context.SaveChanges();
                 return true;

@@ -45,6 +45,8 @@ namespace Application.Services
         {
             IngredienteRepository repository = new IngredienteRepository();
             Ingrediente? ingrediente = repository.Get(id);
+            ProveedorRepository repoProv = new ProveedorRepository();
+            var prov = repoProv.Get(ingrediente.ProveedorId);
 
             if (ingrediente == null)
                 return null;
@@ -53,8 +55,8 @@ namespace Application.Services
             {
                 Id = ingrediente.Id,
                 Nombre = ingrediente.Nombre,
-                ProveedorId = ingrediente.Proveedor.Id,  
-                ProveedorNombre = ingrediente.Proveedor.RazonSocial,
+                ProveedorId = ingrediente.ProveedorId,  
+                ProveedorNombre = prov.RazonSocial,
                 Descripcion = ingrediente.Descripcion,
                 Stock = ingrediente.Stock,
                 UnidadMedida = ingrediente.UnidadMedida,

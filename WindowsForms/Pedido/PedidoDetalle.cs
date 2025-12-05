@@ -51,7 +51,7 @@ namespace WindowsForms.Pedido
 
                     this.Pedido.Descripcion = TxtBoxDescripcion.Text;
                     this.pedido.Estado = (PedidoDTO.EstadoPedido)cboxEstado.SelectedItem!;
-                    this.Pedido.FechaHoraInicio = DateTime.Now;
+                    if(this.Mode == FormMode.Add) this.Pedido.FechaHoraInicio = DateTime.Now;
                     this.Pedido.FechaHoraFinEstimada = dtPickerFinEstimado.Value;
                     this.Pedido.ProductosIds = clistboxProductos.CheckedItems
                         .Cast<ProductoDTO>()

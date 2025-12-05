@@ -93,8 +93,8 @@ namespace WindowsForms.producto
             this.tbxNombre.Text = this.Producto.Nombre;
             this.tbxDescripcion.Text = this.Producto.Descripcion;
             this.tbxImagen.Text = this.Producto.Imagen;
-            this.tbxCalificacion.Text = this.Producto.Calificacion.ToString();
-            this.tbxPrecio.Text = this.Producto.Precio.ToString();
+            this.tbxCalificacion.Text = (((int?)this.Producto.Calificacion)).ToString();
+            this.tbxPrecio.Text = ((int)this.Producto.Precio).ToString();
         }
 
         private void SetFormMode(FormMode value)

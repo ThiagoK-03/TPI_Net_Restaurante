@@ -91,14 +91,19 @@ namespace Domain.Model
                 throw new ArgumentNullException(nameof(ingredientes), "La lista de ingredientes no puede ser nula.");
 
             // Limpia la colección actual y agrega los nuevos
-            Ingredientes.Clear();
+            this.Ingredientes.Clear();
 
             foreach (var ingrediente in ingredientes)
             {
                 if (ingrediente == null)
                     throw new ArgumentException("No se pueden incluir ingredientes nulos en la lista.", nameof(ingredientes));
 
-                Ingredientes.Add(ingrediente);
+ 
+               Ingredientes.Add(ingrediente);
+
+                Console.WriteLine(ingrediente);
+                Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(Ingredientes));
+
             }
         }
 
